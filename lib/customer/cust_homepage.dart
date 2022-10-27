@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 
 class CustHomePage extends StatefulWidget {
   CustHomePage({Key? key}) : super(key: key);
@@ -29,8 +30,18 @@ class _CustHomePageState extends State<CustHomePage> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        actions: [
-          Icon(Icons.person_rounded),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.person_rounded),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustProfile(),
+                ),
+              );
+            },
+          ),
           SizedBox(
             width: 15,
           ),

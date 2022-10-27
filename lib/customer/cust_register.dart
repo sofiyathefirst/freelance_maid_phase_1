@@ -56,8 +56,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 print(e);
               })
             })
-        .then((value) => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => CustHomePage())));
+        .then(
+          (value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CustHomePage(),
+            ),
+          ),
+        );
   }
 
   @override
