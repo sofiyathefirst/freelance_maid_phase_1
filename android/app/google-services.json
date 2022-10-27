@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "165466929848",
+    "project_id": "freelancemaid-8de13",
+    "storage_bucket": "freelancemaid-8de13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165466929848:android:4f4090e6251ecdc3f3d24d",
+        "android_client_info": {
+          "package_name": "com.example.freelance_maid_phase_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165466929848-1s9dhi8hrqsk2g5lb7m1ipqtd3us0ueu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165466929848-1s9dhi8hrqsk2g5lb7m1ipqtd3us0ueu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
