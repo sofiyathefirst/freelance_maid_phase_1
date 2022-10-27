@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/maid/outdoorpage.dart';
+import '../maid/indoorpage.dart';
 
 class CustHomePage extends StatefulWidget {
   CustHomePage({Key? key}) : super(key: key);
@@ -178,33 +180,319 @@ class _CustHomePageState extends State<CustHomePage> {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              'Other type of services:',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                extraWidget("House Cleaning", true),
-                extraWidget("Office Cleaning", false),
-                extraWidget("Disinfection", true),
+                InkWell(
+                  onTap: () {
+                    onChangePaketType("housecleaning");
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[350],
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/image/indoor.png'),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "House Cleaning",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
+                        child: selectedType == "housecleaning"
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Colors.pink[400],
+                                size: 30,
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    onChangePaketType("officecleaning");
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[350], //Color(0xffdfdeff),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/image/outdoor.png'),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Office Cleaning",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
+                        child: selectedType == "officecleaning"
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Colors.pink[400],
+                                size: 30,
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
             const SizedBox(
               height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                extraWidget("Deep Cleaning", false),
-                extraWidget("Gardening", true),
-                extraWidget("Post Renovation", true),
+                InkWell(
+                  onTap: () {
+                    onChangePaketType("disinfection");
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[350],
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/image/indoor.png'),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Disinfection",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
+                        child: selectedType == "disinfection"
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Colors.pink[400],
+                                size: 30,
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    onChangePaketType("garderning");
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[350], //Color(0xffdfdeff),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/image/outdoor.png'),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Garderning",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
+                        child: selectedType == "garderning"
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Colors.pink[400],
+                                size: 30,
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    onChangePaketType("deepcleaning");
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[350],
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/image/indoor.png'),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Deep Cleaning",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
+                        child: selectedType == "deepcleaning"
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Colors.pink[400],
+                                size: 30,
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    onChangePaketType("postrenovation");
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[350], //Color(0xffdfdeff),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/image/outdoor.png'),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Post Renovation",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black,
+                        ),
+                        child: selectedType == "postrenovation"
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Colors.pink[400],
+                                size: 30,
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ],

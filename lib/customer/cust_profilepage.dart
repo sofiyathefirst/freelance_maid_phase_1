@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_editprofile.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 
 class CustProfile extends StatefulWidget {
   CustProfile({Key? key}) : super(key: key);
@@ -9,6 +15,72 @@ class CustProfile extends StatefulWidget {
 }
 
 class _CustProfileState extends State<CustProfile> {
+  String? fname = '';
+  String? lname = '';
+  String? pnum = '';
+  String? email = '';
+  String? password = '';
+  String? gender = '';
+  String? birthdate = '';
+  String? address = '';
+  String? city = '';
+  String? postcode = '';
+  String? state = '';
+  String? image = '';
+  File? imageXFile;
+
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("customer")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          fname = snapshot.data()!['custfirstname'];
+          lname = snapshot.data()!['custlastname'];
+          email = snapshot.data()!['custemail'];
+          pnum = snapshot.data()!['phonenum'];
+          gender = snapshot.data()!['gender'];
+          birthdate = snapshot.data()!['birthdate'];
+          image = snapshot.data()!['image'];
+          address = snapshot.data()!['address'];
+          city = snapshot.data()!['city'];
+          postcode = snapshot.data()!['postcode'];
+          state = snapshot.data()!['state'];
+          password = snapshot.data()!['password'];
+        });
+      }
+    });
+  }
+
+  Future _delete() async {
+    await FirebaseFirestore.instance
+        .collection("customer")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .delete()
+        .then(
+          (value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SplashScreen2(),
+            ),
+          ),
+        );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Delete Succesful'),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +121,9 @@ class _CustProfileState extends State<CustProfile> {
                   onTap: () {},
                   child: CircleAvatar(
                     backgroundColor: Colors.green[200],
-                    backgroundImage:
-                        AssetImage("assets/image/dummyprofile.jpg"),
+                    backgroundImage: imageXFile == null
+                        ? NetworkImage(image!)
+                        : Image.file(imageXFile!).image,
                     radius: 65,
                   ),
                 ),
@@ -67,7 +140,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Name',
+                    fname! + '\t' + lname!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -85,7 +158,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'PhoneNumber',
+                    pnum!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -103,7 +176,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Email',
+                    email!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -121,7 +194,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Gender',
+                    gender!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -139,7 +212,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Birth Date',
+                    birthdate!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -157,7 +230,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Address',
+                    address!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -175,7 +248,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'City',
+                    city!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -193,7 +266,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Postcode',
+                    postcode!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -211,7 +284,7 @@ class _CustProfileState extends State<CustProfile> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'State',
+                    state!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -227,9 +300,16 @@ class _CustProfileState extends State<CustProfile> {
                       width: 25,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CustEditProfile(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
                       ),
                       child: Text(
                         'Edit Profile',
@@ -243,9 +323,9 @@ class _CustProfileState extends State<CustProfile> {
                       width: 10,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: _delete,
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
                       ),
                       child: Text(
                         'Delete Account',
@@ -261,7 +341,14 @@ class _CustProfileState extends State<CustProfile> {
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SplashScreen2(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
                   ),

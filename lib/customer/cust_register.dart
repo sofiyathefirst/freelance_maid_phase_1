@@ -44,14 +44,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 'custlastname': _custLastName.text.trim(),
                 'custid': _custId.text.trim(),
                 'password': _custPassword.text.trim(),
-                'image': '',
-                'phonenum': '',
-                'address': '',
-                'postcode': '',
-                'city': '',
-                'state': '',
-                'gender': '',
-                'birthdate': '',
+                'image': 'image',
+                'phonenum': 'XXX-XXXXXXX',
+                'address': 'address',
+                'postcode': 'postcode',
+                'city': 'city',
+                'state': 'state',
+                'gender': 'gender',
+                'birthdate': 'DD/MM/YYYY',
               }).catchError((e) {
                 print(e);
               })
