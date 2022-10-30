@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+
+import '../common method/gettextformfield.dart';
 
 class RegisterMaid extends StatefulWidget {
   RegisterMaid({Key? key}) : super(key: key);
@@ -9,261 +14,132 @@ class RegisterMaid extends StatefulWidget {
 
 class _RegisterMaidState extends State<RegisterMaid> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController name = TextEditingController();
-  final TextEditingController secname = TextEditingController();
-  final TextEditingController certid = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController confirmpassController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController mobile = TextEditingController();
-  bool _isObscure = true;
-  bool _isObscure2 = true;
+  CollectionReference ref = FirebaseFirestore.instance.collection('maid');
+  final _maidfname = TextEditingController();
+  final _maidlname = TextEditingController();
+  final _certid = TextEditingController();
+  final _password = TextEditingController();
+  final _confirmpass = TextEditingController();
+  final _maidemail = TextEditingController();
+  final _maidpnum = TextEditingController();
   bool showProgress = false;
-  bool valuefirst = false;
+
+  Future signUp() async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+          email: _maidemail.text.trim(),
+          password: _password.text.trim(),
+        )
+        .then((value) => {
+              FirebaseFirestore.instance
+                  .collection('maid')
+                  .doc(value.user!.uid)
+                  .set({
+                'maidemail': _maidemail.text.trim(),
+                'maidfirstname': _maidfname.text.trim(),
+                'maidlastname': _maidlname.text.trim(),
+                'maidid': _certid.text.trim(),
+                'password': _password.text.trim(),
+                'image': 'image',
+                'phonenum': _maidpnum.text.trim(),
+                'address': 'address',
+                'postcode': 'postcode',
+                'city': 'city',
+                'state': 'state',
+                'gender': 'gender',
+                'birthdate': 'DD/MM/YYYY',
+              }).catchError((e) {
+                print(e);
+              })
+            })
+        .then(
+          (value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MaidHomePage(),
+            ),
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade600,
       body: SingleChildScrollView(
-          child: Container(
-              padding: const EdgeInsets.all(40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'Maid Details',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Colors.white,
-                    ),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 150,
+                width: 150,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/image/Logo.png'),
+                    fit: BoxFit.cover,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: name,
-                          decoration: InputDecoration(
-                            hintText: 'First name',
-                            prefixIcon: const Icon(Icons.person),
-                            prefixIconColor: Colors.white,
-                            fillColor: Colors.white,
-                          ),
-                          onChanged: (value) {},
-                          keyboardType: TextInputType.name,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: secname,
-                          decoration: InputDecoration(
-                            hintText: 'Last name',
-                            prefixIcon: const Icon(Icons.person),
-                            prefixIconColor: Colors.white,
-                            fillColor: Colors.white,
-                          ),
-                          onChanged: (value) {},
-                          keyboardType: TextInputType.name,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: mobile,
-                          decoration: InputDecoration(
-                            hintText: 'Phone number',
-                            prefixIcon: const Icon(Icons.phone),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onChanged: (value) {},
-                          keyboardType: TextInputType.phone,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                            hintText: 'Email Address',
-                            prefixIcon: const Icon(Icons.email),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value!.length == 0) {
-                              return "Email cannot be empty";
-                            }
-                            if (!RegExp(
-                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                .hasMatch(value)) {
-                              return ("Please enter a valid email");
-                            } else {
-                              return null;
-                            }
-                          },
-                          onChanged: (value) {},
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: certid,
-                          decoration: InputDecoration(
-                            hintText: 'Certificate ID',
-                            prefixIcon:
-                                const Icon(Icons.chrome_reader_mode_rounded),
-                            prefixIconColor: Colors.white,
-                            fillColor: Colors.white,
-                          ),
-                          onChanged: (value) {},
-                          keyboardType: TextInputType.name,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: _passwordController,
-                          obscureText: _isObscure,
-                          decoration: InputDecoration(
-                            prefixIcon: IconButton(
-                                icon: Icon(_isObscure
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                                onPressed: () {
-                                  setState(() {
-                                    _isObscure = !_isObscure;
-                                  });
-                                }),
-                            hintText: 'Password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          validator: (value) {
-                            RegExp regex = RegExp(r'^.{6,}$');
-                            if (value!.isEmpty) {
-                              return "Password cannot be empty";
-                            }
-                            if (!regex.hasMatch(value)) {
-                              return ("please enter valid password min. 6 character");
-                            } else {
-                              return null;
-                            }
-                          },
-                          onChanged: (value) {},
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: confirmpassController,
-                          obscureText: _isObscure2,
-                          decoration: InputDecoration(
-                            prefixIcon: IconButton(
-                                icon: Icon(_isObscure2
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                                onPressed: () {
-                                  setState(() {
-                                    _isObscure2 = !_isObscure2;
-                                  });
-                                }),
-                            hintText: 'Confirm password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (confirmpassController.text !=
-                                _passwordController.text) {
-                              return "Password did not match";
-                            } else {
-                              return null;
-                            }
-                          },
-                          onChanged: (value) {},
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Checkbox(
-                          checkColor: Colors.greenAccent,
-                          value: this.valuefirst,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              valuefirst = value!;
-                            });
-                          },
-                        ),
-                        Text(
-                          'By clicking this checkbox I am aware with the terms and policy',
-                          style: TextStyle(fontSize: 17.0, color: Colors.white),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              showProgress = true;
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                          ),
-                          child: const Text(
-                            'Sign up',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('Already registered?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                )),
-                            TextButton(
-                              onPressed: () {
-                                const CircularProgressIndicator();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RegisterMaid(),
-                                  ),
-                                );
-                              },
-                              child: const Text('Sign in',
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 15,
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ))),
+                ),
+              ),
+              const Text(
+                'Maid Details',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              getTextFormField(
+                controller: _certid,
+                hintName: 'Cert Id',
+                icon: Icons.person,
+                inputType: TextInputType.name,
+                validator: _requiredValidator,
+              ),
+              getTextFormField(
+                controller: _maidemail,
+                hintName: 'Maid Email',
+                icon: Icons.email,
+                inputType: TextInputType.name,
+                validator: _requiredValidator,
+              ),
+              getTextFormField(
+                controller: _certid,
+                hintName: 'Cert Id',
+                icon: Icons.person,
+                inputType: TextInputType.name,
+                validator: _requiredValidator,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
+  }
+
+  String? _requiredValidator(String? text) {
+    if (text == null || text.trim().isEmpty) {
+      return 'This field is required';
+    }
+    return null;
+  }
+
+  String? _confirmPasswordValidator(String? _custconfirmPassword) {
+    if (_custconfirmPassword == null || _custconfirmPassword.trim().isEmpty) {
+      return 'This field is required';
+    }
+
+    if (_password.text != _confirmpass) {
+      return 'Password did not match';
+    }
+    return null;
   }
 }
