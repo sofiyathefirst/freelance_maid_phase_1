@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_login.dart';
 
 import '../common method/gettextformfield.dart';
 
@@ -112,11 +113,80 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 validator: _requiredValidator,
               ),
               getTextFormField(
-                controller: _certid,
-                hintName: 'Cert Id',
+                controller: _maidfname,
+                hintName: 'First Name',
                 icon: Icons.person,
                 inputType: TextInputType.name,
                 validator: _requiredValidator,
+              ),
+              getTextFormField(
+                controller: _maidlname,
+                hintName: 'Last Name',
+                icon: Icons.person,
+                inputType: TextInputType.name,
+                validator: _requiredValidator,
+              ),
+              getTextFormField(
+                controller: _maidpnum,
+                hintName: 'Phone Number',
+                icon: Icons.phone,
+                inputType: TextInputType.name,
+                validator: _requiredValidator,
+              ),
+              getTextFormField(
+                controller: _password,
+                hintName: 'Password',
+                icon: Icons.lock,
+                inputType: TextInputType.name,
+                validator: _requiredValidator,
+              ),
+              getTextFormField(
+                controller: _confirmpass,
+                hintName: 'Confirm Password',
+                icon: Icons.person,
+                inputType: TextInputType.name,
+                validator: _confirmPasswordValidator,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: signUp,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                ),
+                child: const Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Already registered',
+                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MaidLogin(),
+                        ),
+                      );
+                    },
+                    child: const Text('Sign In',
+                        style: TextStyle(color: Colors.green, fontSize: 20)),
+                  ),
+                ],
               ),
             ],
           ),
