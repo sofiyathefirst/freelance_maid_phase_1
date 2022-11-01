@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
+import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:firebase_core/firebase_core.dart';
 
