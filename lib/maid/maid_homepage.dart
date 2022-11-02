@@ -99,6 +99,90 @@ class _MaidHomePageState extends State<MaidHomePage> {
           ),
         ],
       ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          //height: MediaQuery.of(context).size.height,
+          padding: const EdgeInsets.all(20),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text("Booking List"),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: 300,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                child: Text(
+                    "Read from database booking request. Contoh: \n\nGambar \n\nNama:" +
+                        "\nNombor Phone:" +
+                        "\nRatings:" +
+                        "\n\nButton View Details"),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: 300,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                child: Text(
+                    "Read from database booking request. Contoh: \n\nGambar \n\nNama:" +
+                        "\nNombor Phone:" +
+                        "\nRatings:" +
+                        "\n\nButton View Details"),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: 300,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                child: Text(
+                    "Read from database booking request. Contoh: \n\nGambar \n\nNama:" +
+                        "\nNombor Phone:" +
+                        "\nRatings:" +
+                        "\n\nButton View Details"),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
