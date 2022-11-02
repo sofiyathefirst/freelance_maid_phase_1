@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-class OutdooPage extends StatefulWidget {
-  OutdooPage({Key? key}) : super(key: key);
+class DeepCleaning extends StatefulWidget {
+  DeepCleaning({Key? key}) : super(key: key);
 
   @override
-  State<OutdooPage> createState() => _OutdooPageState();
+  State<DeepCleaning> createState() => _DeepCleaningState();
 }
 
-class _OutdooPageState extends State<OutdooPage> {
+class _DeepCleaningState extends State<DeepCleaning> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +18,7 @@ class _OutdooPageState extends State<OutdooPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          "Outdoor",
+          "Deep Cleaning",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,

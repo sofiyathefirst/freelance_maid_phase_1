@@ -1,7 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/customer/cust_review.dart';
+import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
+import 'package:freelance_maid_phase_1/maid/deepcleaning.dart';
+import 'package:freelance_maid_phase_1/maid/disinfection.dart';
+import 'package:freelance_maid_phase_1/maid/gardening.dart';
+import 'package:freelance_maid_phase_1/maid/housecleaning.dart';
+import 'package:freelance_maid_phase_1/maid/officecleaning.dart';
 import 'package:freelance_maid_phase_1/maid/outdoorpage.dart';
+import 'package:freelance_maid_phase_1/maid/postrenovation.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import '../maid/indoorpage.dart';
 
@@ -54,12 +63,56 @@ class _CustHomePageState extends State<CustHomePage> {
       bottomNavigationBar: GNav(
         backgroundColor: Colors.white,
         tabBackgroundColor: Colors.grey.shade400,
-        gap: 8,
+        gap: 2,
         tabs: [
-          GButton(icon: Icons.home_rounded, text: "Home"),
-          GButton(icon: Icons.receipt_rounded, text: "Receipt"),
-          GButton(icon: Icons.book_online_rounded, text: "Booking"),
-          GButton(icon: Icons.reviews_rounded, text: "Review"),
+          GButton(
+            icon: Icons.home_rounded,
+            text: "Home",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustHomePage(),
+                ),
+              );
+            },
+          ),
+          GButton(
+            icon: Icons.receipt_rounded,
+            text: "Receipt",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Receipt(),
+                ),
+              );
+            },
+          ),
+          GButton(
+            icon: Icons.book_online_rounded,
+            text: "Booking",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Custbooking(),
+                ),
+              );
+            },
+          ),
+          GButton(
+            icon: Icons.reviews_rounded,
+            text: "Review",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Review(),
+                ),
+              );
+            },
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -93,6 +146,10 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("indoor");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => IndooPage()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -131,7 +188,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "indoor"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[200],
                                     size: 30,
                                   )
                                 : Container(),
@@ -145,6 +202,10 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("outdoor");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OutdooPage()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -183,7 +244,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "outdoor"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[400],
                                     size: 30,
                                   )
                                 : Container(),
@@ -197,6 +258,11 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("housecleaning");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HouseCleaning()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -235,7 +301,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "housecleaning"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[400],
                                     size: 30,
                                   )
                                 : Container(),
@@ -249,6 +315,11 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("officecleaning");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OFficeCleaning()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -287,7 +358,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "officecleaning"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[400],
                                     size: 30,
                                   )
                                 : Container(),
@@ -301,6 +372,11 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("disinfection");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Disinfection()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -339,7 +415,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "disinfection"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[400],
                                     size: 30,
                                   )
                                 : Container(),
@@ -353,6 +429,10 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("garderning");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Gardening()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -391,7 +471,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "garderning"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[400],
                                     size: 30,
                                   )
                                 : Container(),
@@ -405,6 +485,11 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("deepcleaning");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeepCleaning()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -443,7 +528,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "deepcleaning"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[400],
                                     size: 30,
                                   )
                                 : Container(),
@@ -457,6 +542,11 @@ class _CustHomePageState extends State<CustHomePage> {
                     InkWell(
                       onTap: () {
                         onChangePaketType("postrenovation");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Postrenovation()),
+                        );
                       },
                       child: Column(
                         children: [
@@ -495,7 +585,7 @@ class _CustHomePageState extends State<CustHomePage> {
                             child: selectedType == "postrenovation"
                                 ? Icon(
                                     Icons.check_circle,
-                                    color: Colors.pink[400],
+                                    color: Colors.teal[400],
                                     size: 30,
                                   )
                                 : Container(),
