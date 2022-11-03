@@ -20,6 +20,17 @@ class _CustbookingState extends State<Custbooking> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CustHomePage(),
+              ),
+            );
+          },
+        ),
         title: const Text(
           "Booking",
           style: TextStyle(

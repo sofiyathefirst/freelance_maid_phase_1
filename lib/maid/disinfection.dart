@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Disinfection extends StatefulWidget {
@@ -17,6 +18,17 @@ class _DisinfectionState extends State<Disinfection> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MaidHomePage(),
+              ),
+            );
+          },
+        ),
         title: const Text(
           "Disinfection",
           style: TextStyle(

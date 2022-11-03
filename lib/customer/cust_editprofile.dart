@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 
 class CustEditProfile extends StatefulWidget {
@@ -161,6 +162,17 @@ class _CustEditProfileState extends State<CustEditProfile> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CustHomePage(),
+              ),
+            );
+          },
+        ),
         title: const Text(
           "Edit Profile",
           style: TextStyle(
@@ -168,16 +180,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustProfile(),
-                ),
-              );
-            },
-            icon: Icon(Icons.arrow_back_ios_new)),
       ),
       body: SingleChildScrollView(
         child: Container(
