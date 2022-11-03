@@ -39,6 +39,9 @@ dependencies:
   firebase_auth: ^3.3.4
   persistent_bottom_nav_bar: ^5.0.2
   google_nav_bar: ^5.0.6
+  flutter_polyline_points: ^1.0.0
+  google_maps_flutter: ^2.2.1
+  location: ^4.4.0
   
 
 

@@ -4,6 +4,7 @@ import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
+import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/maid/deepcleaning.dart';
 import 'package:freelance_maid_phase_1/maid/disinfection.dart';
 import 'package:freelance_maid_phase_1/maid/gardening.dart';
@@ -51,6 +52,17 @@ class _CustHomePageState extends State<CustHomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CustProfile(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.location_on),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Geolocation(),
                 ),
               );
             },

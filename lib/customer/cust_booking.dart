@@ -21,7 +21,7 @@ class _CustbookingState extends State<Custbooking> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          "Home Page",
+          "Booking",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
