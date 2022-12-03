@@ -48,6 +48,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 'city': 'city',
                 'state': 'state',
                 'gender': 'gender',
+                'cleaningtype': 'cleaningtype',
                 'birthdate': 'DD/MM/YYYY',
               }).catchError((e) {
                 print(e);
@@ -148,6 +149,17 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 isObscureText: true,
                 inputType: TextInputType.name,
                 validator: _confirmPasswordValidator,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                '*Please update your profile information after Login at the top right side in your homepage',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
               ),
               const SizedBox(
                 height: 20,

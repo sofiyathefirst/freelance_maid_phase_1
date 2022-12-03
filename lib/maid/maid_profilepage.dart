@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +26,7 @@ class _MaidProfileState extends State<MaidProfile> {
   String? postcode = '';
   String? state = '';
   String? image = '';
+  String? cleaningtype = '';
   File? imageXFile;
 
   Future _getDataFromDatabase() async {
@@ -48,6 +48,7 @@ class _MaidProfileState extends State<MaidProfile> {
           city = snapshot.data()!['city'];
           postcode = snapshot.data()!['postcode'];
           state = snapshot.data()!['state'];
+          cleaningtype = snapshot.data()!['cleaningtype'];
           password = snapshot.data()!['password'];
         });
       }
@@ -107,262 +108,285 @@ class _MaidProfileState extends State<MaidProfile> {
             icon: Icon(Icons.arrow_back_ios_new)),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green[200],
-                    backgroundImage: imageXFile == null
-                        ? NetworkImage(image!)
-                        : Image.file(imageXFile!).image,
-                    radius: 65,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.person,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    fname! + '\t' + lname!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: CircleAvatar(
+                        backgroundColor: Colors.green[200],
+                        backgroundImage: imageXFile == null
+                            ? NetworkImage(image!)
+                            : Image.file(imageXFile!).image,
+                        radius: 65,
+                      ),
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.phone_android,
-                    color: Colors.black,
-                    size: 40,
+                  const SizedBox(
+                    height: 20,
                   ),
-                  SizedBox(width: 10),
-                  Text(
-                    pnum!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.person,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        fname! + '\t' + lname!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.phone_android,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        pnum!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.alternate_email,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        email!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.cleaning_services_rounded,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        cleaningtype!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.accessibility,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        gender!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_month,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        birthdate!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.house,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        address!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_city,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        city!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_city,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        postcode!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_city,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        state!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MaidEditProfile(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+                          ),
+                          child: Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ElevatedButton(
+                          onPressed: _delete,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+                          ),
+                          child: Text(
+                            'Delete Account',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.alternate_email,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    email!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.accessibility,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    gender!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.calendar_month,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    birthdate!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.house,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    address!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_city,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    city!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_city,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    postcode!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_city,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    state!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    ElevatedButton(
+                  SizedBox(height: 20),
+                  Center(
+                    child: ElevatedButton(
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MaidEditProfile(),
+                            builder: (context) => SplashScreen2(),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+                        padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
                       ),
                       child: Text(
-                        'Edit Profile',
+                        'Log Out',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
-                      onPressed: _delete,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-                      ),
-                      child: Text(
-                        'Delete Account',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SplashScreen2(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
                   ),
-                  child: Text(
-                    'Log Out',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

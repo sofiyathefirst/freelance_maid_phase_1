@@ -27,6 +27,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   String? state = '';
   String? image = '';
   String? password = '';
+  String? cleaningtype = '';
   File? imageXFile;
   TextEditingController displayfname = TextEditingController();
   TextEditingController displaylname = TextEditingController();
@@ -40,6 +41,18 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   TextEditingController displaypostcode = TextEditingController();
   TextEditingController displaystate = TextEditingController();
   TextEditingController displaypassword = TextEditingController();
+  TextEditingController displaycleaningtype = TextEditingController();
+  final _cleaningtypeList = [
+    "Deep Cleaning",
+    "Disinfection Services",
+    "Gardening",
+    "House Cleaning",
+    "Indoor",
+    "Outdoor",
+    "Office Cleaning",
+    "Post Renovation"
+  ];
+  String? _selectedVal = "Deep Cleaning";
   bool _fname = true;
   bool _lname = true;
   bool _pnum = true;
@@ -52,6 +65,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   bool _state = true;
   bool _image = true;
   bool _password = true;
+  bool _cleaningtype = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -82,6 +96,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
           city = snapshot.data()!['city'];
           postcode = snapshot.data()!['postcode'];
           state = snapshot.data()!['state'];
+          cleaningtype = snapshot.data()!['cleaningtype'];
           password = snapshot.data()!['password'];
         });
         displayfname.text = fname!;
@@ -95,6 +110,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         displaycity.text = city!;
         displaypostcode.text = postcode!;
         displaystate.text = state!;
+        displaycleaningtype.text = cleaningtype!;
         displaypassword.text = password!;
       }
     });
@@ -112,6 +128,9 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displaypostcode.text.isEmpty ? _postcode = false : _postcode = true;
       displaycity.text.isEmpty ? _city = false : _city = true;
       displaystate.text.isEmpty ? _state = false : _state = true;
+      displaycleaningtype.text.isEmpty
+          ? _cleaningtype = false
+          : _cleaningtype = true;
       displaypassword.text.isEmpty ? _password = false : _password = true;
     });
 
@@ -125,6 +144,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         _postcode &&
         _city &&
         _state &&
+        _cleaningtype &&
         _password) {
       FirebaseFirestore.instance
           .collection("maid")
@@ -140,6 +160,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         "postcode": displaypostcode.text.trim(),
         "city": displaycity.text.trim(),
         "state": displaystate.text.trim(),
+        "cleaningtype": displaycleaningtype.text.trim(),
         "password": displaypassword.text.trim()
       }).then(
         (value) => Navigator.pushReplacement(
@@ -179,270 +200,307 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
             },
             icon: Icon(Icons.arrow_back_ios_new)),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: 20,
-              ),
-              CircleAvatar(
-                radius: 65.0,
-                backgroundImage: NetworkImage(image!),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "First Name",
-                      style: TextStyle(color: Colors.black),
+      body: SizedBox(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(
+                  height: 20,
+                ),
+                CircleAvatar(
+                  radius: 65.0,
+                  backgroundImage: NetworkImage(image!),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "First Name",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: displayfname,
-                    decoration: InputDecoration(
-                        hintText: "Update First Name",
-                        errorText: _fname ? null : "First Name invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Last Name",
-                      style: TextStyle(color: Colors.black),
+                    TextField(
+                      controller: displayfname,
+                      decoration: InputDecoration(
+                          hintText: "Update First Name",
+                          errorText: _fname ? null : "First Name invalid"),
                     ),
-                  ),
-                  TextField(
-                    controller: displaylname,
-                    decoration: InputDecoration(
-                        hintText: "Update Last Name",
-                        errorText: _lname ? null : "Last Name invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Phone Number",
-                      style: TextStyle(color: Colors.black),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Last Name",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: displaypnum,
-                    decoration: InputDecoration(
-                        hintText: "Update Phone Number",
-                        errorText: _pnum ? null : "Phone Number invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Email",
-                      style: TextStyle(color: Colors.black),
+                    TextField(
+                      controller: displaylname,
+                      decoration: InputDecoration(
+                          hintText: "Update Last Name",
+                          errorText: _lname ? null : "Last Name invalid"),
                     ),
-                  ),
-                  TextField(
-                    controller: displayemail,
-                    decoration: InputDecoration(
-                        hintText: "Update Email",
-                        errorText: _email ? null : "Email invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Gender",
-                      style: TextStyle(color: Colors.black),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Phone Number",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: displaygender,
-                    decoration: InputDecoration(
-                        hintText: "Update Gender",
-                        errorText: _gender ? null : "Gender invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Birth Date",
-                      style: TextStyle(color: Colors.black),
+                    TextField(
+                      controller: displaypnum,
+                      decoration: InputDecoration(
+                          hintText: "Update Phone Number",
+                          errorText: _pnum ? null : "Phone Number invalid"),
                     ),
-                  ),
-                  TextField(
-                    controller: displaybirthdate,
-                    decoration: InputDecoration(
-                        hintText: "Update Birthdate",
-                        errorText: _birthdate ? null : "Birthdate invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Address",
-                      style: TextStyle(color: Colors.black),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Email",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: displayaddress,
-                    decoration: InputDecoration(
-                        hintText: "Update Address",
-                        errorText: _address ? null : "Address invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Postcode",
-                      style: TextStyle(color: Colors.black),
+                    TextField(
+                      controller: displayemail,
+                      decoration: InputDecoration(
+                          hintText: "Update Email",
+                          errorText: _email ? null : "Email invalid"),
                     ),
-                  ),
-                  TextField(
-                    controller: displaypostcode,
-                    decoration: InputDecoration(
-                        hintText: "Update Postcode",
-                        errorText: _postcode ? null : "Postcode invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "City",
-                      style: TextStyle(color: Colors.black),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Cleaning Type",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: displaycity,
-                    decoration: InputDecoration(
-                        hintText: "Update City",
-                        errorText: _city ? null : "City invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "State",
-                      style: TextStyle(color: Colors.black),
+                    DropdownButtonFormField(
+                      value: _selectedVal,
+                      items: _cleaningtypeList
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedVal = val as String;
+                          displaycleaningtype.text = _selectedVal!;
+                        });
+                      },
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: displaystate,
-                    decoration: InputDecoration(
-                        hintText: "Update State",
-                        errorText: _state ? null : "State invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Password",
-                      style: TextStyle(color: Colors.black),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Gender",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: displaypassword,
-                    decoration: InputDecoration(
-                        hintText: "Update Password",
-                        errorText: _password ? null : "Password invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: updateProfileData,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                  ),
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    TextField(
+                      controller: displaygender,
+                      decoration: InputDecoration(
+                          hintText: "Update Gender",
+                          errorText: _gender ? null : "Gender invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Birth Date",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    TextField(
+                      controller: displaybirthdate,
+                      decoration: InputDecoration(
+                          hintText: "Update Birthdate",
+                          errorText: _birthdate ? null : "Birthdate invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Address",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    TextField(
+                      controller: displayaddress,
+                      decoration: InputDecoration(
+                          hintText: "Update Address",
+                          errorText: _address ? null : "Address invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Postcode",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    TextField(
+                      controller: displaypostcode,
+                      decoration: InputDecoration(
+                          hintText: "Update Postcode",
+                          errorText: _postcode ? null : "Postcode invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "City",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    TextField(
+                      controller: displaycity,
+                      decoration: InputDecoration(
+                          hintText: "Update City",
+                          errorText: _city ? null : "City invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "State",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    TextField(
+                      controller: displaystate,
+                      decoration: InputDecoration(
+                          hintText: "Update State",
+                          errorText: _state ? null : "State invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Password",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    TextField(
+                      controller: displaypassword,
+                      decoration: InputDecoration(
+                          hintText: "Update Password",
+                          errorText: _password ? null : "Password invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: updateProfileData,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                    ),
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

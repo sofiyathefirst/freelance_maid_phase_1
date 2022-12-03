@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
@@ -6,13 +7,16 @@ import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Custbooking extends StatefulWidget {
-  Custbooking({Key? key}) : super(key: key);
+  final QueryDocumentSnapshot<Object?>? data;
+  const Custbooking({Key? key, this.data}) : super(key: key);
 
   @override
   State<Custbooking> createState() => _CustbookingState();
 }
 
 class _CustbookingState extends State<Custbooking> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

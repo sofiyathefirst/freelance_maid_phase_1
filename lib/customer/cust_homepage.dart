@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
@@ -23,6 +24,8 @@ class CustHomePage extends StatefulWidget {
 }
 
 class _CustHomePageState extends State<CustHomePage> {
+  final CollectionReference dataStream =
+      FirebaseFirestore.instance.collection('maid');
   String selectedType = "indoor";
 
   void onChangePaketType(String type) {

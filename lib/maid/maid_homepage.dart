@@ -41,14 +41,12 @@ class _MaidHomePageState extends State<MaidHomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.person_rounded),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MaidProfile(),
-                ),
-              );
-            },
+            onPressed: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MaidProfile(),
+              ),
+            ),
           ),
           SizedBox(
             width: 15,
