@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
@@ -17,13 +18,13 @@ class Gardening extends StatefulWidget {
 class _GardeningState extends State<Gardening> {
   final CollectionReference dataStream =
       FirebaseFirestore.instance.collection('maid');
+  var currentUser = FirebaseAuth.instance.currentUser?.uid;
   String type = "Gardening";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal.shade200,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
