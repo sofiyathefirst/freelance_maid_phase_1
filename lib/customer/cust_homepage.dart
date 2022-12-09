@@ -14,7 +14,6 @@ import 'package:freelance_maid_phase_1/maid/officecleaning.dart';
 import 'package:freelance_maid_phase_1/maid/outdoorpage.dart';
 import 'package:freelance_maid_phase_1/maid/postrenovation.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '../maid/indoorpage.dart';
 
 class CustHomePage extends StatefulWidget {
   CustHomePage({Key? key}) : super(key: key);
@@ -26,7 +25,7 @@ class CustHomePage extends StatefulWidget {
 class _CustHomePageState extends State<CustHomePage> {
   final CollectionReference dataStream =
       FirebaseFirestore.instance.collection('maid');
-  String selectedType = "indoor";
+  String selectedType = "housecleaning";
 
   void onChangePaketType(String type) {
     selectedType = type;
@@ -38,7 +37,6 @@ class _CustHomePageState extends State<CustHomePage> {
     return Scaffold(
       backgroundColor: Colors.teal.shade200,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
@@ -168,115 +166,6 @@ class _CustHomePageState extends State<CustHomePage> {
                   children: [
                     const SizedBox(
                       width: 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        onChangePaketType("indoor");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => IndooPage()),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[350],
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              image: const DecorationImage(
-                                image: AssetImage('assets/image/indoor.png'),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            "Indoor",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.black,
-                            ),
-                            child: selectedType == "indoor"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.teal[200],
-                                    size: 30,
-                                  )
-                                : Container(),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        onChangePaketType("outdoor");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => OutdooPage()),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[350], //Color(0xffdfdeff),
-                              image: const DecorationImage(
-                                image: AssetImage('assets/image/outdoor.png'),
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            "Outdoor",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.black,
-                            ),
-                            child: selectedType == "outdoor"
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: Colors.teal[400],
-                                    size: 30,
-                                  )
-                                : Container(),
-                          )
-                        ],
-                      ),
                     ),
                     const SizedBox(
                       width: 20,

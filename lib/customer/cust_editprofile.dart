@@ -151,7 +151,7 @@ class _CustEditProfileState extends State<CustEditProfile> {
         ),
       );
       SnackBar snackbar = SnackBar(content: Text("Profile updated!"));
-      _scaffoldKey.currentState!.showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
   }
 
@@ -160,7 +160,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),

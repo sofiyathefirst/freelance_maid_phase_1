@@ -23,7 +23,6 @@ class _PostrenovationState extends State<Postrenovation> {
     return Scaffold(
       backgroundColor: Colors.teal.shade200,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),

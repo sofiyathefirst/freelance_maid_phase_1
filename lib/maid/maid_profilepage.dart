@@ -87,7 +87,6 @@ class _MaidProfileState extends State<MaidProfile> {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           "User Profile",

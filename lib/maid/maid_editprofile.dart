@@ -171,7 +171,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         ),
       );
       SnackBar snackbar = SnackBar(content: Text("Profile updated!"));
-      _scaffoldKey.currentState!.showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
   }
 
@@ -180,7 +180,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           "Edit Profile",

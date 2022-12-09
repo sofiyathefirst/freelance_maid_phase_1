@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:intl/intl.dart';
 
 class Custbooking extends StatefulWidget {
   final QueryDocumentSnapshot<Object?>? data;
@@ -16,13 +18,125 @@ class Custbooking extends StatefulWidget {
 
 class _CustbookingState extends State<Custbooking> {
   final _formKey = GlobalKey<FormState>();
+  final dropdownState = GlobalKey<FormFieldState>();
+
+  final TextEditingController date = TextEditingController();
+  final TextEditingController timestart = TextEditingController();
+  final TextEditingController timeend = TextEditingController();
+  final TextEditingController hour = TextEditingController();
+
+  late String maidfname = widget.data!.get('maidfirstname');
+  late String maidlname = widget.data!.get('maidlastname');
+  late String maidpnum = widget.data!.get('phonenum');
+  late String maidemail = widget.data!.get('maidemail');
+  late String maidgender = widget.data!.get('gender');
+  late String maidstate = widget.data!.get('state');
+
+  var fname;
+  var lname;
+  var pnum;
+  var email;
+  var gender;
+  var address;
+  var city;
+  var postcode;
+  var state;
+  //String? image = '';
+  var currentUser = FirebaseAuth.instance.currentUser?.uid;
+
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("customer")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          fname = snapshot.data()!['custfirstname'];
+          lname = snapshot.data()!['custlastname'];
+          email = snapshot.data()!['custemail'];
+          pnum = snapshot.data()!['phonenum'];
+          gender = snapshot.data()!['gender'];
+          //image = snapshot.data()!['image'];
+          address = snapshot.data()!['address'];
+          city = snapshot.data()!['city'];
+          postcode = snapshot.data()!['postcode'];
+          state = snapshot.data()!['state'];
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference bookingmaid =
+        FirebaseFirestore.instance.collection('booking_kayak');
+    Add(
+        String maidfname,
+        String maidlname,
+        String maidpnum,
+        String maidemail,
+        String maidgender,
+        String maidstate,
+        var fname,
+        var lname,
+        var pnum,
+        var email,
+        var gender,
+        var address,
+        var city,
+        var postcode,
+        var state,
+        String date,
+        String timestart,
+        String timeend,
+        String hour,
+        var uid) {
+      try {
+        return bookingmaid.add({
+          'maidfirstname': maidfname,
+          'maidlastname': maidlname,
+          'maidpnum': maidpnum,
+          'maidemail': maidemail,
+          'maidgender': maidgender,
+          'maidstate': maidstate,
+          'custfirstname': fname,
+          'cuslastname': lname,
+          'custpnum': pnum,
+          'custemail': email,
+          'custgender': gender,
+          'custaddress': address,
+          'custcity': city,
+          'custpostcode': postcode,
+          'custstate': state,
+          'bookingdate': date,
+          'timestart': timestart,
+          'timeend': timeend,
+          'hour': hour,
+          'uid': uid,
+        }).then(
+          (value) => ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Booking Succesful'),
+            ),
+          ),
+        );
+      } on FirebaseException catch (e) {
+        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.code),
+        ));
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.teal.shade200,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
@@ -113,6 +227,285 @@ class _CustbookingState extends State<Custbooking> {
             },
           ),
         ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: Column(
+                children: [
+                  const SizedBox(height: 15),
+                  Text(
+                    maidfname + '\t' + maidlname,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    maidpnum,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    maidgender,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    maidemail,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    maidstate,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    fname + '\t' + lname,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    pnum,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    email,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    gender,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    address,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    state,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    postcode,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    city,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      ' Date',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: date,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your date',
+                      hintStyle: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.calendar_today_rounded,
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    readOnly:
+                        true, //set it true, so that user will not able to edit text
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime
+                              .now(), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2023));
+
+                      if (pickedDate != null) {
+                        print(
+                            pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                        print(
+                            formattedDate); //formatted date output using intl package =>  2021-03-16
+                        //you can implement different kind of Date Format here according to your requirement
+
+                        setState(() {
+                          date.text =
+                              formattedDate; //set output date to TextField value.
+                        });
+                      } else {
+                        print("Date is not selected");
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: timestart,
+                    decoration: InputDecoration(
+                      hintText: 'Enter time start',
+                      hintStyle: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onChanged: (value) {},
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: timeend,
+                    decoration: InputDecoration(
+                      hintText: 'Enter time end',
+                      hintStyle: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onChanged: (value) {},
+                  ),
+                  const SizedBox(height: 15),
+                  TextFormField(
+                    controller: hour,
+                    decoration: InputDecoration(
+                      hintText: 'Enter duration (hour)',
+                      hintStyle: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onChanged: (value) {},
+                  ),
+                  const SizedBox(height: 15),
+                  ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          setState(
+                            () {},
+                          );
+                          Add(
+                              maidfname,
+                              maidlname,
+                              maidpnum,
+                              maidemail,
+                              maidgender,
+                              maidstate,
+                              fname,
+                              lname,
+                              pnum,
+                              email,
+                              gender,
+                              address,
+                              city,
+                              postcode,
+                              state,
+                              date.text,
+                              timestart.text,
+                              timeend.text,
+                              hour.text,
+                              currentUser);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => Receipt(),
+                            ),
+                          );
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.orangeAccent),
+                      ),
+                      child: const Text(
+                        'Book',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      )),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

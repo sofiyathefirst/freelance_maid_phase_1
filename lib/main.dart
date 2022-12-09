@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Freelance Maid Application',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
         primarySwatch: Colors.teal,
         inputDecorationTheme: const InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
