@@ -32,15 +32,15 @@ class _CustbookingState extends State<Custbooking> {
   late String maidgender = widget.data!.get('gender');
   late String maidstate = widget.data!.get('state');
 
-  var fname;
-  var lname;
-  var pnum;
-  var email;
-  var gender;
-  var address;
-  var city;
-  var postcode;
-  var state;
+  late String? fname = '';
+  late String? lname = '';
+  late String? pnum = '';
+  late String? email = '';
+  late String? gender = '';
+  late String? address = '';
+  late String? city = '';
+  late String? postcode = '';
+  late String? state = '';
   //String? image = '';
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
@@ -76,7 +76,7 @@ class _CustbookingState extends State<Custbooking> {
   @override
   Widget build(BuildContext context) {
     CollectionReference bookingmaid =
-        FirebaseFirestore.instance.collection('booking_kayak');
+        FirebaseFirestore.instance.collection('bookingmaid');
     Add(
         String maidfname,
         String maidlname,
@@ -84,15 +84,15 @@ class _CustbookingState extends State<Custbooking> {
         String maidemail,
         String maidgender,
         String maidstate,
-        var fname,
-        var lname,
-        var pnum,
-        var email,
-        var gender,
-        var address,
-        var city,
-        var postcode,
-        var state,
+        String fname,
+        String lname,
+        String pnum,
+        String email,
+        String gender,
+        String address,
+        String city,
+        String postcode,
+        String state,
         String date,
         String timestart,
         String timeend,
@@ -237,7 +237,7 @@ class _CustbookingState extends State<Custbooking> {
                 children: [
                   const SizedBox(height: 15),
                   Text(
-                    maidfname + '\t' + maidlname,
+                    'Maid Name: $maidfname\t$maidlname',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -246,7 +246,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    maidpnum,
+                    'Maid Phone Number: $maidpnum',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -255,7 +255,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    maidgender,
+                    'Maid Gender:' + maidgender,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -264,7 +264,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    maidemail,
+                    'Maid Email:' + maidemail,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -273,7 +273,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    maidstate,
+                    'Maid State:' + maidstate,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -282,7 +282,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    fname + '\t' + lname,
+                    'Cust Name: $fname\t$lname',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -291,7 +291,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    pnum,
+                    'Cust Phone Number: $pnum',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -300,7 +300,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    email,
+                    'Cust Email: $email',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -309,7 +309,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    gender,
+                    'Cust Gender: $gender',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -318,7 +318,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    address,
+                    'Cust Address: $address',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -327,7 +327,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    state,
+                    'Cust State: $state',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -336,7 +336,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    postcode,
+                    'Cust Postcode: $postcode',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -345,7 +345,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    city,
+                    'Cust City: $city',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -367,49 +367,56 @@ class _CustbookingState extends State<Custbooking> {
                   const SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
-                    controller: date,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your date',
-                      hintStyle: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.calendar_today_rounded,
-                        color: Colors.black,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: date,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your date',
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.calendar_today_rounded,
+                              color: Colors.black,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          readOnly:
+                              true, //set it true, so that user will not able to edit text
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime
+                                    .now(), //DateTime.now() - not to allow to choose before today.
+                                lastDate: DateTime(2025));
+
+                            if (pickedDate != null) {
+                              print(
+                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                              String formattedDate =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                              print(
+                                  formattedDate); //formatted date output using intl package =>  2021-03-16
+                              //you can implement different kind of Date Format here according to your requirement
+
+                              setState(() {
+                                date.text =
+                                    formattedDate; //set output date to TextField value.
+                              });
+                            } else {
+                              print("Date is not selected");
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    readOnly:
-                        true, //set it true, so that user will not able to edit text
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime
-                              .now(), //DateTime.now() - not to allow to choose before today.
-                          lastDate: DateTime(2023));
-
-                      if (pickedDate != null) {
-                        print(
-                            pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                        String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(pickedDate);
-                        print(
-                            formattedDate); //formatted date output using intl package =>  2021-03-16
-                        //you can implement different kind of Date Format here according to your requirement
-
-                        setState(() {
-                          date.text =
-                              formattedDate; //set output date to TextField value.
-                        });
-                      } else {
-                        print("Date is not selected");
-                      }
-                    },
                   ),
                   const SizedBox(height: 15),
                   TextFormField(
@@ -470,15 +477,15 @@ class _CustbookingState extends State<Custbooking> {
                               maidemail,
                               maidgender,
                               maidstate,
-                              fname,
-                              lname,
-                              pnum,
-                              email,
-                              gender,
-                              address,
-                              city,
-                              postcode,
-                              state,
+                              fname ?? "null",
+                              lname ?? "null",
+                              pnum ?? "null",
+                              email ?? "null",
+                              gender ?? "null",
+                              address ?? "null",
+                              city ?? "null",
+                              postcode ?? "null",
+                              state ?? "null",
                               date.text,
                               timestart.text,
                               timeend.text,
