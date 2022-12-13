@@ -30,11 +30,11 @@ class _CustbookingState extends State<Custbooking> {
   final TextEditingController kitchens = TextEditingController();
   final TextEditingController pantries = TextEditingController();
   final TextEditingController gardenarea = TextEditingController();
-  int? _bathrooms;
-  int? _bedrooms;
-  int? _office;
-  int? _kitchens;
-  int? _pantries;
+  String? _bathrooms;
+  String? _bedrooms;
+  String? _office;
+  String? _kitchens;
+  String? _pantries;
   String? _gardenarea;
 
   late String maidfname = widget.data!.get('maidfirstname');
@@ -57,21 +57,21 @@ class _CustbookingState extends State<Custbooking> {
   late String? state = '';
   //String? image = '';
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
-  late int totalpayment;
-  late String? totalarea = '';
+  late int sum = 0;
+  late int totalpayment = 0;
   String type1 = "Deep Cleaning";
-  String type2 = "Disinfection";
+  String type2 = "Disinfection Services";
   String type3 = "Gardening";
   String type4 = "House Cleaning";
   String type5 = "Office Cleaning";
   String type6 = "Post Renovation";
 
-  final _bathroomslist = ["0", "1", "2", "3", "4"];
-  final _bedroomslist = ["0", "1", "2", "3", "4", "5", "6"];
-  final _officelist = ["0", "1", "2", "3", "4"];
-  final _kitchenslist = ["0", "1", "2", "3", "4"];
-  final _pantrieslist = ["0", "1", "2", "3", "4"];
-  final _gardenarealist = [
+  final List<String> _bathroomslist = ["0", "1", "2", "3", "4"];
+  final List<String> _bedroomslist = ["0", "1", "2", "3", "4", "5", "6"];
+  final List<String> _officelist = ["0", "1", "2", "3", "4"];
+  final List<String> _kitchenslist = ["0", "1", "2", "3", "4"];
+  final List<String> _pantrieslist = ["0", "1", "2", "3", "4"];
+  final List<String> _gardenarealist = [
     "0sqft",
     "100sqft",
     "150sqft",
@@ -82,13 +82,13 @@ class _CustbookingState extends State<Custbooking> {
     "400sqft",
     "450sqft",
     "500sqft",
-    "550sqft and above"
+    "550sqft"
   ];
-  int? _selectedbathroom = 0;
-  int? _selectedbedroom = 0;
-  int? _selectedoffice = 0;
-  int? _selectedkitchen = 0;
-  int? _selectedpantries = 0;
+  String? _selectedbathroom = "0";
+  String? _selectedbedroom = "0";
+  String? _selectedoffice = "0";
+  String? _selectedkitchen = "0";
+  String? _selectedpantries = "0";
   String? _selectedgarden = "0sqft";
 
   Future _getDataFromDatabase() async {
@@ -118,6 +118,73 @@ class _CustbookingState extends State<Custbooking> {
   void initState() {
     super.initState();
     _getDataFromDatabase();
+  }
+
+  _calculation(String hour, String bathrooms, String bedrooms, String kitchens,
+      String pantries, String office, String gardenarea) {
+    setState(
+      () {
+        if (bathrooms == "0" ||
+            bedrooms == "0" ||
+            office == "0" ||
+            kitchens == "0" ||
+            pantries == "0" ||
+            gardenarea == "0sqft") {
+          sum = 0;
+        } else if (bathrooms == "1" || bedrooms == "1") {
+          sum = 30;
+        } else if (bathrooms == "2" || bedrooms == "2") {
+          sum = 60;
+        } else if (bathrooms == "3" || bedrooms == "3") {
+          sum = 90;
+        } else if (bathrooms == "4" || bedrooms == "4") {
+          sum = 120;
+        } else if (bedrooms == "5") {
+          sum = 150;
+        } else if (bedrooms == "6") {
+          sum = 180;
+        } else if (kitchens == "1") {
+          sum = 50;
+        } else if (kitchens == "2") {
+          sum = 100;
+        } else if (kitchens == "3") {
+          sum = 150;
+        } else if (kitchens == "4") {
+          sum = 200;
+        } else if (pantries == "1") {
+          sum = 40;
+        } else if (pantries == "2") {
+          sum = 80;
+        } else if (pantries == "3") {
+          sum = 120;
+        } else if (pantries == "4") {
+          sum = 160;
+        } else if (gardenarea == "100sqft") {
+          sum = 30;
+        } else if (gardenarea == "150sqft") {
+          sum = 45;
+        } else if (gardenarea == "200sqft") {
+          sum = 60;
+        } else if (gardenarea == "250sqft") {
+          sum = 75;
+        } else if (gardenarea == "300sqft") {
+          sum = 90;
+        } else if (gardenarea == "350sqft") {
+          sum = 105;
+        } else if (gardenarea == "400sqft") {
+          sum = 120;
+        } else if (gardenarea == "450sqft") {
+          sum = 135;
+        } else if (gardenarea == "500sqft") {
+          sum = 150;
+        } else if (gardenarea == "550sqft") {
+          sum = 165;
+        }
+        totalpayment = sum +
+            (int.parse(rateperhour.toString()) * int.parse(hour.toString()));
+      },
+    );
+    return totalpayment;
   }
 
   @override
@@ -448,8 +515,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbedroom = val as int;
-                              bedrooms.text = _selectedbedroom!.toString();
+                              _selectedbedroom = val as String;
+                              bedrooms.text = _selectedbedroom!;
                             });
                           },
                           style: TextStyle(
@@ -481,8 +548,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbathroom = val as int;
-                              bathrooms.text = _selectedbathroom!.toString();
+                              _selectedbathroom = val as String;
+                              bathrooms.text = _selectedbathroom!;
                             });
                           },
                           style: TextStyle(
@@ -514,8 +581,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedkitchen = val as int;
-                              kitchens.text = _selectedkitchen!.toString();
+                              _selectedkitchen = val as String;
+                              kitchens.text = _selectedkitchen!;
                             });
                           },
                           style: TextStyle(
@@ -547,8 +614,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedpantries = val as int;
-                              pantries.text = _selectedpantries!.toString();
+                              _selectedpantries = val as String;
+                              pantries.text = _selectedpantries!;
                             });
                           },
                           style: TextStyle(
@@ -580,8 +647,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedoffice = val as int;
-                              office.text = _selectedoffice!.toString();
+                              _selectedoffice = val as String;
+                              office.text = _selectedoffice!;
                             });
                           },
                           style: TextStyle(
@@ -632,8 +699,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbedroom = val as int;
-                              bedrooms.text = _selectedbedroom!.toString();
+                              _selectedbedroom = val as String;
+                              bedrooms.text = _selectedbedroom!;
                             });
                           },
                           style: TextStyle(
@@ -665,8 +732,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbathroom = val as int;
-                              bathrooms.text = _selectedbathroom!.toString();
+                              _selectedbathroom = val as String;
+                              bathrooms.text = _selectedbathroom!;
                             });
                           },
                           style: TextStyle(
@@ -698,8 +765,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedkitchen = val as int;
-                              kitchens.text = _selectedkitchen!.toString();
+                              _selectedkitchen = val as String;
+                              kitchens.text = _selectedkitchen!;
                             });
                           },
                           style: TextStyle(
@@ -731,8 +798,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedpantries = val as int;
-                              pantries.text = _selectedpantries!.toString();
+                              _selectedpantries = val as String;
+                              pantries.text = _selectedpantries!;
                             });
                           },
                           style: TextStyle(
@@ -764,8 +831,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedoffice = val as int;
-                              office.text = _selectedoffice!.toString();
+                              _selectedoffice = val as String;
+                              office.text = _selectedoffice!;
                             });
                           },
                           style: TextStyle(
@@ -797,7 +864,7 @@ class _CustbookingState extends State<Custbooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Bedroom: $_selectedbedroom',
+                      'Bedroom:' + _selectedbedroom!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -806,7 +873,7 @@ class _CustbookingState extends State<Custbooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Bathroom: $_selectedbathroom',
+                      'Bathroom:' + _selectedbathroom!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -815,7 +882,7 @@ class _CustbookingState extends State<Custbooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Kitchen: $_selectedkitchen',
+                      'Kitchen:' + _selectedkitchen!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -824,7 +891,7 @@ class _CustbookingState extends State<Custbooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Pantry: $_selectedpantries',
+                      'Pantry:' + _selectedpantries!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -833,7 +900,7 @@ class _CustbookingState extends State<Custbooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Office: $_selectedoffice',
+                      'Office: ' + _selectedoffice!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -903,8 +970,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbedroom = val as int;
-                              bedrooms.text = _selectedbedroom!.toString();
+                              _selectedbedroom = val as String;
+                              bedrooms.text = _selectedbedroom!;
                             });
                           },
                           style: TextStyle(
@@ -936,8 +1003,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbathroom = val as int;
-                              bathrooms.text = _selectedbathroom!.toString();
+                              _selectedbathroom = val as String;
+                              bathrooms.text = _selectedbathroom!;
                             });
                           },
                           style: TextStyle(
@@ -969,8 +1036,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedkitchen = val as int;
-                              kitchens.text = _selectedkitchen!.toString();
+                              _selectedkitchen = val as String;
+                              kitchens.text = _selectedkitchen!;
                             });
                           },
                           style: TextStyle(
@@ -1002,8 +1069,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedpantries = val as int;
-                              pantries.text = _selectedpantries!.toString();
+                              _selectedpantries = val as String;
+                              pantries.text = _selectedpantries!;
                             });
                           },
                           style: TextStyle(
@@ -1035,8 +1102,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedoffice = val as int;
-                              office.text = _selectedoffice!.toString();
+                              _selectedoffice = val as String;
+                              office.text = _selectedoffice!;
                             });
                           },
                           style: TextStyle(
@@ -1068,7 +1135,7 @@ class _CustbookingState extends State<Custbooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Bedroom: $_selectedbedroom',
+                      'Bedroom:' + _selectedbedroom!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -1096,8 +1163,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbathroom = val as int;
-                              bathrooms.text = _selectedbathroom!.toString();
+                              _selectedbathroom = val as String;
+                              bathrooms.text = _selectedbathroom!;
                             });
                           },
                           style: TextStyle(
@@ -1110,7 +1177,7 @@ class _CustbookingState extends State<Custbooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Kitchen: $_selectedkitchen',
+                      'Kitchen: ' + _selectedkitchen!,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -1138,8 +1205,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedpantries = val as int;
-                              pantries.text = _selectedpantries!.toString();
+                              _selectedpantries = val as String;
+                              pantries.text = _selectedpantries!;
                             });
                           },
                           style: TextStyle(
@@ -1171,8 +1238,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedoffice = val as int;
-                              office.text = _selectedoffice!.toString();
+                              _selectedoffice = val as String;
+                              office.text = _selectedoffice!;
                             });
                           },
                           style: TextStyle(
@@ -1223,8 +1290,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbedroom = val as int;
-                              bedrooms.text = _selectedbedroom!.toString();
+                              _selectedbedroom = val as String;
+                              bedrooms.text = _selectedbedroom!;
                             });
                           },
                           style: TextStyle(
@@ -1256,8 +1323,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedbathroom = val as int;
-                              bathrooms.text = _selectedbathroom!.toString();
+                              _selectedbathroom = val as String;
+                              bathrooms.text = _selectedbathroom!;
                             });
                           },
                           style: TextStyle(
@@ -1289,8 +1356,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedkitchen = val as int;
-                              kitchens.text = _selectedkitchen!.toString();
+                              _selectedkitchen = val as String;
+                              kitchens.text = _selectedkitchen!;
                             });
                           },
                           style: TextStyle(
@@ -1322,8 +1389,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedpantries = val as int;
-                              pantries.text = _selectedpantries!.toString();
+                              _selectedpantries = val as String;
+                              pantries.text = _selectedpantries!;
                             });
                           },
                           style: TextStyle(
@@ -1355,8 +1422,8 @@ class _CustbookingState extends State<Custbooking> {
                               .toList(),
                           onChanged: (val) {
                             setState(() {
-                              _selectedoffice = val as int;
-                              office.text = _selectedoffice!.toString();
+                              _selectedoffice = val as String;
+                              office.text = _selectedoffice!;
                             });
                           },
                           style: TextStyle(
@@ -1512,6 +1579,15 @@ class _CustbookingState extends State<Custbooking> {
                       ),
                     ),
                     onChanged: (value) {},
+                  ),
+                  const SizedBox(height: 15),
+                  Text(
+                    'Total Payment: RM ${_calculation(hour.text, bathrooms.text, bedrooms.text, kitchens.text, pantries.text, office.text, gardenarea.text)}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black),
+                    textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: 15),
                   ElevatedButton(

@@ -28,7 +28,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   String? image = '';
   String? password = '';
   String? cleaningtype = '';
-  String? rateperhour = '';
+  String? rateperhour;
   String? serviceoffered = '';
   File? imageXFile;
   TextEditingController displayfname = TextEditingController();
@@ -92,7 +92,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
     "Office Cleaning",
     "Post Renovation"
   ];
-  final _rateperhourList = ["50.00", "70.00", "100.00", "150.00", "170.00"];
+  final _rateperhourList = ["50", "70", "100", "150", "170"];
   final _serviceofferedList = [
     "Deep Cleaning: Whole house cleaning under furniture, vacuuming and cleaning upholstery, scrubbing walls, polishing furniture, organizing",
     "Disinfection Services: Sanitizing whole house or office area",
@@ -105,7 +105,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   String? _selectedservice =
       "Deep Cleaning: Whole house cleaning under furniture, vacuuming and cleaning upholstery, scrubbing walls, polishing furniture, organizing";
   String? _selectedVal = "Deep Cleaning";
-  String? _selectedrate = "50.00";
+  String? _selectedrate = "50";
   String? _selectedpostcode = "75000";
   String? _selectedcity = "Alor Gajah";
   bool _fname = true;

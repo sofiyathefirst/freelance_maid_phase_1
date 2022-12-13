@@ -50,7 +50,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 'gender': 'Male',
                 'cleaningtype': 'cleaningtype',
                 'birthdate': 'DD/MM/YYYY',
-                'rateperhour': '50.00',
+                'rateperhour': '50',
                 'serviceoffered': 'choose'
               }).catchError((e) {
                 print(e);
