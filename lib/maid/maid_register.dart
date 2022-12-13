@@ -47,9 +47,11 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 'postcode': 'postcode',
                 'city': 'city',
                 'state': 'state',
-                'gender': 'gender',
+                'gender': 'Male',
                 'cleaningtype': 'cleaningtype',
                 'birthdate': 'DD/MM/YYYY',
+                'rateperhour': '50.00',
+                'serviceoffered': 'choose'
               }).catchError((e) {
                 print(e);
               })
