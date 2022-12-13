@@ -24,6 +24,18 @@ class _CustbookingState extends State<Custbooking> {
   final TextEditingController timestart = TextEditingController();
   final TextEditingController timeend = TextEditingController();
   final TextEditingController hour = TextEditingController();
+  final TextEditingController bedrooms = TextEditingController();
+  final TextEditingController bathrooms = TextEditingController();
+  final TextEditingController office = TextEditingController();
+  final TextEditingController kitchens = TextEditingController();
+  final TextEditingController pantries = TextEditingController();
+  final TextEditingController gardenarea = TextEditingController();
+  int? _bathrooms;
+  int? _bedrooms;
+  int? _office;
+  int? _kitchens;
+  int? _pantries;
+  String? _gardenarea;
 
   late String maidfname = widget.data!.get('maidfirstname');
   late String maidlname = widget.data!.get('maidlastname');
@@ -31,6 +43,8 @@ class _CustbookingState extends State<Custbooking> {
   late String maidemail = widget.data!.get('maidemail');
   late String maidgender = widget.data!.get('gender');
   late String maidstate = widget.data!.get('state');
+  late String cleaningtype = widget.data!.get('cleaningtype');
+  late String rateperhour = widget.data!.get('rateperhour');
 
   late String? fname = '';
   late String? lname = '';
@@ -43,6 +57,39 @@ class _CustbookingState extends State<Custbooking> {
   late String? state = '';
   //String? image = '';
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
+  late int totalpayment;
+  late String? totalarea = '';
+  String type1 = "Deep Cleaning";
+  String type2 = "Disinfection";
+  String type3 = "Gardening";
+  String type4 = "House Cleaning";
+  String type5 = "Office Cleaning";
+  String type6 = "Post Renovation";
+
+  final _bathroomslist = ["0", "1", "2", "3", "4"];
+  final _bedroomslist = ["0", "1", "2", "3", "4", "5", "6"];
+  final _officelist = ["0", "1", "2", "3", "4"];
+  final _kitchenslist = ["0", "1", "2", "3", "4"];
+  final _pantrieslist = ["0", "1", "2", "3", "4"];
+  final _gardenarealist = [
+    "0sqft",
+    "100sqft",
+    "150sqft",
+    "200sqft",
+    "250sqft",
+    "300sqft",
+    "350sqft",
+    "400sqft",
+    "450sqft",
+    "500sqft",
+    "550sqft and above"
+  ];
+  int? _selectedbathroom = 0;
+  int? _selectedbedroom = 0;
+  int? _selectedoffice = 0;
+  int? _selectedkitchen = 0;
+  int? _selectedpantries = 0;
+  String? _selectedgarden = "0sqft";
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -84,6 +131,14 @@ class _CustbookingState extends State<Custbooking> {
         String maidemail,
         String maidgender,
         String maidstate,
+        String cleaningtype,
+        String bathrooms,
+        String bedrooms,
+        String kitchen,
+        String pantry,
+        String office,
+        String garden,
+        String rateperhour,
         String fname,
         String lname,
         String pnum,
@@ -97,6 +152,7 @@ class _CustbookingState extends State<Custbooking> {
         String timestart,
         String timeend,
         String hour,
+        int totalpayment,
         var uid) {
       try {
         return bookingmaid.add({
@@ -106,6 +162,14 @@ class _CustbookingState extends State<Custbooking> {
           'maidemail': maidemail,
           'maidgender': maidgender,
           'maidstate': maidstate,
+          'cleaningtype': cleaningtype,
+          'bathrooms': bathrooms,
+          'bedrooms': bedrooms,
+          'kitchen': kitchen,
+          'pantry': pantry,
+          'office': office,
+          'garden': garden,
+          'rateperhour': rateperhour,
           'custfirstname': fname,
           'cuslastname': lname,
           'custpnum': pnum,
@@ -119,6 +183,7 @@ class _CustbookingState extends State<Custbooking> {
           'timestart': timestart,
           'timeend': timeend,
           'hour': hour,
+          'totalpayment': totalpayment,
           'uid': uid,
         }).then(
           (value) => ScaffoldMessenger.of(context).showSnackBar(
@@ -353,6 +418,991 @@ class _CustbookingState extends State<Custbooking> {
                     textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: 15),
+                  if (type1 == cleaningtype) ...[
+                    Text(
+                      'Cleaning Type: $cleaningtype',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bedrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbedroom,
+                          items: _bedroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbedroom = val as int;
+                              bedrooms.text = _selectedbedroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bathrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbathroom,
+                          items: _bathroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbathroom = val as int;
+                              bathrooms.text = _selectedbathroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Kitchens",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedkitchen,
+                          items: _kitchenslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedkitchen = val as int;
+                              kitchens.text = _selectedkitchen!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Pantry",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedpantries,
+                          items: _pantrieslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedpantries = val as int;
+                              pantries.text = _selectedpantries!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Office",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedoffice,
+                          items: _officelist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedoffice = val as int;
+                              office.text = _selectedoffice!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Garden Area: $_selectedgarden',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                  ] else if (type2 == cleaningtype) ...[
+                    Text(
+                      'Cleaning Type: $cleaningtype',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bedrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbedroom,
+                          items: _bedroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbedroom = val as int;
+                              bedrooms.text = _selectedbedroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bathrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbathroom,
+                          items: _bathroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbathroom = val as int;
+                              bathrooms.text = _selectedbathroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Kitchens",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedkitchen,
+                          items: _kitchenslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedkitchen = val as int;
+                              kitchens.text = _selectedkitchen!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Pantry",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedpantries,
+                          items: _pantrieslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedpantries = val as int;
+                              pantries.text = _selectedpantries!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Office",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedoffice,
+                          items: _officelist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedoffice = val as int;
+                              office.text = _selectedoffice!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Garden Area: $_selectedgarden',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                  ] else if (type3 == cleaningtype) ...[
+                    Text(
+                      'Cleaning Type: $cleaningtype',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Bedroom: $_selectedbedroom',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Bathroom: $_selectedbathroom',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Kitchen: $_selectedkitchen',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Pantry: $_selectedpantries',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Office: $_selectedoffice',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Garden Area",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedgarden,
+                          items: _gardenarealist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedgarden = val as String;
+                              gardenarea.text = _selectedgarden!;
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                  ] else if (type4 == cleaningtype) ...[
+                    Text(
+                      'Cleaning Type: $cleaningtype',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bedrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbedroom,
+                          items: _bedroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbedroom = val as int;
+                              bedrooms.text = _selectedbedroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bathrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbathroom,
+                          items: _bathroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbathroom = val as int;
+                              bathrooms.text = _selectedbathroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Kitchens",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedkitchen,
+                          items: _kitchenslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedkitchen = val as int;
+                              kitchens.text = _selectedkitchen!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Pantry",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedpantries,
+                          items: _pantrieslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedpantries = val as int;
+                              pantries.text = _selectedpantries!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Office",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedoffice,
+                          items: _officelist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedoffice = val as int;
+                              office.text = _selectedoffice!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Garden Area: $_selectedgarden',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                  ] else if (type5 == cleaningtype) ...[
+                    Text(
+                      'Cleaning Type: $cleaningtype',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Bedroom: $_selectedbedroom',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bathrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbathroom,
+                          items: _bathroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbathroom = val as int;
+                              bathrooms.text = _selectedbathroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Kitchen: $_selectedkitchen',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Pantry",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedpantries,
+                          items: _pantrieslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedpantries = val as int;
+                              pantries.text = _selectedpantries!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Office",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedoffice,
+                          items: _officelist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedoffice = val as int;
+                              office.text = _selectedoffice!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Garden Area: $_selectedgarden',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                  ] else if (type6 == cleaningtype) ...[
+                    Text(
+                      'Cleaning Type: $cleaningtype',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bedrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbedroom,
+                          items: _bedroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbedroom = val as int;
+                              bedrooms.text = _selectedbedroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Bathrooms",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedbathroom,
+                          items: _bathroomslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedbathroom = val as int;
+                              bathrooms.text = _selectedbathroom!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Kitchens",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedkitchen,
+                          items: _kitchenslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedkitchen = val as int;
+                              kitchens.text = _selectedkitchen!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Pantry",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedpantries,
+                          items: _pantrieslist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedpantries = val as int;
+                              pantries.text = _selectedpantries!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Total Office",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedoffice,
+                          items: _officelist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedoffice = val as int;
+                              office.text = _selectedoffice!.toString();
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Garden Area",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedgarden,
+                          items: _gardenarealist
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedgarden = val as String;
+                              gardenarea.text = _selectedgarden!;
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                  ],
+                  const SizedBox(height: 15),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
@@ -471,26 +1521,36 @@ class _CustbookingState extends State<Custbooking> {
                             () {},
                           );
                           Add(
-                              maidfname,
-                              maidlname,
-                              maidpnum,
-                              maidemail,
-                              maidgender,
-                              maidstate,
-                              fname ?? "null",
-                              lname ?? "null",
-                              pnum ?? "null",
-                              email ?? "null",
-                              gender ?? "null",
-                              address ?? "null",
-                              city ?? "null",
-                              postcode ?? "null",
-                              state ?? "null",
-                              date.text,
-                              timestart.text,
-                              timeend.text,
-                              hour.text,
-                              currentUser);
+                            maidfname,
+                            maidlname,
+                            maidpnum,
+                            maidemail,
+                            maidgender,
+                            maidstate,
+                            cleaningtype,
+                            bathrooms.text,
+                            bedrooms.text,
+                            kitchens.text,
+                            pantries.text,
+                            office.text,
+                            gardenarea.text,
+                            rateperhour,
+                            fname ?? "null",
+                            lname ?? "null",
+                            pnum ?? "null",
+                            email ?? "null",
+                            gender ?? "null",
+                            address ?? "null",
+                            city ?? "null",
+                            postcode ?? "null",
+                            state ?? "null",
+                            date.text,
+                            timestart.text,
+                            timeend.text,
+                            hour.text,
+                            totalpayment,
+                            currentUser,
+                          );
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

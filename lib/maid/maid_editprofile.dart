@@ -28,6 +28,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   String? image = '';
   String? password = '';
   String? cleaningtype = '';
+  String? rateperhour = '';
+  String? serviceoffered = '';
   File? imageXFile;
   TextEditingController displayfname = TextEditingController();
   TextEditingController displaylname = TextEditingController();
@@ -42,17 +44,70 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   TextEditingController displaystate = TextEditingController();
   TextEditingController displaypassword = TextEditingController();
   TextEditingController displaycleaningtype = TextEditingController();
+  TextEditingController displayrateperhour = TextEditingController();
+  TextEditingController displayserviceoffered = TextEditingController();
+  final _genderList = ["Male", "Female"];
+  final _postcodeList = [
+    "75000",
+    "75050",
+    "75100",
+    "75150",
+    "75200",
+    "75250",
+    "75260",
+    "75300",
+    "75350",
+    "75400",
+    "75430",
+    "75450",
+    "75460",
+    "76300",
+    "76400",
+    "76450",
+    "77200"
+  ];
+  final _cityList = [
+    "Alor Gajah",
+    "Asahan",
+    "Ayer Keroh",
+    "Bemban",
+    "Durian Tunggal",
+    "Jasin",
+    "Kem Trendak",
+    "Kuala Sungai Baru",
+    "Lubok China",
+    "Masjid Tanah",
+    "Melaka",
+    "Merlimau",
+    "Selandar",
+    "Sungai Rambai",
+    "Sungai Udang",
+    "Tanjong Kling"
+  ];
   final _cleaningtypeList = [
     "Deep Cleaning",
     "Disinfection Services",
     "Gardening",
     "House Cleaning",
-    "Indoor",
-    "Outdoor",
     "Office Cleaning",
     "Post Renovation"
   ];
+  final _rateperhourList = ["50.00", "70.00", "100.00", "150.00", "170.00"];
+  final _serviceofferedList = [
+    "Deep Cleaning: Whole house cleaning under furniture, vacuuming and cleaning upholstery, scrubbing walls, polishing furniture, organizing",
+    "Disinfection Services: Sanitizing whole house or office area",
+    "Gardening: Mowing, Pruning, Fertilizing",
+    "House Cleaning: Whole house cleaning, mopping, vacuuming, dusting, polishing adn sweeping",
+    "Office Cleaning: Whole office cleaning, mopping, dusting, polishing, sanitizing and waste removal",
+    "Post Renovation: Whole renovation area cleaning, mopping, dusting, polishing, sanitizing, organizing"
+  ];
+  String? _selectedgender = "Male";
+  String? _selectedservice =
+      "Deep Cleaning: Whole house cleaning under furniture, vacuuming and cleaning upholstery, scrubbing walls, polishing furniture, organizing";
   String? _selectedVal = "Deep Cleaning";
+  String? _selectedrate = "50.00";
+  String? _selectedpostcode = "75000";
+  String? _selectedcity = "Alor Gajah";
   bool _fname = true;
   bool _lname = true;
   bool _pnum = true;
@@ -66,6 +121,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   bool _image = true;
   bool _password = true;
   bool _cleaningtype = true;
+  bool _rateperhour = true;
+  bool _serviceoffered = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -97,6 +154,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
           postcode = snapshot.data()!['postcode'];
           state = snapshot.data()!['state'];
           cleaningtype = snapshot.data()!['cleaningtype'];
+          rateperhour = snapshot.data()!['rateperhour'];
+          serviceoffered = snapshot.data()!['serviceoffered'];
           password = snapshot.data()!['password'];
         });
         displayfname.text = fname!;
@@ -111,6 +170,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         displaypostcode.text = postcode!;
         displaystate.text = state!;
         displaycleaningtype.text = cleaningtype!;
+        displayrateperhour.text = rateperhour!;
+        displayserviceoffered.text = serviceoffered!;
         displaypassword.text = password!;
       }
     });
@@ -131,6 +192,12 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displaycleaningtype.text.isEmpty
           ? _cleaningtype = false
           : _cleaningtype = true;
+      displayrateperhour.text.isEmpty
+          ? _rateperhour = false
+          : _rateperhour = true;
+      displayserviceoffered.text.isEmpty
+          ? _serviceoffered = false
+          : _serviceoffered = true;
       displaypassword.text.isEmpty ? _password = false : _password = true;
     });
 
@@ -145,6 +212,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         _city &&
         _state &&
         _cleaningtype &&
+        _rateperhour &&
+        _serviceoffered &&
         _password) {
       FirebaseFirestore.instance
           .collection("maid")
@@ -161,6 +230,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         "city": displaycity.text.trim(),
         "state": displaystate.text.trim(),
         "cleaningtype": displaycleaningtype.text.trim(),
+        "rateperhour": displayrateperhour.text.trim(),
+        "serviceoffered": displayserviceoffered.text.trim(),
         "password": displaypassword.text.trim()
       }).then(
         (value) => Navigator.pushReplacement(
@@ -170,8 +241,11 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
           ),
         ),
       );
-      SnackBar snackbar = SnackBar(content: Text("Profile updated!"));
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Update Successful!'),
+        ),
+      );
     }
   }
 
@@ -346,11 +420,25 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    TextField(
-                      controller: displaygender,
-                      decoration: InputDecoration(
-                          hintText: "Update Gender",
-                          errorText: _gender ? null : "Gender invalid"),
+                    DropdownButtonFormField(
+                      value: _selectedgender,
+                      items: _genderList
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedgender = val as String;
+                          displaygender.text = _selectedgender!;
+                        });
+                      },
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
@@ -409,11 +497,25 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    TextField(
-                      controller: displaypostcode,
-                      decoration: InputDecoration(
-                          hintText: "Update Postcode",
-                          errorText: _postcode ? null : "Postcode invalid"),
+                    DropdownButtonFormField(
+                      value: _selectedpostcode,
+                      items: _postcodeList
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedpostcode = val as String;
+                          displaypostcode.text = _selectedpostcode!;
+                        });
+                      },
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
@@ -430,11 +532,25 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    TextField(
-                      controller: displaycity,
-                      decoration: InputDecoration(
-                          hintText: "Update City",
-                          errorText: _city ? null : "City invalid"),
+                    DropdownButtonFormField(
+                      value: _selectedcity,
+                      items: _cityList
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedcity = val as String;
+                          displaycity.text = _selectedcity!;
+                        });
+                      },
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
@@ -456,6 +572,76 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                       decoration: InputDecoration(
                           hintText: "Update State",
                           errorText: _state ? null : "State invalid"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Rate per Hour",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    DropdownButtonFormField(
+                      value: _selectedrate,
+                      items: _rateperhourList
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedrate = val as String;
+                          displayrateperhour.text = _selectedrate!;
+                        });
+                      },
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Service Offered",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    DropdownButtonFormField(
+                      value: _selectedservice,
+                      items: _serviceofferedList
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedservice = val as String;
+                          displayserviceoffered.text = _selectedservice!;
+                        });
+                      },
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),

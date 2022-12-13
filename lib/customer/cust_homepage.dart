@@ -11,7 +11,6 @@ import 'package:freelance_maid_phase_1/maid/disinfection.dart';
 import 'package:freelance_maid_phase_1/maid/gardening.dart';
 import 'package:freelance_maid_phase_1/maid/housecleaning.dart';
 import 'package:freelance_maid_phase_1/maid/officecleaning.dart';
-import 'package:freelance_maid_phase_1/maid/outdoorpage.dart';
 import 'package:freelance_maid_phase_1/maid/postrenovation.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
