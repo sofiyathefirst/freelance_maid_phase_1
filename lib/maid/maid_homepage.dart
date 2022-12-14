@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/update_booking.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
@@ -13,6 +16,19 @@ class MaidHomePage extends StatefulWidget {
 }
 
 class _MaidHomePageState extends State<MaidHomePage> {
+  final bookingMaid = FirebaseFirestore.instance.collection('bookingmaid');
+  var currentUser = FirebaseAuth.instance.currentUser?.email;
+
+  Future<void> _delete(String bookingId) async {
+    await bookingMaid.doc(bookingId).delete();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Cancel Succesful'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,87 +124,176 @@ class _MaidHomePageState extends State<MaidHomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          //height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.all(20),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40),
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: bookingMaid.get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Delete Succesful'),
+                    ),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final sd = snapshot.data!.docs;
+
+                return Column(
+                  children: List.generate(
+                    sd.length,
+                    (i) {
+                      final bookmaid = sd[i];
+
+                      if (currentUser == bookmaid.get('maidemail')) {
+                        return Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Container(
+                              color: Colors.teal[300],
+                              width: double.infinity,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 20),
+                                  Text('Customer Information',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  SizedBox(height: 5),
+                                  Text('Customer Name: ' +
+                                      bookmaid.get('custfirstname') +
+                                      '\t' +
+                                      bookmaid.get('cuslastname')),
+                                  SizedBox(height: 5),
+                                  Text('Customer Phone Number: ' +
+                                      bookmaid.get('custpnum')),
+                                  SizedBox(height: 5),
+                                  Text('Customer Email: ' +
+                                      bookmaid.get('custemail')),
+                                  SizedBox(height: 5),
+                                  Text('Customer Gender: ' +
+                                      bookmaid.get('custgender')),
+                                  SizedBox(height: 5),
+                                  Text('Customer Address: ' +
+                                      bookmaid.get('custaddress') +
+                                      '\n' +
+                                      bookmaid.get('custcity') +
+                                      '\t' +
+                                      bookmaid.get('custpostcode') +
+                                      '\t' +
+                                      bookmaid.get('custstate')),
+                                  SizedBox(height: 5),
+                                  Text('Cleaning type: ' +
+                                      bookmaid.get('cleaningtype')),
+                                  SizedBox(height: 5),
+                                  Text('Bedroom: ' + bookmaid.get('bedrooms')),
+                                  SizedBox(height: 5),
+                                  Text(
+                                      'Bathroom: ' + bookmaid.get('bathrooms')),
+                                  SizedBox(height: 5),
+                                  Text('Kitchen: ' + bookmaid.get('kitchen')),
+                                  SizedBox(height: 5),
+                                  Text('Pantry: ' + bookmaid.get('pantry')),
+                                  SizedBox(height: 5),
+                                  Text('Office: ' + bookmaid.get('office')),
+                                  SizedBox(height: 5),
+                                  Text('Garden: ' + bookmaid.get('garden')),
+                                  SizedBox(height: 5),
+                                  Text('Rate Per Hour: ' +
+                                      bookmaid.get('rateperhour')),
+                                  SizedBox(height: 5),
+                                  Text('Booking Date: ' +
+                                      bookmaid.get('bookingdate')),
+                                  SizedBox(height: 5),
+                                  Text('Time Start: ' +
+                                      bookmaid.get('timestart')),
+                                  SizedBox(height: 5),
+                                  Text('Time End: ' + bookmaid.get('timeend')),
+                                  SizedBox(height: 5),
+                                  Text('Total Hour: ' + bookmaid.get('hour')),
+                                  SizedBox(height: 5),
+                                  Text('Total Payment: RM' +
+                                      bookmaid.get('totalpayment').toString()),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      /* Status Accept/Decline
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          _delete(bookmaid.id);
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Receipt()),
+                                            (Route<dynamic> route) => false,
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.red.shade800),
+                                        ),
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),*/
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UpdateBooking(),
+                                            ),
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.green.shade800),
+                                        ),
+                                        child: Text(
+                                          'Update Status',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [],
+                        );
+                      }
+                    },
+                  ),
+                );
+              },
             ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text("Booking List"),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database booking request. Contoh: \n\nGambar \n\nNama:" +
-                        "\nNombor Phone:" +
-                        "\nRatings:" +
-                        "\n\nButton View Details"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database booking request. Contoh: \n\nGambar \n\nNama:" +
-                        "\nNombor Phone:" +
-                        "\nRatings:" +
-                        "\n\nButton View Details"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database booking request. Contoh: \n\nGambar \n\nNama:" +
-                        "\nNombor Phone:" +
-                        "\nRatings:" +
-                        "\n\nButton View Details"),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );

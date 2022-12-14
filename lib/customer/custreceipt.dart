@@ -120,34 +120,56 @@ class _ReceiptState extends State<Receipt> {
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       )),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Maid Name: ' +
                                       bookmaid.get('maidfirstname') +
                                       '\t' +
                                       bookmaid.get('maidlastname')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Maid Phone Number: ' +
                                       bookmaid.get('maidpnum')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Maid Email: ' +
                                       bookmaid.get('maidemail')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Maid Gender: ' +
                                       bookmaid.get('maidgender')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Maid State: ' +
                                       bookmaid.get('maidstate')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
+                                  Text('Cleaning type: ' +
+                                      bookmaid.get('cleaningtype')),
+                                  SizedBox(height: 5),
+                                  Text('Bedroom: ' + bookmaid.get('bedrooms')),
+                                  SizedBox(height: 5),
+                                  Text(
+                                      'Bathroom: ' + bookmaid.get('bathrooms')),
+                                  SizedBox(height: 5),
+                                  Text('Kitchen: ' + bookmaid.get('kitchen')),
+                                  SizedBox(height: 5),
+                                  Text('Pantry: ' + bookmaid.get('pantry')),
+                                  SizedBox(height: 5),
+                                  Text('Office: ' + bookmaid.get('office')),
+                                  SizedBox(height: 5),
+                                  Text('Garden: ' + bookmaid.get('garden')),
+                                  SizedBox(height: 5),
+                                  Text('Rate Per Hour: ' +
+                                      bookmaid.get('rateperhour')),
+                                  SizedBox(height: 5),
                                   Text('Booking Date: ' +
                                       bookmaid.get('bookingdate')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Time Start: ' +
                                       bookmaid.get('timestart')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Time End: ' + bookmaid.get('timeend')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
                                   Text('Total Hour: ' + bookmaid.get('hour')),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 5),
+                                  Text('Total Payment: RM' +
+                                      bookmaid.get('totalpayment').toString()),
+                                  SizedBox(height: 10),
                                   Row(
                                     children: [
                                       ElevatedButton(
@@ -174,7 +196,7 @@ class _ReceiptState extends State<Receipt> {
                                         ),
                                       ),
                                       const SizedBox(
-                                        width: 25,
+                                        width: 20,
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
@@ -192,7 +214,7 @@ class _ReceiptState extends State<Receipt> {
                                                   Colors.green.shade800),
                                         ),
                                         child: Text(
-                                          'Update Booking',
+                                          'View Update',
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,

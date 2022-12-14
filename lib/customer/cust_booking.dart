@@ -120,7 +120,7 @@ class _CustbookingState extends State<Custbooking> {
     _getDataFromDatabase();
   }
 
-  _calculation(String hour, String bathrooms, String bedrooms, String kitchens,
+  /*_calculation(String hour, String bathrooms, String bedrooms, String kitchens,
       String pantries, String office, String gardenarea) {
     setState(
       () {
@@ -185,7 +185,7 @@ class _CustbookingState extends State<Custbooking> {
       },
     );
     return totalpayment;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -1582,7 +1582,7 @@ class _CustbookingState extends State<Custbooking> {
                   ),
                   const SizedBox(height: 15),
                   Text(
-                    'Total Payment: RM ${_calculation(hour.text, bathrooms.text, bedrooms.text, kitchens.text, pantries.text, office.text, gardenarea.text)}',
+                    'Total Payment: RM $totalpayment',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,

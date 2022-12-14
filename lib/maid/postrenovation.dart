@@ -198,18 +198,7 @@ class _PostrenovationState extends State<Postrenovation> {
                         );
                       } else {
                         return Column(
-                          children: [
-                            Center(
-                              child: Text(
-                                "No Maid Available",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 40,
-                                ),
-                              ),
-                            ),
-                          ],
+                          children: [],
                         );
                       }
                     },

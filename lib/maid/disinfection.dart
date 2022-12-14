@@ -198,18 +198,7 @@ class _DisinfectionState extends State<Disinfection> {
                         );
                       } else {
                         return Column(
-                          children: [
-                            Center(
-                              child: Text(
-                                "No Maid Available",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 40,
-                                ),
-                              ),
-                            ),
-                          ],
+                          children: [],
                         );
                       }
                     },
