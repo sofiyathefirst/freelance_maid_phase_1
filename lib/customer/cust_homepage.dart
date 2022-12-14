@@ -6,12 +6,12 @@ import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
-import 'package:freelance_maid_phase_1/maid/deepcleaning.dart';
-import 'package:freelance_maid_phase_1/maid/disinfection.dart';
-import 'package:freelance_maid_phase_1/maid/gardening.dart';
-import 'package:freelance_maid_phase_1/maid/housecleaning.dart';
-import 'package:freelance_maid_phase_1/maid/officecleaning.dart';
-import 'package:freelance_maid_phase_1/maid/postrenovation.dart';
+import 'package:freelance_maid_phase_1/type%20of%20services/deepcleaning.dart';
+import 'package:freelance_maid_phase_1/type%20of%20services/disinfection.dart';
+import 'package:freelance_maid_phase_1/type%20of%20services/gardening.dart';
+import 'package:freelance_maid_phase_1/type%20of%20services/housecleaning.dart';
+import 'package:freelance_maid_phase_1/type%20of%20services/officecleaning.dart';
+import 'package:freelance_maid_phase_1/type%20of%20services/postrenovation.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class CustHomePage extends StatefulWidget {
