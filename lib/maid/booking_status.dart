@@ -7,9 +7,6 @@ import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '../customer/cust_booking.dart';
-import '../customer/cust_review.dart';
-import '../customer/custreceipt.dart';
 
 enum ProductTypeEnum { Accept, Decline }
 
@@ -24,7 +21,7 @@ class UpdateBooking extends StatefulWidget {
 class _UpdateBookingState extends State<UpdateBooking> {
   ProductTypeEnum? _productTypeEnum;
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
-  final _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _abcKey = GlobalKey<FormState>();
 
   late String maidfname = widget.data!.get('maidfirstname');
   late String maidlname = widget.data!.get('maidlastname');
@@ -288,72 +285,79 @@ class _UpdateBookingState extends State<UpdateBooking> {
                     const SizedBox(height: 15),
                     Row(
                       children: [
-                        RadioListTile<ProductTypeEnum>(
-                          contentPadding: const EdgeInsets.all(0.0),
-                          value: ProductTypeEnum.Accept,
-                          groupValue: _productTypeEnum,
-                          dense: true,
-                          title: Text(ProductTypeEnum.Accept.name),
-                          onChanged: (val) {
-                            setState(() {
-                              _productTypeEnum = val;
-                              status = ProductTypeEnum.Accept.name;
-                            });
-                          },
+                        Expanded(
+                          child: RadioListTile<ProductTypeEnum>(
+                            contentPadding: const EdgeInsets.all(0.0),
+                            value: ProductTypeEnum.Accept,
+                            groupValue: _productTypeEnum,
+                            dense: true,
+                            title: Text(ProductTypeEnum.Accept.name),
+                            onChanged: (val) {
+                              setState(() {
+                                _productTypeEnum = val;
+                                status = ProductTypeEnum.Accept.name;
+                              });
+                            },
+                          ),
                         ),
-                        const SizedBox(width: 5),
-                        RadioListTile<ProductTypeEnum>(
-                          contentPadding: const EdgeInsets.all(0.0),
-                          value: ProductTypeEnum.Decline,
-                          groupValue: _productTypeEnum,
-                          dense: true,
-                          title: Text(ProductTypeEnum.Decline.name),
-                          onChanged: (val) {
-                            setState(() {
-                              _productTypeEnum = val;
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 12.0),
-                                    child: Text(
-                                      "Reason of Decline",
-                                      style: TextStyle(color: Colors.black),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: RadioListTile<ProductTypeEnum>(
+                            contentPadding: const EdgeInsets.all(0.0),
+                            value: ProductTypeEnum.Decline,
+                            groupValue: _productTypeEnum,
+                            dense: true,
+                            title: Text(ProductTypeEnum.Decline.name),
+                            onChanged: (val) {
+                              setState(() {
+                                _productTypeEnum = val;
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 12.0),
+                                      child: Text(
+                                        "Reason of Decline",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                     ),
-                                  ),
-                                  DropdownButtonFormField(
-                                    value: _selectedstatus,
-                                    items: _declineList
-                                        .map((e) => DropdownMenuItem(
-                                              child: Text(e),
-                                              value: e,
-                                            ))
-                                        .toList(),
-                                    onChanged: (val) {
-                                      setState(() {
-                                        _selectedstatus = val as String;
-                                        status = ProductTypeEnum.Decline.name +
-                                            '\t' +
-                                            _selectedstatus!;
-                                      });
-                                    },
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
+                                    DropdownButtonFormField(
+                                      value: _selectedstatus,
+                                      items: _declineList
+                                          .map((e) => DropdownMenuItem(
+                                                child: Text(e),
+                                                value: e,
+                                              ))
+                                          .toList(),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          _selectedstatus = val as String;
+                                          status =
+                                              ProductTypeEnum.Decline.name +
+                                                  '\t' +
+                                                  _selectedstatus!;
+                                        });
+                                      },
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            });
-                          },
+                                  ],
+                                );
+                              });
+                            },
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 15),
                     ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_abcKey.currentState!.validate()) {
                             setState(
                               () {},
                             );

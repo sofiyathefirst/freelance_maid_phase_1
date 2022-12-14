@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/booking_status.dart';
@@ -204,7 +205,7 @@ class _ReceiptState extends State<Receipt> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  UpdateBooking(),
+                                                  CustBookingStatus(),
                                             ),
                                           );
                                         },
