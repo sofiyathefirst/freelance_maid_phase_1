@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
+import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import '../customer/cust_booking.dart';
 import '../customer/cust_review.dart';
@@ -197,7 +199,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CustHomePage(),
+                    builder: (context) => MaidHomePage(),
                   ),
                 );
               },
@@ -209,19 +211,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Receipt(),
-                  ),
-                );
-              },
-            ),
-            GButton(
-              icon: Icons.book_online_rounded,
-              text: "Booking",
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Custbooking(),
+                    builder: (context) => MaidReceipt(),
                   ),
                 );
               },
@@ -233,7 +223,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Review(),
+                    builder: (context) => Maidreview(),
                   ),
                 );
               },

@@ -221,61 +221,29 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                   Text('Total Payment: RM' +
                                       bookmaid.get('totalpayment').toString()),
                                   SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      /* Status Accept/Decline
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          _delete(bookmaid.id);
-                                          Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Receipt()),
-                                            (Route<dynamic> route) => false,
-                                          );
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.red.shade800),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              UpdateBooking(data: bookmaid),
                                         ),
-                                        child: const Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),*/
-                                      const SizedBox(
-                                        width: 20,
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.green.shade800),
+                                    ),
+                                    child: Text(
+                                      'Update Status',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  UpdateBooking(data: bookmaid),
-                                            ),
-                                          );
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.green.shade800),
-                                        ),
-                                        child: Text(
-                                          'Update Status',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                  SizedBox(height: 20),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,
