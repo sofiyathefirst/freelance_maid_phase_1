@@ -2,10 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
+import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
+import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
+import 'package:freelance_maid_phase_1/maid/maid_review.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Review extends StatefulWidget {
@@ -14,6 +18,8 @@ class Review extends StatefulWidget {
 
   @override
   State<Review> createState() => _ReviewState();
+
+  static fromJson(Map<String, dynamic> data) {}
 }
 
 class _ReviewState extends State<Review> {
@@ -26,11 +32,11 @@ class _ReviewState extends State<Review> {
   late String custemail = widget.data!.get('custemail');
   late String maidemail = widget.data!.get('maidemail');
   late String cleaningtype = widget.data!.get('cleaningtype');
-  late String date = widget.data!.get('date');
+  late String date = widget.data!.get('bookingdate');
   late String timestart = widget.data!.get('timestart');
   late String timeend = widget.data!.get('timeend');
-  late String review = '';
-  late int totalpayment = widget.data!.get('totalpayment');
+  late String reviews = '';
+  late int totalpayment = widget.data?.get('totalpayment');
 
   final TextEditingController reviewcontroller = TextEditingController();
 
@@ -55,7 +61,7 @@ class _ReviewState extends State<Review> {
         String timestart,
         String timeend,
         int totalpayment,
-        String review) {
+        String reviews) {
       try {
         return reviewref.add({
           'maidfirstname': maidfname,
@@ -69,7 +75,7 @@ class _ReviewState extends State<Review> {
           'timestart': timestart,
           'timeend': timeend,
           'totalpayment': totalpayment,
-          'review': review,
+          'reviews': reviews,
         }).then(
           (value) => ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -100,7 +106,7 @@ class _ReviewState extends State<Review> {
           },
         ),
         title: const Text(
-          "Home Page",
+          "Review",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
@@ -108,12 +114,23 @@ class _ReviewState extends State<Review> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.location_on),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustProfile(),
+                  builder: (context) => Geolocation(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout_rounded),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen2(),
                 ),
               );
             },
@@ -129,13 +146,13 @@ class _ReviewState extends State<Review> {
         gap: 2,
         tabs: [
           GButton(
-            icon: Icons.home_rounded,
-            text: "Home",
+            icon: Icons.person_rounded,
+            text: "Profile",
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
+                  builder: (context) => CustProfile(),
                 ),
               );
             },
@@ -159,7 +176,7 @@ class _ReviewState extends State<Review> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Custbooking(),
+                  builder: (context) => CustBookingStatus(),
                 ),
               );
             },
@@ -171,7 +188,7 @@ class _ReviewState extends State<Review> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Review(),
+                  builder: (context) => ReviewPage(),
                 ),
               );
             },
@@ -223,7 +240,7 @@ class _ReviewState extends State<Review> {
               TextFormField(
                 controller: reviewcontroller,
                 decoration: InputDecoration(
-                  hintText: 'Enter duration (hour)',
+                  hintText: 'Leave your review',
                   hintStyle: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
@@ -253,7 +270,7 @@ class _ReviewState extends State<Review> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => ReviewPage(),
+                        builder: (_) => Maidreview(),
                       ),
                     );
                   },

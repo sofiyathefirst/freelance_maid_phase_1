@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
+import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Maidreview extends StatefulWidget {
@@ -15,8 +17,9 @@ class Maidreview extends StatefulWidget {
 }
 
 class _MaidreviewState extends State<Maidreview> {
-  final review = FirebaseFirestore.instance.collection('review');
+  final rreview = FirebaseFirestore.instance.collection('review');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +38,7 @@ class _MaidreviewState extends State<Maidreview> {
           },
         ),
         title: const Text(
-          "Home Page",
+          "Review",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
@@ -43,12 +46,23 @@ class _MaidreviewState extends State<Maidreview> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.location_on),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MaidProfile(),
+                  builder: (context) => Geolocation(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout_rounded),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen2(),
                 ),
               );
             },
@@ -64,13 +78,13 @@ class _MaidreviewState extends State<Maidreview> {
         gap: 2,
         tabs: [
           GButton(
-            icon: Icons.home_rounded,
-            text: "Home",
+            icon: Icons.person_rounded,
+            text: "Profile",
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MaidHomePage(),
+                  builder: (context) => MaidProfile(),
                 ),
               );
             },
@@ -83,18 +97,6 @@ class _MaidreviewState extends State<Maidreview> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MaidReceipt(),
-                ),
-              );
-            },
-          ),
-          GButton(
-            icon: Icons.book_online_rounded,
-            text: "Booking",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustBookingStatus(),
                 ),
               );
             },
@@ -117,7 +119,7 @@ class _MaidreviewState extends State<Maidreview> {
         child: Column(
           children: [
             FutureBuilder(
-              future: review.get(),
+              future: rreview.get(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -164,7 +166,7 @@ class _MaidreviewState extends State<Maidreview> {
                                   Text('Cleaning type: ' +
                                       review.get('cleaningtype')),
                                   SizedBox(height: 5),
-                                  Text('Review: ' + review.get('review')),
+                                  Text('Review: ' + review.get('reviews')),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,

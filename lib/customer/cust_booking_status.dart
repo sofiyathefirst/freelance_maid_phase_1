@@ -6,6 +6,9 @@ import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
+import 'package:freelance_maid_phase_1/customer/review_page.dart';
+import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class CustBookingStatus extends StatefulWidget {
@@ -37,7 +40,7 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
           },
         ),
         title: const Text(
-          "Booking",
+          "Booking Status",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
@@ -45,12 +48,23 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.location_on),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustProfile(),
+                  builder: (context) => Geolocation(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout_rounded),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen2(),
                 ),
               );
             },
@@ -66,13 +80,13 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
         gap: 2,
         tabs: [
           GButton(
-            icon: Icons.home_rounded,
-            text: "Home",
+            icon: Icons.person_rounded,
+            text: "Profile",
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
+                  builder: (context) => CustProfile(),
                 ),
               );
             },
@@ -96,7 +110,7 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Custbooking(),
+                  builder: (context) => CustBookingStatus(),
                 ),
               );
             },
@@ -108,7 +122,7 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Review(),
+                  builder: (context) => ReviewPage(),
                 ),
               );
             },

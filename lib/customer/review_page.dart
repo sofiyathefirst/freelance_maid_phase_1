@@ -5,8 +5,10 @@ import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
+import '../geolocation/geolocation.dart';
 import 'cust_profilepage.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -17,8 +19,9 @@ class ReviewPage extends StatefulWidget {
 }
 
 class _ReviewPageState extends State<ReviewPage> {
-  final review = FirebaseFirestore.instance.collection('review');
+  final rreview = FirebaseFirestore.instance.collection('review');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +40,7 @@ class _ReviewPageState extends State<ReviewPage> {
           },
         ),
         title: const Text(
-          "Review",
+          "Review Page",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
@@ -45,12 +48,23 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.location_on),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustProfile(),
+                  builder: (context) => Geolocation(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout_rounded),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen2(),
                 ),
               );
             },
@@ -66,13 +80,13 @@ class _ReviewPageState extends State<ReviewPage> {
         gap: 2,
         tabs: [
           GButton(
-            icon: Icons.home_rounded,
-            text: "Home",
+            icon: Icons.person_rounded,
+            text: "Profile",
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
+                  builder: (context) => CustProfile(),
                 ),
               );
             },
@@ -108,7 +122,7 @@ class _ReviewPageState extends State<ReviewPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Review(),
+                  builder: (context) => ReviewPage(),
                 ),
               );
             },
@@ -119,7 +133,7 @@ class _ReviewPageState extends State<ReviewPage> {
         child: Column(
           children: [
             FutureBuilder(
-              future: review.get(),
+              future: rreview.get(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -134,45 +148,52 @@ class _ReviewPageState extends State<ReviewPage> {
                     child: CircularProgressIndicator(),
                   );
                 }
-                final sd = snapshot.data!.docs;
+                final snapd = snapshot.data!.docs;
                 return Column(
                   children: List.generate(
-                    sd.length,
+                    snapd.length,
                     (i) {
-                      final review = sd[i];
-                      return Column(
-                        children: [
-                          SizedBox(height: 20),
-                          Container(
-                            color: Colors.teal[300],
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                SizedBox(height: 20),
-                                Text(
-                                    'Review from ' +
-                                        review.get('custfirstname'),
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                SizedBox(height: 5),
-                                Text('Maid Name: ' +
-                                    review.get('maidfirstname') +
-                                    '\t' +
-                                    review.get('maidlastname')),
-                                SizedBox(height: 5),
-                                Text('Cleaning type: ' +
-                                    review.get('cleaningtype')),
-                                SizedBox(height: 5),
-                                Text('Review: ' + review.get('review')),
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                            ),
-                          )
-                        ],
-                      );
+                      final review = snapd[i];
+                      if (review.get('reviews') != null) {
+                        return Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Container(
+                              color: Colors.teal[300],
+                              width: double.infinity,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 10),
+                                  Text(
+                                      'Review from ' +
+                                          review.get('custfirstname'),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  SizedBox(height: 10),
+                                  Text('Maid Name: ' +
+                                      review.get('maidfirstname') +
+                                      '\t' +
+                                      review.get('maidlastname')),
+                                  SizedBox(height: 10),
+                                  Text('Cleaning type: ' +
+                                      review.get('cleaningtype')),
+                                  SizedBox(height: 10),
+                                  Text('Review: ' + review.get('reviews')),
+                                  SizedBox(height: 10),
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [],
+                        );
+                      }
                     },
                   ),
                 );

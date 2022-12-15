@@ -2,11 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
+import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
+import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
+import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Gardening extends StatefulWidget {
@@ -47,12 +51,23 @@ class _GardeningState extends State<Gardening> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.location_on),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustProfile(),
+                  builder: (context) => Geolocation(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout_rounded),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen2(),
                 ),
               );
             },
@@ -65,12 +80,56 @@ class _GardeningState extends State<Gardening> {
       bottomNavigationBar: GNav(
         backgroundColor: Colors.white,
         tabBackgroundColor: Colors.grey.shade400,
-        gap: 8,
+        gap: 2,
         tabs: [
-          GButton(icon: Icons.home_rounded, text: "Home"),
-          GButton(icon: Icons.receipt_rounded, text: "Receipt"),
-          GButton(icon: Icons.book_online_rounded, text: "Booking"),
-          GButton(icon: Icons.reviews_rounded, text: "Review"),
+          GButton(
+            icon: Icons.person_rounded,
+            text: "Profile",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustProfile(),
+                ),
+              );
+            },
+          ),
+          GButton(
+            icon: Icons.receipt_rounded,
+            text: "Receipt",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Receipt(),
+                ),
+              );
+            },
+          ),
+          GButton(
+            icon: Icons.book_online_rounded,
+            text: "Booking",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustBookingStatus(),
+                ),
+              );
+            },
+          ),
+          GButton(
+            icon: Icons.reviews_rounded,
+            text: "Review",
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReviewPage(),
+                ),
+              );
+            },
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -139,6 +198,9 @@ class _GardeningState extends State<Gardening> {
                                       Text('Gender: ' + maid.get('gender')),
                                       SizedBox(height: 20),
                                       Text('State: ' + maid.get('state')),
+                                      SizedBox(height: 20),
+                                      Text('Rate per hour: RM' +
+                                          maid.get('rateperhour')),
                                       SizedBox(height: 20),
                                       Row(
                                         children: [

@@ -3,9 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 enum ProductTypeEnum { Accept, Decline }
@@ -162,7 +165,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
             },
           ),
           title: const Text(
-            "Booking",
+            "Booking Status",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -170,12 +173,23 @@ class _UpdateBookingState extends State<UpdateBooking> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.person_rounded),
+              icon: Icon(Icons.location_on),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CustProfile(),
+                    builder: (context) => Geolocation(),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.logout_rounded),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SplashScreen2(),
                   ),
                 );
               },
@@ -191,13 +205,13 @@ class _UpdateBookingState extends State<UpdateBooking> {
           gap: 2,
           tabs: [
             GButton(
-              icon: Icons.home_rounded,
-              text: "Home",
+              icon: Icons.person_rounded,
+              text: "Profile",
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MaidHomePage(),
+                    builder: (context) => MaidProfile(),
                   ),
                 );
               },

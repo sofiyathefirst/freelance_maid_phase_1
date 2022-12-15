@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
+import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
+import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'maid_homepage.dart';
@@ -37,7 +39,7 @@ class _MaidReceiptState extends State<MaidReceipt> {
           },
         ),
         title: const Text(
-          "Home Page",
+          "Booking Receipt",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
@@ -45,13 +47,26 @@ class _MaidReceiptState extends State<MaidReceipt> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.person_rounded),
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MaidProfile(),
-              ),
-            ),
+            icon: Icon(Icons.location_on),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Geolocation(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.logout_rounded),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen2(),
+                ),
+              );
+            },
           ),
           SizedBox(
             width: 15,
@@ -64,13 +79,13 @@ class _MaidReceiptState extends State<MaidReceipt> {
         gap: 2,
         tabs: [
           GButton(
-            icon: Icons.home_rounded,
-            text: "Home",
+            icon: Icons.person_rounded,
+            text: "Profile",
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MaidHomePage(),
+                  builder: (context) => MaidProfile(),
                 ),
               );
             },
@@ -83,18 +98,6 @@ class _MaidReceiptState extends State<MaidReceipt> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MaidReceipt(),
-                ),
-              );
-            },
-          ),
-          GButton(
-            icon: Icons.book_online_rounded,
-            text: "Booking",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustBookingStatus(),
                 ),
               );
             },
