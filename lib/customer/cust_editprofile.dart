@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:intl/intl.dart';
 
 class CustEditProfile extends StatefulWidget {
   CustEditProfile({Key? key}) : super(key: key);
@@ -15,6 +16,8 @@ class CustEditProfile extends StatefulWidget {
 
 class _CustEditProfileState extends State<CustEditProfile> {
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
+  final _formKey = GlobalKey<FormState>();
+
   bool isLoading = false;
   String? fname = '';
   String? lname = '';
@@ -41,6 +44,47 @@ class _CustEditProfileState extends State<CustEditProfile> {
   TextEditingController displaypostcode = TextEditingController();
   TextEditingController displaystate = TextEditingController();
   TextEditingController displaypassword = TextEditingController();
+  final _genderList = ["Male", "Female"];
+  final _postcodeList = [
+    "75000",
+    "75050",
+    "75100",
+    "75150",
+    "75200",
+    "75250",
+    "75260",
+    "75300",
+    "75350",
+    "75400",
+    "75430",
+    "75450",
+    "75460",
+    "76300",
+    "76400",
+    "76450",
+    "77200"
+  ];
+  final _cityList = [
+    "Alor Gajah",
+    "Asahan",
+    "Ayer Keroh",
+    "Bemban",
+    "Durian Tunggal",
+    "Jasin",
+    "Kem Trendak",
+    "Kuala Sungai Baru",
+    "Lubok China",
+    "Masjid Tanah",
+    "Melaka",
+    "Merlimau",
+    "Selandar",
+    "Sungai Rambai",
+    "Sungai Udang",
+    "Tanjong Kling"
+  ];
+  String? _selectedgender = "Male";
+  String? _selectedpostcode = "75000";
+  String? _selectedcity = "Alor Gajah";
   bool _fname = true;
   bool _lname = true;
   bool _pnum = true;
@@ -291,11 +335,25 @@ class _CustEditProfileState extends State<CustEditProfile> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  TextField(
-                    controller: displaygender,
-                    decoration: InputDecoration(
-                        hintText: "Update Gender",
-                        errorText: _gender ? null : "Gender invalid"),
+                  DropdownButtonFormField(
+                    value: _selectedgender,
+                    items: _genderList
+                        .map((e) => DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        _selectedgender = val as String;
+                        displaygender.text = _selectedgender!;
+                      });
+                    },
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -312,11 +370,57 @@ class _CustEditProfileState extends State<CustEditProfile> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  TextField(
-                    controller: displaybirthdate,
-                    decoration: InputDecoration(
-                        hintText: "Update Birthdate",
-                        errorText: _birthdate ? null : "Birthdate invalid"),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: displaybirthdate,
+                          decoration: InputDecoration(
+                            hintText: 'Update Birthdate',
+                            errorText: _birthdate ? null : "Birthdate invalid",
+                            hintStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.calendar_today_rounded,
+                              color: Colors.black,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          readOnly:
+                              true, //set it true, so that user will not able to edit text
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(
+                                    1900), //DateTime.now() - not to allow to choose before today.
+                                lastDate: DateTime(2025));
+
+                            if (pickedDate != null) {
+                              print(
+                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                              String formattedDate =
+                                  DateFormat('dd-MM-yyyy').format(pickedDate);
+                              print(
+                                  formattedDate); //formatted date output using intl package =>  2021-03-16
+                              //you can implement different kind of Date Format here according to your requirement
+
+                              setState(() {
+                                displaybirthdate.text =
+                                    formattedDate; //set output date to TextField value.
+                              });
+                            } else {
+                              print("Date is not selected");
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -354,11 +458,25 @@ class _CustEditProfileState extends State<CustEditProfile> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  TextField(
-                    controller: displaypostcode,
-                    decoration: InputDecoration(
-                        hintText: "Update Postcode",
-                        errorText: _postcode ? null : "Postcode invalid"),
+                  DropdownButtonFormField(
+                    value: _selectedpostcode,
+                    items: _postcodeList
+                        .map((e) => DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        _selectedpostcode = val as String;
+                        displaypostcode.text = _selectedpostcode!;
+                      });
+                    },
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -375,11 +493,25 @@ class _CustEditProfileState extends State<CustEditProfile> {
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  TextField(
-                    controller: displaycity,
-                    decoration: InputDecoration(
-                        hintText: "Update City",
-                        errorText: _city ? null : "City invalid"),
+                  DropdownButtonFormField(
+                    value: _selectedcity,
+                    items: _cityList
+                        .map((e) => DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        _selectedcity = val as String;
+                        displaycity.text = _selectedcity!;
+                      });
+                    },
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),

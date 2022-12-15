@@ -27,6 +27,8 @@ class _MaidProfileState extends State<MaidProfile> {
   String? state = '';
   String? image = '';
   String? cleaningtype = '';
+  String? rateperhour;
+  String? serviceoffered = '';
   File? imageXFile;
 
   Future _getDataFromDatabase() async {
@@ -49,6 +51,8 @@ class _MaidProfileState extends State<MaidProfile> {
           postcode = snapshot.data()!['postcode'];
           state = snapshot.data()!['state'];
           cleaningtype = snapshot.data()!['cleaningtype'];
+          rateperhour = snapshot.data()!['rateperhour'];
+          serviceoffered = snapshot.data()!['serviceoffered'];
           password = snapshot.data()!['password'];
         });
       }
@@ -198,6 +202,42 @@ class _MaidProfileState extends State<MaidProfile> {
                       SizedBox(width: 10),
                       Text(
                         cleaningtype!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.cleaning_services_rounded,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        serviceoffered!,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.cleaning_services_rounded,
+                        color: Colors.black,
+                        size: 40,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        rateperhour!,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

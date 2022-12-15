@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
+import 'package:intl/intl.dart';
 
 class MaidEditProfile extends StatefulWidget {
   MaidEditProfile({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class MaidEditProfile extends StatefulWidget {
 
 class _MaidEditProfileState extends State<MaidEditProfile> {
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
+  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   String? fname = '';
   String? lname = '';
@@ -455,11 +457,58 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    TextField(
-                      controller: displaybirthdate,
-                      decoration: InputDecoration(
-                          hintText: "Update Birthdate",
-                          errorText: _birthdate ? null : "Birthdate invalid"),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: displaybirthdate,
+                            decoration: InputDecoration(
+                              hintText: 'Update Birthdate',
+                              errorText:
+                                  _birthdate ? null : "Birthdate invalid",
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.calendar_today_rounded,
+                                color: Colors.black,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            readOnly:
+                                true, //set it true, so that user will not able to edit text
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime(1900),
+                                  firstDate: DateTime
+                                      .now(), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2025));
+
+                              if (pickedDate != null) {
+                                print(
+                                    pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                String formattedDate =
+                                    DateFormat('dd-MM-yyyy').format(pickedDate);
+                                print(
+                                    formattedDate); //formatted date output using intl package =>  2021-03-16
+                                //you can implement different kind of Date Format here according to your requirement
+
+                                setState(() {
+                                  displaybirthdate.text =
+                                      formattedDate; //set output date to TextField value.
+                                });
+                              } else {
+                                print("Date is not selected");
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
