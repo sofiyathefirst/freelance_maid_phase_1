@@ -150,7 +150,7 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
                               child: Column(
                                 children: [
                                   SizedBox(height: 20),
-                                  Text('Customer Information',
+                                  Text('Maid Information',
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,

@@ -20,8 +20,7 @@ class UpdateBooking extends StatefulWidget {
 
 class _UpdateBookingState extends State<UpdateBooking> {
   ProductTypeEnum? _productTypeEnum;
-  var currentUser = FirebaseAuth.instance.currentUser!.uid;
-  GlobalKey<FormState> _abcKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _abcKey = GlobalKey<FormState>();
 
   late String maidfname = widget.data!.get('maidfirstname');
   late String maidlname = widget.data!.get('maidlastname');
@@ -52,7 +51,9 @@ class _UpdateBookingState extends State<UpdateBooking> {
   late String cleaningtype = widget.data!.get('cleaningtype');
   late String rateperhour = widget.data!.get('rateperhour');
   late String status = '';
+
   TextEditingController displaystatus = TextEditingController();
+
   String? _selectedstatus = "I am fully booked";
   final _declineList = [
     "I am fully booked",
@@ -155,7 +156,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
+                  builder: (context) => MaidHomePage(),
                 ),
               );
             },
@@ -284,7 +285,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                     ),
                     const SizedBox(height: 15),
                     Row(
-                      children: [
+                      children: <Widget>[
                         Expanded(
                           child: RadioListTile<ProductTypeEnum>(
                             contentPadding: const EdgeInsets.all(0.0),
@@ -295,7 +296,8 @@ class _UpdateBookingState extends State<UpdateBooking> {
                             onChanged: (val) {
                               setState(() {
                                 _productTypeEnum = val;
-                                status = ProductTypeEnum.Accept.name;
+                                displaystatus.text =
+                                    ProductTypeEnum.Accept.name;
                               });
                             },
                           ),
@@ -313,92 +315,91 @@ class _UpdateBookingState extends State<UpdateBooking> {
                             onChanged: (val) {
                               setState(() {
                                 _productTypeEnum = val;
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 12.0),
-                                      child: Text(
-                                        "Reason of Decline",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    ),
-                                    DropdownButtonFormField(
-                                      value: _selectedstatus,
-                                      items: _declineList
-                                          .map((e) => DropdownMenuItem(
-                                                child: Text(e),
-                                                value: e,
-                                              ))
-                                          .toList(),
-                                      onChanged: (val) {
-                                        setState(() {
-                                          _selectedstatus = val as String;
-                                          status =
-                                              ProductTypeEnum.Decline.name +
-                                                  '\t' +
-                                                  _selectedstatus!;
-                                        });
-                                      },
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                );
+                                displaystatus.text =
+                                    ProductTypeEnum.Decline.name;
                               });
                             },
                           ),
                         ),
                       ],
                     ),
+                    if (displaystatus.text == "Decline") ...[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: 12.0),
+                            child: Text(
+                              "Reason of Decline",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          DropdownButtonFormField(
+                            value: _selectedstatus,
+                            items: _declineList
+                                .map((e) => DropdownMenuItem(
+                                      child: Text(e),
+                                      value: e,
+                                    ))
+                                .toList(),
+                            onChanged: (val) {
+                              setState(() {
+                                _selectedstatus = val as String;
+                                displaystatus.text =
+                                    ProductTypeEnum.Decline.name +
+                                        '\t' +
+                                        _selectedstatus!;
+                              });
+                            },
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     const SizedBox(height: 15),
                     ElevatedButton(
                         onPressed: () {
-                          if (_abcKey.currentState!.validate()) {
-                            setState(
-                              () {},
-                            );
-                            Add(
-                              maidfname,
-                              maidlname,
-                              maidpnum,
-                              maidemail,
-                              maidgender,
-                              maidstate,
-                              cleaningtype,
-                              bathroom,
-                              bedroom,
-                              kitchen,
-                              pantry,
-                              office,
-                              garden,
-                              rateperhour,
-                              custfname,
-                              custlname,
-                              custpnum,
-                              custemail,
-                              custgender,
-                              custaddress,
-                              custcity,
-                              custpostcode,
-                              custstate,
-                              date,
-                              timestart,
-                              timeend,
-                              hour,
-                              totalpayment,
-                              status,
-                            );
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MaidReceipt(),
-                              ),
-                            );
-                          }
+                          Add(
+                            maidfname,
+                            maidlname,
+                            maidpnum,
+                            maidemail,
+                            maidgender,
+                            maidstate,
+                            cleaningtype,
+                            bathroom,
+                            bedroom,
+                            kitchen,
+                            pantry,
+                            office,
+                            garden,
+                            rateperhour,
+                            custfname,
+                            custlname,
+                            custpnum,
+                            custemail,
+                            custgender,
+                            custaddress,
+                            custcity,
+                            custpostcode,
+                            custstate,
+                            date,
+                            timestart,
+                            timeend,
+                            hour,
+                            totalpayment,
+                            displaystatus.text,
+                          );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MaidReceipt(),
+                            ),
+                          );
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(

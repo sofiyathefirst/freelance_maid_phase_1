@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
@@ -13,8 +15,99 @@ class Review extends StatefulWidget {
 }
 
 class _ReviewState extends State<Review> {
+  final bookingStatus = FirebaseFirestore.instance.collection('bookingstatus');
+  var currentUser = FirebaseAuth.instance.currentUser?.email;
+
+  late String? custfname = '';
+  late String? custlname = '';
+  late String? maidfname = '';
+  late String? maidlname = '';
+  late String? custemail = '';
+  late String? maidemail = '';
+  late String? cleaningtype = '';
+  late String? date = '';
+  late String? timestart = '';
+  late String? timeend = '';
+  late String? review = '';
+  late int? totalpayment = '' as int?;
+
+  final TextEditingController reviewcontroller = TextEditingController();
+
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("bookingstatus")
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          custfname = snapshot.data()!['custfirstname'];
+          custlname = snapshot.data()!['cuslastname'];
+          custemail = snapshot.data()!['custemail'];
+          maidfname = snapshot.data()!['maidfirstname'];
+          maidlname = snapshot.data()!['maidlastname'];
+          maidemail = snapshot.data()!['maidemail'];
+          cleaningtype = snapshot.data()!['cleaningtype'];
+          date = snapshot.data()!['date'];
+          timestart = snapshot.data()!['timestart'];
+          timeend = snapshot.data()!['timeend'];
+          totalpayment = snapshot.data()!['totalpayment'];
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference reviewref =
+        FirebaseFirestore.instance.collection('review');
+    Add(
+        String maidfname,
+        String maidlname,
+        String maidemail,
+        String cleaningtype,
+        String custfname,
+        String custlname,
+        String custemail,
+        String date,
+        String timestart,
+        String timeend,
+        int totalpayment,
+        String review) {
+      try {
+        return reviewref.add({
+          'maidfirstname': maidfname,
+          'maidlastname': maidlname,
+          'maidemail': maidemail,
+          'cleaningtype': cleaningtype,
+          'custfirstname': custfname,
+          'cuslastname': custlname,
+          'custemail': custemail,
+          'bookingdate': date,
+          'timestart': timestart,
+          'timeend': timeend,
+          'totalpayment': totalpayment,
+          'review': review,
+        }).then(
+          (value) => ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Review posted!'),
+            ),
+          ),
+        );
+      } on FirebaseException catch (e) {
+        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.code),
+        ));
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.teal.shade200,
       appBar: AppBar(
