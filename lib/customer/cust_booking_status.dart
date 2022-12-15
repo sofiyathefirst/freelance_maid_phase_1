@@ -211,6 +211,29 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
                                   SizedBox(height: 20),
                                   SizedBox(height: 5),
                                   Text('Status: ' + bookstatus.get('status')),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              Review(data: bookstatus),
+                                        ),
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.green.shade700),
+                                    ),
+                                    child: const Text(
+                                      'Leave Review',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,

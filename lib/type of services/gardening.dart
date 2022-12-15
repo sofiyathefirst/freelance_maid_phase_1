@@ -5,6 +5,7 @@ import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
+import 'package:freelance_maid_phase_1/customer/review_page.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -172,7 +173,7 @@ class _GardeningState extends State<Gardening> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      Review(),
+                                                      ReviewPage(),
                                                 ),
                                               );
                                             },

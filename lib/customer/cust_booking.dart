@@ -374,7 +374,6 @@ class _CustbookingState extends State<Custbooking> {
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                         color: Colors.black),
-                    textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: 15),
                   Text(

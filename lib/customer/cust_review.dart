@@ -5,62 +5,38 @@ import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
+import 'package:freelance_maid_phase_1/customer/review_page.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Review extends StatefulWidget {
-  Review({Key? key}) : super(key: key);
+  final QueryDocumentSnapshot<Object?>? data;
+  Review({Key? key, this.data}) : super(key: key);
 
   @override
   State<Review> createState() => _ReviewState();
 }
 
 class _ReviewState extends State<Review> {
-  final bookingStatus = FirebaseFirestore.instance.collection('bookingstatus');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
 
-  late String? custfname = '';
-  late String? custlname = '';
-  late String? maidfname = '';
-  late String? maidlname = '';
-  late String? custemail = '';
-  late String? maidemail = '';
-  late String? cleaningtype = '';
-  late String? date = '';
-  late String? timestart = '';
-  late String? timeend = '';
-  late String? review = '';
-  late int? totalpayment = '' as int?;
+  late String custfname = widget.data!.get('custfirstname');
+  late String custlname = widget.data!.get('cuslastname');
+  late String maidfname = widget.data!.get('maidfirstname');
+  late String maidlname = widget.data!.get('maidlastname');
+  late String custemail = widget.data!.get('custemail');
+  late String maidemail = widget.data!.get('maidemail');
+  late String cleaningtype = widget.data!.get('cleaningtype');
+  late String date = widget.data!.get('date');
+  late String timestart = widget.data!.get('timestart');
+  late String timeend = widget.data!.get('timeend');
+  late String review = '';
+  late int totalpayment = widget.data!.get('totalpayment');
 
   final TextEditingController reviewcontroller = TextEditingController();
-
-  Future _getDataFromDatabase() async {
-    await FirebaseFirestore.instance
-        .collection("bookingstatus")
-        .doc(FirebaseAuth.instance.currentUser!.email)
-        .get()
-        .then((snapshot) async {
-      if (snapshot.exists) {
-        setState(() {
-          custfname = snapshot.data()!['custfirstname'];
-          custlname = snapshot.data()!['cuslastname'];
-          custemail = snapshot.data()!['custemail'];
-          maidfname = snapshot.data()!['maidfirstname'];
-          maidlname = snapshot.data()!['maidlastname'];
-          maidemail = snapshot.data()!['maidemail'];
-          cleaningtype = snapshot.data()!['cleaningtype'];
-          date = snapshot.data()!['date'];
-          timestart = snapshot.data()!['timestart'];
-          timeend = snapshot.data()!['timeend'];
-          totalpayment = snapshot.data()!['totalpayment'];
-        });
-      }
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _getDataFromDatabase();
   }
 
   @override
@@ -217,94 +193,78 @@ class _ReviewState extends State<Review> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text("Review List"),
-              const SizedBox(
-                height: 20,
+            children: [
+              const SizedBox(height: 15),
+              Text(
+                'Maid Name: $maidfname\t$maidlname',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
               ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
+              const SizedBox(height: 15),
+              Text(
+                'Maid Email: $maidemail',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                'Customer Name: $custfname\t$custlname',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                'Customer Email: $custemail',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                'Booking Date: $date',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                controller: reviewcontroller,
+                decoration: InputDecoration(
+                  hintText: 'Enter duration (hour)',
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
-                    "Read from database customer review based on uid. Contoh: \n\nMaid Name: \nReview:" +
-                        "\nRatings: ****" +
-                        "\nTime Stamp"),
+                onChanged: (value) {},
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database customer review based on uid. Contoh: \n\nMaid Name: \nReview:" +
-                        "\nRatings: ****" +
-                        "\nTime Stamp"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database customer review based on uid. Contoh: \n\nMaid Name: \nReview:" +
-                        "\nRatings: ****" +
-                        "\nTime Stamp"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                decoration:
-                    InputDecoration(labelText: "Leave your review here"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                  onPressed: () {
+                    Add(
+                        maidfname,
+                        maidlname,
+                        maidemail,
+                        cleaningtype,
+                        custfname,
+                        custlname,
+                        custemail,
+                        date,
+                        timestart,
+                        timeend,
+                        totalpayment,
+                        reviewcontroller.text);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ReviewPage(),
+                      ),
+                    );
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.orangeAccent),
                   ),
                   child: const Text(
                     'Save Review',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )),
             ],
           ),
         ),
