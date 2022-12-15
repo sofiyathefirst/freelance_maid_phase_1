@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
-import 'package:freelance_maid_phase_1/maid/maid_services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Maidreview extends StatefulWidget {
@@ -13,6 +15,8 @@ class Maidreview extends StatefulWidget {
 }
 
 class _MaidreviewState extends State<Maidreview> {
+  final review = FirebaseFirestore.instance.collection('review');
+  var currentUser = FirebaseAuth.instance.currentUser?.email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +94,7 @@ class _MaidreviewState extends State<Maidreview> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Maidservices(),
+                  builder: (context) => CustBookingStatus(),
                 ),
               );
             },
@@ -110,165 +114,75 @@ class _MaidreviewState extends State<Maidreview> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          //height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.all(20),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40),
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: review.get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Delete Succesful'),
+                    ),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final sd = snapshot.data!.docs;
+                return Column(
+                  children: List.generate(
+                    sd.length,
+                    (i) {
+                      final review = sd[i];
+                      if (currentUser == review.get('maidemail')) {
+                        return Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Container(
+                              color: Colors.teal[300],
+                              width: double.infinity,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 20),
+                                  Text(
+                                      'Review from ' +
+                                          review.get('custfirstname'),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  SizedBox(height: 5),
+                                  Text('Maid Name: ' +
+                                      review.get('maidfirstname') +
+                                      '\t' +
+                                      review.get('maidlastname')),
+                                  SizedBox(height: 5),
+                                  Text('Cleaning type: ' +
+                                      review.get('cleaningtype')),
+                                  SizedBox(height: 5),
+                                  Text('Review: ' + review.get('review')),
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [],
+                        );
+                      }
+                    },
+                  ),
+                );
+              },
             ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text("Review List"),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database customer review based on uid. Contoh: \n\nMaid Name: \nReview:" +
-                        "\nRatings: ****" +
-                        "\nTime Stamp"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                decoration:
-                    InputDecoration(labelText: "Leave your respond here"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  ),
-                  child: const Text(
-                    'Save Response',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database customer review based on uid. Contoh: \n\nMaid Name: \nReview:" +
-                        "\nRatings: ****" +
-                        "\nTime Stamp"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                decoration:
-                    InputDecoration(labelText: "Leave your respond here"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  ),
-                  child: const Text(
-                    'Save Response',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 300,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
-                    bottomRight: Radius.circular(40),
-                  ),
-                ),
-                child: Text(
-                    "Read from database customer review based on uid. Contoh: \n\nMaid Name: \nReview:" +
-                        "\nRatings: ****" +
-                        "\nTime Stamp"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                decoration:
-                    InputDecoration(labelText: "Leave your respond here"),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  ),
-                  child: const Text(
-                    'Save Response',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );

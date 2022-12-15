@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/maid/booking_status.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
-import 'package:freelance_maid_phase_1/maid/maid_services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MaidHomePage extends StatefulWidget {
@@ -104,7 +104,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Maidservices(),
+                  builder: (context) => CustBookingStatus(),
                 ),
               );
             },
