@@ -26,6 +26,7 @@ class _CustProfileState extends State<CustProfile> {
   String? postcode = '';
   String? state = '';
   String? image = '';
+  String? uid = '';
   File? imageXFile;
 
   Future _getDataFromDatabase() async {
@@ -48,6 +49,7 @@ class _CustProfileState extends State<CustProfile> {
           postcode = snapshot.data()!['postcode'];
           state = snapshot.data()!['state'];
           password = snapshot.data()!['password'];
+          uid = snapshot.data()!['uid'];
         });
       }
     });

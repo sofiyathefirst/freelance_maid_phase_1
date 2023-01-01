@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class MaidEditProfile extends StatefulWidget {
@@ -15,6 +17,8 @@ class MaidEditProfile extends StatefulWidget {
 
 class _MaidEditProfileState extends State<MaidEditProfile> {
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
+  FirebaseStorage storageRef = FirebaseStorage.instance;
+  FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   String? fname = '';
@@ -32,7 +36,9 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   String? cleaningtype = '';
   String? rateperhour;
   String? serviceoffered = '';
-  File? imageXFile;
+  String imageName = '';
+  XFile? imagePath;
+  final ImagePicker _picker = ImagePicker();
   TextEditingController displayfname = TextEditingController();
   TextEditingController displaylname = TextEditingController();
   TextEditingController displaypnum = TextEditingController();
@@ -184,6 +190,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displayfname.text.isEmpty ? _fname = false : _fname = true;
       displaylname.text.isEmpty ? _lname = false : _lname = true;
       displaypnum.text.isEmpty ? _pnum = false : _pnum = true;
+      displayimg.text.isEmpty ? _image = false : _image = true;
       displayemail.text.isEmpty ? _email = false : _email = true;
       displaygender.text.isEmpty ? _gender = false : _gender = true;
       displaybirthdate.text.isEmpty ? _birthdate = false : _birthdate = true;
@@ -203,7 +210,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displaypassword.text.isEmpty ? _password = false : _password = true;
     });
 
-    if (_fname &&
+    if (_image &&
+        _fname &&
         _lname &&
         _pnum &&
         _email &&
@@ -227,6 +235,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         "phonenum": displaypnum.text.trim(),
         "gender": displaygender.text.trim(),
         "birthdate": displaybirthdate.text.trim(),
+        "image": displayimg.text.trim(),
         "address": displayaddress.text.trim(),
         "postcode": displaypostcode.text.trim(),
         "city": displaycity.text.trim(),
@@ -290,6 +299,15 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                   radius: 65.0,
                   backgroundImage: NetworkImage(image!),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                imageName == "" ? Container() : Text("${imageName}"),
+                OutlinedButton(
+                    onPressed: () {
+                      imagePicker();
+                    },
+                    child: Text("Select Image")),
                 const SizedBox(
                   height: 20,
                 ),
@@ -739,5 +757,36 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         ),
       ),
     );
+  }
+
+  imagePicker() async {
+    final XFile? images = await _picker.pickImage(source: ImageSource.gallery);
+    if (images != null) {
+      setState(() {
+        imagePath = images;
+        imageName = images.name.toString();
+      });
+    }
+
+    var uniqueKey = firestoreRef.collection('customer').doc();
+    String uploadFileName =
+        DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
+    Reference reference =
+        storageRef.ref().child('customer').child(uploadFileName);
+    UploadTask uploadTask = reference.putFile(File(imagePath!.path));
+
+    uploadTask.snapshotEvents.listen((event) {
+      print(event.bytesTransferred.toString() +
+          "\t" +
+          event.totalBytes.toString());
+    });
+
+    await uploadTask.whenComplete(() async {
+      var uploadPath = await uploadTask.snapshot.ref.getDownloadURL();
+
+      if (uploadPath.isNotEmpty) {
+        displayimg.text = uploadPath;
+      } else {}
+    });
   }
 }

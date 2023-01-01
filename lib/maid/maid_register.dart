@@ -41,7 +41,8 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 'maidlastname': _maidlname.text.trim(),
                 'maidid': _certid.text.trim(),
                 'password': _password.text.trim(),
-                'image': 'image',
+                'image':
+                    'https://firebasestorage.googleapis.com/v0/b/freelancemaid-8de13.appspot.com/o/dummyprofile.jpg?alt=media&token=86896df5-3e37-471e-9845-2f97ec3427ab',
                 'phonenum': _maidpnum.text.trim(),
                 'address': 'address',
                 'postcode': 'postcode',

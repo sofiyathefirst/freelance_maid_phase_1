@@ -20,7 +20,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _auth = FirebaseAuth.instance;
   CollectionReference ref = FirebaseFirestore.instance.collection('customer');
   final _custEmail = TextEditingController();
-  final _custId = TextEditingController();
   final _custFirstName = TextEditingController();
   final _custLastName = TextEditingController();
   final _custPassword = TextEditingController();
@@ -42,9 +41,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 'custemail': _custEmail.text.trim(),
                 'custfirstname': _custFirstName.text.trim(),
                 'custlastname': _custLastName.text.trim(),
-                'custid': _custId.text.trim(),
                 'password': _custPassword.text.trim(),
-                'image': 'image',
+                'image':
+                    'https://firebasestorage.googleapis.com/v0/b/freelancemaid-8de13.appspot.com/o/dummyprofile.jpg?alt=media&token=86896df5-3e37-471e-9845-2f97ec3427ab',
                 'phonenum': 'XXX-XXXXXXX',
                 'address': 'address',
                 'postcode': 'postcode',
@@ -52,6 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 'state': 'state',
                 'gender': 'gender',
                 'birthdate': 'DD/MM/YYYY',
+                'uid': value.user!.uid,
               }).catchError((e) {
                 print(e);
               })
@@ -103,13 +103,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(
                     height: 20,
-                  ),
-                  getTextFormField(
-                    controller: _custId,
-                    hintName: 'User Id',
-                    icon: Icons.person,
-                    inputType: TextInputType.name,
-                    validator: _requiredValidator,
                   ),
                   getTextFormField(
                     controller: _custEmail,
@@ -221,31 +214,4 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     return null;
   }
-
-  /*_signUp(String _custEmail, String _custFirstName, String _custLastName,
-      String _custId, String password) async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        UserCredential user = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: _custEmail, password: password);
-        userSetup(_custEmail, _custFirstName, _custLastName, _custId, password);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => CustLogin(),
-          ),
-        );
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
-        } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
-        }
-      } catch (e) {
-        print(e);
-      }
-    }
-    const CircularProgressIndicator();
-  }*/
 }
