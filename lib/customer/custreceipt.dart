@@ -180,6 +180,13 @@ class _ReceiptState extends State<Receipt> {
                                         fontWeight: FontWeight.bold,
                                       )),
                                   SizedBox(height: 5),
+                                  SizedBox(height: 5),
+                                  Center(
+                                    child: Image(
+                                        image: NetworkImage(
+                                            bookmaid.get('maidimage'))),
+                                  ),
+                                  SizedBox(height: 5),
                                   Text('Maid Name: ' +
                                       bookmaid.get('maidfirstname') +
                                       '\t' +

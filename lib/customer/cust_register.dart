@@ -5,6 +5,7 @@ import 'package:freelance_maid_phase_1/common%20method/gettextformfield.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_login.dart';
 import 'package:freelance_maid_phase_1/database/auth.dart';
+import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key? key}) : super(key: key);
@@ -17,13 +18,60 @@ class _RegisterPageState extends State<RegisterPage> {
   _RegisterPageState();
 
   final _formKey = new GlobalKey<FormState>();
-  final _auth = FirebaseAuth.instance;
   CollectionReference ref = FirebaseFirestore.instance.collection('customer');
   final _custEmail = TextEditingController();
   final _custFirstName = TextEditingController();
   final _custLastName = TextEditingController();
+  final _custgender = TextEditingController();
+  final _custaddress = TextEditingController();
+  final _custpostcode = TextEditingController();
+  final _custstate = TextEditingController();
+  final _custcity = TextEditingController();
+  final _custphonenum = TextEditingController();
   final _custPassword = TextEditingController();
   final _custConfirmPassword = TextEditingController();
+  final _custbirthdate = TextEditingController();
+  String? _selectedgender = "Male";
+  String? _selectedpostcode = "75000";
+  String? _selectedcity = "Alor Gajah";
+  final _genderList = ["Male", "Female"];
+  final _postcodeList = [
+    "75000",
+    "75050",
+    "75100",
+    "75150",
+    "75200",
+    "75250",
+    "75260",
+    "75300",
+    "75350",
+    "75400",
+    "75430",
+    "75450",
+    "75460",
+    "76300",
+    "76400",
+    "76450",
+    "77200"
+  ];
+  final _cityList = [
+    "Alor Gajah",
+    "Asahan",
+    "Ayer Keroh",
+    "Bemban",
+    "Durian Tunggal",
+    "Jasin",
+    "Kem Trendak",
+    "Kuala Sungai Baru",
+    "Lubok China",
+    "Masjid Tanah",
+    "Melaka",
+    "Merlimau",
+    "Selandar",
+    "Sungai Rambai",
+    "Sungai Udang",
+    "Tanjong Kling"
+  ];
 
   bool showProgress = false;
 
@@ -44,13 +92,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 'password': _custPassword.text.trim(),
                 'image':
                     'https://firebasestorage.googleapis.com/v0/b/freelancemaid-8de13.appspot.com/o/dummyprofile.jpg?alt=media&token=86896df5-3e37-471e-9845-2f97ec3427ab',
-                'phonenum': 'XXX-XXXXXXX',
-                'address': 'address',
-                'postcode': 'postcode',
-                'city': 'city',
-                'state': 'state',
-                'gender': 'gender',
-                'birthdate': 'DD/MM/YYYY',
+                'phonenum': _custphonenum.text.trim(),
+                'address': _custaddress.text.trim(),
+                'postcode': _custpostcode.text.trim(),
+                'city': _custcity.text.trim(),
+                'state': _custstate.text.trim(),
+                'gender': _custgender.text.trim(),
+                'birthdate': _custbirthdate.text.trim(),
                 'uid': value.user!.uid,
               }).catchError((e) {
                 print(e);
@@ -126,6 +174,280 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: _requiredValidator,
                   ),
                   getTextFormField(
+                    controller: _custphonenum,
+                    hintName: 'Phone Number',
+                    icon: Icons.phone,
+                    inputType: TextInputType.phone,
+                    validator: _requiredValidator,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Gender",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedgender,
+                          items: _genderList
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedgender = val as String;
+                              _custgender.text = _selectedgender!;
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(
+                                  color: Colors.green.shade200, width: 3.0),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.black,
+                            ),
+                            hintText: 'Gender',
+                            hintStyle: TextStyle(color: Colors.black),
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _custbirthdate,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30.0)),
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30.0)),
+                                borderSide: BorderSide(
+                                    color: Colors.green.shade200, width: 3.0),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.calendar_today_rounded,
+                                color: Colors.black,
+                              ),
+                              hintText: 'Enter your birthdate',
+                              hintStyle: TextStyle(color: Colors.black),
+                              fillColor: Colors.white,
+                              filled: true,
+                            ),
+                            readOnly:
+                                true, //set it true, so that user will not able to edit text
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(
+                                      1900), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2025));
+
+                              if (pickedDate != null) {
+                                print(
+                                    pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                String formattedDate =
+                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                                print(
+                                    formattedDate); //formatted date output using intl package =>  2021-03-16
+                                //you can implement different kind of Date Format here according to your requirement
+
+                                setState(() {
+                                  _custbirthdate.text =
+                                      formattedDate; //set output date to TextField value.
+                                });
+                              } else {
+                                print("Date is not selected");
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  getTextFormField(
+                    controller: _custaddress,
+                    hintName: 'Address',
+                    icon: Icons.home,
+                    inputType: TextInputType.streetAddress,
+                    validator: _requiredValidator,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "Postcode",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedpostcode,
+                          items: _postcodeList
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedpostcode = val as String;
+                              _custpostcode.text = _selectedpostcode!;
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(
+                                  color: Colors.green.shade200, width: 3.0),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.location_on,
+                              color: Colors.black,
+                            ),
+                            hintText: "Enter Postcode",
+                            hintStyle: TextStyle(color: Colors.black),
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            "City",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        DropdownButtonFormField(
+                          value: _selectedcity,
+                          items: _cityList
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedcity = val as String;
+                              _custcity.text = _selectedcity!;
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(
+                                  color: Colors.green.shade200, width: 3.0),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.location_city,
+                              color: Colors.black,
+                            ),
+                            hintText: 'Enter City',
+                            hintStyle: TextStyle(color: Colors.black),
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  getTextFormField(
+                    controller: _custstate,
+                    hintName: 'State',
+                    icon: Icons.location_on,
+                    inputType: TextInputType.name,
+                    validator: _requiredValidator,
+                  ),
+                  getTextFormField(
                     controller: _custPassword,
                     hintName: 'Password',
                     icon: Icons.lock,
@@ -143,7 +465,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 20,
                   ),
                   Text(
-                    '*Please update your profile information after Login at the top right side in your homepage',
+                    '*Please update your profile information after Login',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

@@ -170,6 +170,12 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
                                         fontWeight: FontWeight.bold,
                                       )),
                                   SizedBox(height: 5),
+                                  Center(
+                                    child: Image(
+                                        image: NetworkImage(
+                                            bookstatus.get('maidimage'))),
+                                  ),
+                                  const SizedBox(height: 15),
                                   Text('Maid Name: ' +
                                       bookstatus.get('maidfirstname') +
                                       '\t' +

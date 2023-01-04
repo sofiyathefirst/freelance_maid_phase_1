@@ -218,11 +218,13 @@ class _MaidProfileState extends State<MaidProfile> {
                         size: 40,
                       ),
                       SizedBox(width: 10),
-                      Text(
-                        serviceoffered!,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          serviceoffered!,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],

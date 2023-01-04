@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
+import 'package:freelance_maid_phase_1/geolocation/maidgeolocation.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
@@ -52,7 +53,7 @@ class _MaidReceiptState extends State<MaidReceipt> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Geolocation(),
+                  builder: (context) => MaidGeolocation(),
                 ),
               );
             },
@@ -156,6 +157,12 @@ class _MaidReceiptState extends State<MaidReceipt> {
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       )),
+                                  SizedBox(height: 5),
+                                  Center(
+                                    child: Image(
+                                        image: NetworkImage(
+                                            bookstatus.get('custimage'))),
+                                  ),
                                   SizedBox(height: 5),
                                   Text('Customer Name: ' +
                                       bookstatus.get('custfirstname') +

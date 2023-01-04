@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
+import 'package:freelance_maid_phase_1/geolocation/maidgeolocation.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
@@ -28,10 +29,12 @@ class _UpdateBookingState extends State<UpdateBooking> {
   late String maidfname = widget.data!.get('maidfirstname');
   late String maidlname = widget.data!.get('maidlastname');
   late String maidpnum = widget.data!.get('maidpnum');
+  late String maidimage = widget.data!.get('maidimage');
   late String maidemail = widget.data!.get('maidemail');
   late String maidgender = widget.data!.get('maidgender');
   late String custfname = widget.data!.get('custfirstname');
   late String custlname = widget.data!.get('cuslastname');
+  late String custimage = widget.data!.get('custimage');
   late String custpnum = widget.data!.get('custpnum');
   late String custemail = widget.data!.get('custemail');
   late String custgender = widget.data!.get('custgender');
@@ -73,10 +76,11 @@ class _UpdateBookingState extends State<UpdateBooking> {
   @override
   Widget build(BuildContext context) {
     CollectionReference bookingstatus =
-        FirebaseFirestore.instance.collection('bookingstatus');
+        FirebaseFirestore.instance.collection('bookstatus');
     Add(
         String maidfname,
         String maidlname,
+        String maidimage,
         String maidpnum,
         String maidemail,
         String maidgender,
@@ -91,6 +95,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
         String rateperhour,
         String fname,
         String lname,
+        String custimage,
         String pnum,
         String email,
         String gender,
@@ -108,6 +113,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
         return bookingstatus.add({
           'maidfirstname': maidfname,
           'maidlastname': maidlname,
+          'maidimage': maidimage,
           'maidpnum': maidpnum,
           'maidemail': maidemail,
           'maidgender': maidgender,
@@ -122,6 +128,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
           'rateperhour': rateperhour,
           'custfirstname': fname,
           'cuslastname': lname,
+          'custimage': custimage,
           'custpnum': pnum,
           'custemail': email,
           'custgender': gender,
@@ -178,7 +185,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Geolocation(),
+                    builder: (context) => MaidGeolocation(),
                   ),
                 );
               },
@@ -380,6 +387,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                           Add(
                             maidfname,
                             maidlname,
+                            maidimage,
                             maidpnum,
                             maidemail,
                             maidgender,
@@ -394,6 +402,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                             rateperhour,
                             custfname,
                             custlname,
+                            custimage,
                             custpnum,
                             custemail,
                             custgender,
