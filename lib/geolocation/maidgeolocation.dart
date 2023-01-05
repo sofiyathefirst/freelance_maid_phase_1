@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/DataHandler/appData.dart';
 import 'package:freelance_maid_phase_1/geolocation/assistantMethods.dart';
+import 'package:freelance_maid_phase_1/geolocation/searchScreen.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
@@ -198,27 +199,36 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
                       style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(height: 20.0),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 6.0,
-                            spreadRadius: 0.5,
-                            offset: Offset(0.7, 0.7),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.search, color: Colors.teal),
-                            SizedBox(width: 10.0),
-                            Text("Search Drop Off"),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchScreen(),
+                            ));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black54,
+                              blurRadius: 6.0,
+                              spreadRadius: 0.5,
+                              offset: Offset(0.7, 0.7),
+                            ),
                           ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.search, color: Colors.teal),
+                              SizedBox(width: 10.0),
+                              Text("Search Drop Off"),
+                            ],
+                          ),
                         ),
                       ),
                     ),
