@@ -290,43 +290,6 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
           ),
         ],
       ),
-      /*body: currentLocation == null
-          ? const Center(
-              child: Text("Loading"),
-            )
-          : GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(
-                    currentLocation!.latitude!, currentLocation!.longitude!),
-                zoom: 14.5,
-              ),
-              polylines: {
-                Polyline(
-                  polylineId: PolylineId("route"),
-                  points: polylineCoordinates,
-                  color: primaryColor,
-                  width: 6,
-                ),
-              },
-              markers: {
-                Marker(
-                  markerId: MarkerId("currenLocation"),
-                  position: LatLng(
-                      currentLocation!.latitude!, currentLocation!.longitude!),
-                ),
-                Marker(
-                  markerId: MarkerId("source"),
-                  position: sourceLocation,
-                ),
-                Marker(
-                  markerId: MarkerId("destination"),
-                  position: destination,
-                ),
-              },
-              onMapCreated: (mapController) {
-                _controller.complete(mapController);
-              },
-            ),*/
     );
   }
 }
