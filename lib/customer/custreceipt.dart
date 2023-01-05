@@ -18,7 +18,7 @@ class Receipt extends StatefulWidget {
 }
 
 class _ReceiptState extends State<Receipt> {
-  final bookingMaid = FirebaseFirestore.instance.collection('bookingmaid');
+  final bookingMaid = FirebaseFirestore.instance.collection('bookingmaids');
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
   Future<void> _delete(String bookingId) async {
     await bookingMaid.doc(bookingId).delete();
