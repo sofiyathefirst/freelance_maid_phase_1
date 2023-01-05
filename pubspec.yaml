@@ -49,6 +49,9 @@ dependencies:
   intl: any
   image_picker: any
   faker: any
+  geolocator: any
+  http: any
+  provider: any
   
 
 
