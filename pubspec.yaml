@@ -52,6 +52,8 @@ dependencies:
   geolocator: any
   http: any
   provider: any
+  permission_handler: any
+  geocoding: ^2.0.5 
   
 
 

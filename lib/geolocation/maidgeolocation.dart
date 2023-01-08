@@ -11,6 +11,8 @@ import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class MaidGeolocation extends StatefulWidget {
@@ -24,11 +26,25 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
   late GoogleMapController newGoogleMapController;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool isLoading = false;
+  LocationData? locationData;
   late Position currentPosition;
   var geoLocator = Geolocator();
   double bottomPadding = 0;
 
-  void locatePosition() async {
+  void getPermission() async {
+    if (await Permission.location.isGranted) {
+      getLocation();
+    } else {
+      Permission.location.request();
+    }
+  }
+
+  void getLocation() async {
+    locationData = await Location.instance.getLocation();
+  }
+
+  /*void locatePosition() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
@@ -44,7 +60,7 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
     String address =
         await AsistantsMethods.searchCoordinateAddress(position, context);
     print("This is your Address :: " + address);
-  }
+  }*/
 
   static final CameraPosition _kUiTMJasin =
       CameraPosition(target: LatLng(2.225674, 102.454676), zoom: 14.476);
@@ -148,19 +164,19 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
         children: [
           GoogleMap(
             padding: EdgeInsets.only(bottom: bottomPadding),
-            mapType: MapType.satellite,
+            mapType: MapType.hybrid,
             myLocationButtonEnabled: true,
             initialCameraPosition: _kUiTMJasin,
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
+            indoorViewEnabled: true,
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
               setState(() {
                 bottomPadding = 300.0;
               });
-              locatePosition();
             },
           ),
           Positioned(
@@ -168,7 +184,7 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
             right: 0.0,
             bottom: 0.0,
             child: Container(
-              height: 300.0,
+              height: 220.0,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -232,7 +248,7 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 24.0),
+                    /*SizedBox(height: 24.0),
                     Row(
                       children: [
                         Icon(Icons.home, color: Colors.grey),
@@ -259,8 +275,36 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
                           ],
                         ),
                       ],
-                    ),
+                    ),*/
                     SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        Icon(Icons.home, color: Colors.grey),
+                        SizedBox(
+                          width: 12.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(locationData != null
+                                ? "Latitude : ${locationData!.latitude} "
+                                : "Latitude: Not Available"),
+                            SizedBox(height: 4.0),
+                            Text(
+                              locationData != null
+                                  ? "Longitude : ${locationData!.longitude} "
+                                  : "Longitude: Not Available",
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 30.0,
+                        ),
+                        ElevatedButton(
+                            onPressed: getPermission, child: Text("Location"))
+                      ],
+                    ),
+                    /*SizedBox(height: 10.0),
                     DividerWidget(),
                     SizedBox(height: 10.0),
                     Row(
@@ -282,7 +326,7 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
                           ],
                         ),
                       ],
-                    ),
+                    ),*/
                   ],
                 ),
               ),

@@ -22,11 +22,12 @@ class AsistantsMethods {
       placeAddress = st1 + ", " + st2 + ", " + st3 + ", " + st4;
 
       Address userPickupAddress = new Address(
-          placeFormattedAddress: '',
+          latitude: 0.0,
+          longitude: 0.0,
           placeName: '',
           placeId: '',
-          latitude: 0,
-          longitude: 0);
+          placeFormattedAddress: '');
+
       userPickupAddress.longitude = position.longitude;
       userPickupAddress.latitude = position.latitude;
       userPickupAddress.placeName = placeAddress;
