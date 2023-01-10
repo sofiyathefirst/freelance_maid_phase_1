@@ -124,7 +124,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
         setState(() {
           fname = snapshot.data()!['custfirstname'];
           lname = snapshot.data()!['custlastname'];
-          email = snapshot.data()!['custemail'];
           pnum = snapshot.data()!['phonenum'];
           gender = snapshot.data()!['gender'];
           birthdate = snapshot.data()!['birthdate'];
@@ -133,20 +132,17 @@ class _CustEditProfileState extends State<CustEditProfile> {
           city = snapshot.data()!['city'];
           postcode = snapshot.data()!['postcode'];
           state = snapshot.data()!['state'];
-          password = snapshot.data()!['password'];
         });
         displayfname.text = fname!;
         displaylname.text = lname!;
         displaypnum.text = pnum!;
         displayimg.text = image!;
-        displayemail.text = email!;
         displaygender.text = gender!;
         displaybirthdate.text = birthdate!;
         displayaddress.text = address!;
         displaycity.text = city!;
         displaypostcode.text = postcode!;
         displaystate.text = state!;
-        displaypassword.text = password!;
       }
     });
   }
@@ -156,7 +152,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
       displayfname.text.isEmpty ? _fname = false : _fname = true;
       displaylname.text.isEmpty ? _lname = false : _lname = true;
       displaypnum.text.isEmpty ? _pnum = false : _pnum = true;
-      displayemail.text.isEmpty ? _email = false : _email = true;
       displaygender.text.isEmpty ? _gender = false : _gender = true;
       displaybirthdate.text.isEmpty ? _birthdate = false : _birthdate = true;
       displayimg.text.isEmpty ? _image = false : _image = true;
@@ -164,28 +159,24 @@ class _CustEditProfileState extends State<CustEditProfile> {
       displaypostcode.text.isEmpty ? _postcode = false : _postcode = true;
       displaycity.text.isEmpty ? _city = false : _city = true;
       displaystate.text.isEmpty ? _state = false : _state = true;
-      displaypassword.text.isEmpty ? _password = false : _password = true;
     });
 
     if (_image &&
         _fname &&
         _lname &&
         _pnum &&
-        _email &&
         _gender &&
         _birthdate &&
         _address &&
         _postcode &&
         _city &&
-        _state &&
-        _password) {
+        _state) {
       FirebaseFirestore.instance
           .collection("customer")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({
         "custfirstname": displayfname.text.trim(),
         "custlastname": displaylname.text.trim(),
-        "custemail": displayemail.text.trim(),
         "phonenum": displaypnum.text.trim(),
         "gender": displaygender.text.trim(),
         "birthdate": displaybirthdate.text.trim(),
@@ -194,7 +185,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
         "postcode": displaypostcode.text.trim(),
         "city": displaycity.text.trim(),
         "state": displaystate.text.trim(),
-        "password": displaypassword.text.trim()
       }).then(
         (value) => Navigator.pushReplacement(
           context,
@@ -316,27 +306,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
                     decoration: InputDecoration(
                         hintText: "Update Phone Number",
                         errorText: _pnum ? null : "Phone Number invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Email",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  TextField(
-                    controller: displayemail,
-                    decoration: InputDecoration(
-                        hintText: "Update Email",
-                        errorText: _email ? null : "Email invalid"),
                   ),
                 ],
               ),
@@ -551,27 +520,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
                     decoration: InputDecoration(
                         hintText: "Update State",
                         errorText: _state ? null : "State invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Password",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  TextField(
-                    controller: displaypassword,
-                    decoration: InputDecoration(
-                        hintText: "Update Password",
-                        errorText: _password ? null : "Password invalid"),
                   ),
                 ],
               ),

@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/DataHandler/appData.dart';
-import 'package:freelance_maid_phase_1/geolocation/assistantMethods.dart';
 import 'package:freelance_maid_phase_1/geolocation/searchScreen.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
@@ -13,7 +11,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 class MaidGeolocation extends StatefulWidget {
   MaidGeolocation({Key? key}) : super(key: key);
@@ -287,12 +284,12 @@ class _MaidGeolocationState extends State<MaidGeolocation> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(locationData != null
-                                ? "Latitude : ${locationData!.latitude} "
+                                ? "Latitude : ${locationData!.latitude.toString()} "
                                 : "Latitude: Not Available"),
                             SizedBox(height: 4.0),
                             Text(
                               locationData != null
-                                  ? "Longitude : ${locationData!.longitude} "
+                                  ? "Longitude : ${locationData!.longitude.toString()} "
                                   : "Longitude: Not Available",
                             ),
                           ],

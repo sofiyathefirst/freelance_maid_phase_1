@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/maid/maid_editprofile.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_update_email_pass.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 
 class MaidProfile extends StatefulWidget {
@@ -403,25 +404,55 @@ class _MaidProfileState extends State<MaidProfile> {
                   ),
                   SizedBox(height: 20),
                   Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SplashScreen2(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                      ),
-                      child: Text(
-                        'Log Out',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 25,
                         ),
-                      ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MaidUpdate(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+                          ),
+                          child: Text(
+                            'Update Email \n & Password',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SplashScreen2(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+                          ),
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

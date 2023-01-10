@@ -155,7 +155,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         setState(() {
           fname = snapshot.data()!['maidfirstname'];
           lname = snapshot.data()!['maidlastname'];
-          email = snapshot.data()!['maidemail'];
           pnum = snapshot.data()!['phonenum'];
           gender = snapshot.data()!['gender'];
           birthdate = snapshot.data()!['birthdate'];
@@ -167,13 +166,11 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
           cleaningtype = snapshot.data()!['cleaningtype'];
           rateperhour = snapshot.data()!['rateperhour'];
           serviceoffered = snapshot.data()!['serviceoffered'];
-          password = snapshot.data()!['password'];
         });
         displayfname.text = fname!;
         displaylname.text = lname!;
         displaypnum.text = pnum!;
         displayimg.text = image!;
-        displayemail.text = email!;
         displaygender.text = gender!;
         displaybirthdate.text = birthdate!;
         displayaddress.text = address!;
@@ -183,7 +180,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         displaycleaningtype.text = cleaningtype!;
         displayrateperhour.text = rateperhour!;
         displayserviceoffered.text = serviceoffered!;
-        displaypassword.text = password!;
       }
     });
   }
@@ -194,7 +190,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displaylname.text.isEmpty ? _lname = false : _lname = true;
       displaypnum.text.isEmpty ? _pnum = false : _pnum = true;
       displayimg.text.isEmpty ? _image = false : _image = true;
-      displayemail.text.isEmpty ? _email = false : _email = true;
       displaygender.text.isEmpty ? _gender = false : _gender = true;
       displaybirthdate.text.isEmpty ? _birthdate = false : _birthdate = true;
       displayaddress.text.isEmpty ? _address = false : _address = true;
@@ -210,14 +205,12 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displayserviceoffered.text.isEmpty
           ? _serviceoffered = false
           : _serviceoffered = true;
-      displaypassword.text.isEmpty ? _password = false : _password = true;
     });
 
     if (_image &&
         _fname &&
         _lname &&
         _pnum &&
-        _email &&
         _gender &&
         _birthdate &&
         _address &&
@@ -226,44 +219,31 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         _state &&
         _cleaningtype &&
         _rateperhour &&
-        _serviceoffered &&
-        _password) {
-      await FirebaseAuth.instance.currentUser!
-          .updateEmail(
-            displayemail.text.trim(),
-          )
-          .then((value) => {
-                FirebaseFirestore.instance
-                    .collection("maid")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .update({
-                  "maidfirstname": displayfname.text.trim(),
-                  "maidlastname": displaylname.text.trim(),
-                  "maidemail": displayemail.text.trim(),
-                  "phonenum": displaypnum.text.trim(),
-                  "gender": displaygender.text.trim(),
-                  "birthdate": displaybirthdate.text.trim(),
-                  "image": displayimg.text.trim(),
-                  "address": displayaddress.text.trim(),
-                  "postcode": displaypostcode.text.trim(),
-                  "city": displaycity.text.trim(),
-                  "state": displaystate.text.trim(),
-                  "cleaningtype": displaycleaningtype.text.trim(),
-                  "rateperhour": displayrateperhour.text.trim(),
-                  "serviceoffered": displayserviceoffered.text.trim(),
-                  "password": displaypassword.text.trim()
-                })
-              })
-          .then(
-            (value) => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MaidProfile(),
-              ),
-            ),
-          );
-      await FirebaseAuth.instance.currentUser!.updatePassword(
-        displaypassword.text.trim(),
+        _serviceoffered) {
+      FirebaseFirestore.instance
+          .collection("maid")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        "maidfirstname": displayfname.text.trim(),
+        "maidlastname": displaylname.text.trim(),
+        "phonenum": displaypnum.text.trim(),
+        "gender": displaygender.text.trim(),
+        "birthdate": displaybirthdate.text.trim(),
+        "image": displayimg.text.trim(),
+        "address": displayaddress.text.trim(),
+        "postcode": displaypostcode.text.trim(),
+        "city": displaycity.text.trim(),
+        "state": displaystate.text.trim(),
+        "cleaningtype": displaycleaningtype.text.trim(),
+        "rateperhour": displayrateperhour.text.trim(),
+        "serviceoffered": displayserviceoffered.text.trim(),
+      }).then(
+        (value) => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MaidProfile(),
+          ),
+        ),
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -452,53 +432,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                           ),
                           prefixIcon: Icon(
                             Icons.phone,
-                            color: Colors.black,
-                          ),
-                          hintStyle: TextStyle(color: Colors.black),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  margin: EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 12.0),
-                        child: Text(
-                          "Email",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        controller: displayemail,
-                        decoration: InputDecoration(
-                          hintText: "Update Email",
-                          errorText: _email ? null : "Email invalid",
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(
-                                color: Colors.green.shade200, width: 3.0),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.email,
                             color: Colors.black,
                           ),
                           hintStyle: TextStyle(color: Colors.black),
@@ -1061,61 +994,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  margin: EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 12.0),
-                        child: Text(
-                          "Password",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        controller: displaypassword,
-                        decoration: InputDecoration(
-                          hintText: "Update Password",
-                          errorText: _password ? null : "Password invalid",
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(
-                                color: Colors.green.shade200, width: 3.0),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            color: Colors.black,
-                          ),
-                          hintStyle: TextStyle(color: Colors.black),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                getTextFormField(
-                  controller: _confirmpass,
-                  hintName: 'Confirm Password',
-                  icon: Icons.lock,
-                  isObscureText: true,
-                  inputType: TextInputType.name,
-                  validator: _confirmPasswordValidator,
                 ),
                 const SizedBox(
                   height: 25,
