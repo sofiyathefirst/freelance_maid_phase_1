@@ -7,6 +7,7 @@ import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
+import 'package:freelance_maid_phase_1/geolocation/display_map.dart';
 import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/geolocation/try_maps.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
@@ -66,7 +67,7 @@ class _CustHomePageState extends State<CustHomePage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Maps(),
+                  builder: (context) => Geolocation(),
                 ),
               );
             },

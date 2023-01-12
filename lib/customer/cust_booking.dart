@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
-import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
 import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
@@ -58,10 +57,6 @@ class _CustbookingState extends State<Custbooking> {
   late String? pnum = '';
   late String? email = '';
   late String? gender = '';
-  late String? address = '';
-  late String? city = '';
-  late String? postcode = '';
-  late String? state = '';
   late String? image = '';
   File? imageXFile;
 
@@ -126,10 +121,6 @@ class _CustbookingState extends State<Custbooking> {
           pnum = snapshot.data()!['phonenum'];
           gender = snapshot.data()!['gender'];
           image = snapshot.data()!['image'];
-          address = snapshot.data()!['address'];
-          city = snapshot.data()!['city'];
-          postcode = snapshot.data()!['postcode'];
-          state = snapshot.data()!['state'];
         });
       }
     });
@@ -167,10 +158,6 @@ class _CustbookingState extends State<Custbooking> {
         String pnum,
         String email,
         String gender,
-        String address,
-        String city,
-        String postcode,
-        String state,
         String date,
         String timestart,
         String timeend,
@@ -200,10 +187,6 @@ class _CustbookingState extends State<Custbooking> {
           'custpnum': pnum,
           'custemail': email,
           'custgender': gender,
-          'custaddress': address,
-          'custcity': city,
-          'custpostcode': postcode,
-          'custstate': state,
           'bookingdate': date,
           'timestart': timestart,
           'timeend': timeend,
@@ -425,38 +408,6 @@ class _CustbookingState extends State<Custbooking> {
                 const SizedBox(height: 15),
                 Text(
                   'Cust Gender: $gender',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Cust Address: $address',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Cust State: $state',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Cust Postcode: $postcode',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Cust City: $city',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -1532,10 +1483,6 @@ class _CustbookingState extends State<Custbooking> {
                           pnum ?? "null",
                           email ?? "null",
                           gender ?? "null",
-                          address ?? "null",
-                          city ?? "null",
-                          postcode ?? "null",
-                          state ?? "null",
                           date.text,
                           timestart.text,
                           timeend.text,

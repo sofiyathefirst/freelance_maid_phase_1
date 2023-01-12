@@ -5,6 +5,7 @@ import 'package:freelance_maid_phase_1/common%20method/gettextformfield.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_login.dart';
 import 'package:freelance_maid_phase_1/database/auth.dart';
+import 'package:freelance_maid_phase_1/geolocation/try_maps.dart';
 import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -23,55 +24,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _custFirstName = TextEditingController();
   final _custLastName = TextEditingController();
   final _custgender = TextEditingController();
-  final _custaddress = TextEditingController();
-  final _custpostcode = TextEditingController();
-  final _custstate = TextEditingController();
-  final _custcity = TextEditingController();
   final _custphonenum = TextEditingController();
   final _custPassword = TextEditingController();
   final _custConfirmPassword = TextEditingController();
   final _custbirthdate = TextEditingController();
   String? _selectedgender = "Male";
-  String? _selectedpostcode = "75000";
-  String? _selectedcity = "Alor Gajah";
   final _genderList = ["Male", "Female"];
-  final _postcodeList = [
-    "75000",
-    "75050",
-    "75100",
-    "75150",
-    "75200",
-    "75250",
-    "75260",
-    "75300",
-    "75350",
-    "75400",
-    "75430",
-    "75450",
-    "75460",
-    "76300",
-    "76400",
-    "76450",
-    "77200"
-  ];
-  final _cityList = [
-    "Alor Gajah",
-    "Asahan",
-    "Ayer Keroh",
-    "Bemban",
-    "Durian Tunggal",
-    "Jasin",
-    "Kem Trendak",
-    "Kuala Sungai Baru",
-    "Lubok China",
-    "Masjid Tanah",
-    "Melaka",
-    "Merlimau",
-    "Selandar",
-    "Sungai Rambai",
-    "Sungai Udang",
-    "Tanjong Kling"
-  ];
 
   bool showProgress = false;
 
@@ -93,10 +51,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 'image':
                     'https://firebasestorage.googleapis.com/v0/b/freelancemaid-8de13.appspot.com/o/dummyprofile.jpg?alt=media&token=86896df5-3e37-471e-9845-2f97ec3427ab',
                 'phonenum': _custphonenum.text.trim(),
-                'address': _custaddress.text.trim(),
-                'postcode': _custpostcode.text.trim(),
-                'city': _custcity.text.trim(),
-                'state': _custstate.text.trim(),
                 'gender': _custgender.text.trim(),
                 'birthdate': _custbirthdate.text.trim(),
                 'uid': value.user!.uid,
@@ -108,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
           (value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => CustHomePage(),
+              builder: (context) => Maps(),
             ),
           ),
         );
@@ -305,147 +259,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                     ),
-                  ),
-                  getTextFormField(
-                    controller: _custaddress,
-                    hintName: 'Address',
-                    icon: Icons.home,
-                    inputType: TextInputType.streetAddress,
-                    validator: _requiredValidator,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 12.0),
-                          child: Text(
-                            "Postcode",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        DropdownButtonFormField(
-                          value: _selectedpostcode,
-                          items: _postcodeList
-                              .map((e) => DropdownMenuItem(
-                                    child: Text(e),
-                                    value: e,
-                                  ))
-                              .toList(),
-                          onChanged: (val) {
-                            setState(() {
-                              _selectedpostcode = val as String;
-                              _custpostcode.text = _selectedpostcode!;
-                            });
-                          },
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(
-                                  color: Colors.green.shade200, width: 3.0),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.location_on,
-                              color: Colors.black,
-                            ),
-                            hintText: "Enter Postcode",
-                            hintStyle: TextStyle(color: Colors.black),
-                            fillColor: Colors.white,
-                            filled: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 12.0),
-                          child: Text(
-                            "City",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        DropdownButtonFormField(
-                          value: _selectedcity,
-                          items: _cityList
-                              .map((e) => DropdownMenuItem(
-                                    child: Text(e),
-                                    value: e,
-                                  ))
-                              .toList(),
-                          onChanged: (val) {
-                            setState(() {
-                              _selectedcity = val as String;
-                              _custcity.text = _selectedcity!;
-                            });
-                          },
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(
-                                  color: Colors.green.shade200, width: 3.0),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.location_city,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Enter City',
-                            hintStyle: TextStyle(color: Colors.black),
-                            fillColor: Colors.white,
-                            filled: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  getTextFormField(
-                    controller: _custstate,
-                    hintName: 'State',
-                    icon: Icons.location_on,
-                    inputType: TextInputType.name,
-                    validator: _requiredValidator,
                   ),
                   getTextFormField(
                     controller: _custPassword,
