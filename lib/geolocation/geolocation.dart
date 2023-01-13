@@ -182,7 +182,7 @@ class _GeolocationState extends State<Geolocation> {
             right: 0.0,
             bottom: 0.0,
             child: Container(
-              height: 300.0,
+              height: 150.0,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -203,49 +203,6 @@ class _GeolocationState extends State<Geolocation> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 6.0),
-                    Text(
-                      "Hi there,",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Text(
-                      "Where to?",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 20.0),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SearchScreen(),
-                            ));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black54,
-                              blurRadius: 6.0,
-                              spreadRadius: 0.5,
-                              offset: Offset(0.7, 0.7),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              Icon(Icons.search, color: Colors.teal),
-                              SizedBox(width: 10.0),
-                              Text("Search Drop Off"),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
                     SizedBox(height: 24.0),
                     Row(
                       children: [

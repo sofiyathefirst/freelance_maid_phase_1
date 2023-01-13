@@ -45,62 +45,16 @@ class _CustEditProfileState extends State<CustEditProfile> {
   TextEditingController displayemail = TextEditingController();
   TextEditingController displaygender = TextEditingController();
   TextEditingController displaybirthdate = TextEditingController();
-  TextEditingController displayaddress = TextEditingController();
-  TextEditingController displaycity = TextEditingController();
-  TextEditingController displaypostcode = TextEditingController();
-  TextEditingController displaystate = TextEditingController();
   TextEditingController displaypassword = TextEditingController();
   final _genderList = ["Male", "Female"];
-  final _postcodeList = [
-    "75000",
-    "75050",
-    "75100",
-    "75150",
-    "75200",
-    "75250",
-    "75260",
-    "75300",
-    "75350",
-    "75400",
-    "75430",
-    "75450",
-    "75460",
-    "76300",
-    "76400",
-    "76450",
-    "77200"
-  ];
-  final _cityList = [
-    "Alor Gajah",
-    "Asahan",
-    "Ayer Keroh",
-    "Bemban",
-    "Durian Tunggal",
-    "Jasin",
-    "Kem Trendak",
-    "Kuala Sungai Baru",
-    "Lubok China",
-    "Masjid Tanah",
-    "Melaka",
-    "Merlimau",
-    "Selandar",
-    "Sungai Rambai",
-    "Sungai Udang",
-    "Tanjong Kling"
-  ];
+
   String? _selectedgender = "Male";
-  String? _selectedpostcode = "75000";
-  String? _selectedcity = "Alor Gajah";
   bool _fname = true;
   bool _lname = true;
   bool _pnum = true;
   bool _email = true;
   bool _gender = true;
   bool _birthdate = true;
-  bool _address = true;
-  bool _city = true;
-  bool _postcode = true;
-  bool _state = true;
   bool _image = true;
   bool _password = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -128,10 +82,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
           gender = snapshot.data()!['gender'];
           birthdate = snapshot.data()!['birthdate'];
           image = snapshot.data()!['image'];
-          address = snapshot.data()!['address'];
-          city = snapshot.data()!['city'];
-          postcode = snapshot.data()!['postcode'];
-          state = snapshot.data()!['state'];
         });
         displayfname.text = fname!;
         displaylname.text = lname!;
@@ -139,10 +89,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
         displayimg.text = image!;
         displaygender.text = gender!;
         displaybirthdate.text = birthdate!;
-        displayaddress.text = address!;
-        displaycity.text = city!;
-        displaypostcode.text = postcode!;
-        displaystate.text = state!;
       }
     });
   }
@@ -155,22 +101,9 @@ class _CustEditProfileState extends State<CustEditProfile> {
       displaygender.text.isEmpty ? _gender = false : _gender = true;
       displaybirthdate.text.isEmpty ? _birthdate = false : _birthdate = true;
       displayimg.text.isEmpty ? _image = false : _image = true;
-      displayaddress.text.isEmpty ? _address = false : _address = true;
-      displaypostcode.text.isEmpty ? _postcode = false : _postcode = true;
-      displaycity.text.isEmpty ? _city = false : _city = true;
-      displaystate.text.isEmpty ? _state = false : _state = true;
     });
 
-    if (_image &&
-        _fname &&
-        _lname &&
-        _pnum &&
-        _gender &&
-        _birthdate &&
-        _address &&
-        _postcode &&
-        _city &&
-        _state) {
+    if (_image && _fname && _lname && _pnum && _gender && _birthdate) {
       FirebaseFirestore.instance
           .collection("customer")
           .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -181,10 +114,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
         "gender": displaygender.text.trim(),
         "birthdate": displaybirthdate.text.trim(),
         "image": displayimg.text.trim(),
-        "address": displayaddress.text.trim(),
-        "postcode": displaypostcode.text.trim(),
-        "city": displaycity.text.trim(),
-        "state": displaystate.text.trim(),
       }).then(
         (value) => Navigator.pushReplacement(
           context,
@@ -413,118 +342,6 @@ class _CustEditProfileState extends State<CustEditProfile> {
               ),
               const SizedBox(
                 height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Address",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  TextField(
-                    controller: displayaddress,
-                    decoration: InputDecoration(
-                        hintText: "Update Address",
-                        errorText: _address ? null : "Address invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Postcode",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  DropdownButtonFormField(
-                    value: _selectedpostcode,
-                    items: _postcodeList
-                        .map((e) => DropdownMenuItem(
-                              child: Text(e),
-                              value: e,
-                            ))
-                        .toList(),
-                    onChanged: (val) {
-                      setState(() {
-                        _selectedpostcode = val as String;
-                        displaypostcode.text = _selectedpostcode!;
-                      });
-                    },
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "City",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  DropdownButtonFormField(
-                    value: _selectedcity,
-                    items: _cityList
-                        .map((e) => DropdownMenuItem(
-                              child: Text(e),
-                              value: e,
-                            ))
-                        .toList(),
-                    onChanged: (val) {
-                      setState(() {
-                        _selectedcity = val as String;
-                        displaycity.text = _selectedcity!;
-                      });
-                    },
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "State",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  TextField(
-                    controller: displaystate,
-                    decoration: InputDecoration(
-                        hintText: "Update State",
-                        errorText: _state ? null : "State invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 25,
               ),
               Center(
                 child: ElevatedButton(

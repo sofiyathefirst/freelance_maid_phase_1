@@ -22,10 +22,6 @@ class _CustProfileState extends State<CustProfile> {
   String? password = '';
   String? gender = '';
   String? birthdate = '';
-  String? address = '';
-  String? city = '';
-  String? postcode = '';
-  String? state = '';
   String? image = '';
   String? uid = '';
   File? imageXFile;
@@ -45,10 +41,6 @@ class _CustProfileState extends State<CustProfile> {
           gender = snapshot.data()!['gender'];
           birthdate = snapshot.data()!['birthdate'];
           image = snapshot.data()!['image'];
-          address = snapshot.data()!['address'];
-          city = snapshot.data()!['city'];
-          postcode = snapshot.data()!['postcode'];
-          state = snapshot.data()!['state'];
           password = snapshot.data()!['password'];
           uid = snapshot.data()!['uid'];
         });
@@ -214,78 +206,6 @@ class _CustProfileState extends State<CustProfile> {
                   SizedBox(width: 10),
                   Text(
                     birthdate!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.house,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    address!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_city,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    city!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_city,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    postcode!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_city,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    state!,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

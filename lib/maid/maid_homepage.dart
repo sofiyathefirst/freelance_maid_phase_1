@@ -20,7 +20,7 @@ class MaidHomePage extends StatefulWidget {
 }
 
 class _MaidHomePageState extends State<MaidHomePage> {
-  final bookingMaid = FirebaseFirestore.instance.collection('bookingmaid');
+  final bookingMaid = FirebaseFirestore.instance.collection('bookingmaids');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
 
   Future<void> _delete(String bookingId) async {
@@ -184,15 +184,6 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                   SizedBox(height: 5),
                                   Text('Customer Gender: ' +
                                       bookmaid.get('custgender')),
-                                  SizedBox(height: 5),
-                                  Text('Customer Address: ' +
-                                      bookmaid.get('custaddress') +
-                                      '\n' +
-                                      bookmaid.get('custcity') +
-                                      '\t' +
-                                      bookmaid.get('custpostcode') +
-                                      '\t' +
-                                      bookmaid.get('custstate')),
                                   SizedBox(height: 5),
                                   Text('Cleaning type: ' +
                                       bookmaid.get('cleaningtype')),
