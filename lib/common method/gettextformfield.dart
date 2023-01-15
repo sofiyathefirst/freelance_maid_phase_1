@@ -36,7 +36,7 @@ class getTextFormField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(30.0)),
-            borderSide: BorderSide(color: Colors.green.shade200, width: 3.0),
+            borderSide: BorderSide(color: Colors.blue.shade200, width: 3.0),
           ),
           prefixIcon: Icon(
             icon,

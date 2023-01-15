@@ -8,7 +8,7 @@ class SplashScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade100,
+      backgroundColor: Colors.lightBlue.shade100,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -56,14 +56,14 @@ class SplashScreen2 extends StatelessWidget {
                         topRight: Radius.circular(50),
                         bottomRight: Radius.circular(50),
                       ),
-                      color: Colors.white,
+                      color: Colors.black38,
                     ),
                     child: Text(
                       'Customer',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -94,14 +94,14 @@ class SplashScreen2 extends StatelessWidget {
                         topRight: Radius.circular(50),
                         bottomRight: Radius.circular(50),
                       ),
-                      color: Colors.white,
+                      color: Colors.black38,
                     ),
                     child: Text(
                       'Maid',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                   ),

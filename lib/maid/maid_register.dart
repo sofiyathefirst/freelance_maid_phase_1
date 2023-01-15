@@ -118,7 +118,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade600,
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -188,7 +188,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
                       child: Text(
                         "Gender",
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
@@ -319,7 +319,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
                       child: Text(
                         "Postcode",
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
@@ -382,7 +382,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
                       child: Text(
                         "City",
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
@@ -461,17 +461,6 @@ class _RegisterMaidState extends State<RegisterMaid> {
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                '*Please update your profile information after Login',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
               ElevatedButton(
                 onPressed: signUp,
                 style: ElevatedButton.styleFrom(
@@ -492,7 +481,10 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Already registered',
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600)),
                   const SizedBox(
                     height: 15,
                   ),
@@ -506,7 +498,10 @@ class _RegisterMaidState extends State<RegisterMaid> {
                       );
                     },
                     child: const Text('Sign In',
-                        style: TextStyle(color: Colors.green, fontSize: 20)),
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),

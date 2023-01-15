@@ -44,7 +44,7 @@ class _MaidLoginState extends State<MaidLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade600,
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -113,7 +113,10 @@ class _MaidLoginState extends State<MaidLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Not registered yet?',
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600)),
                   const SizedBox(
                     height: 15,
                   ),
@@ -127,7 +130,10 @@ class _MaidLoginState extends State<MaidLogin> {
                       );
                     },
                     child: const Text('Sign Up',
-                        style: TextStyle(color: Colors.green, fontSize: 20)),
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),

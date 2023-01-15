@@ -25,14 +25,14 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
-          primarySwatch: Colors.teal,
+          primarySwatch: Colors.lightBlue,
           inputDecorationTheme: const InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(width: 2, color: Colors.white),
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 2, color: Colors.teal),
+              borderSide: BorderSide(width: 2, color: Colors.lightBlue),
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             prefixIconColor: Colors.white,
