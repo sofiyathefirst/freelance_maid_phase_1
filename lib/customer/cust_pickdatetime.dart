@@ -91,6 +91,10 @@ class _PickDateTimeState extends State<PickDateTime> {
                 return GestureDetector(
                   onTap: () {
                     selectedTime = TIME_SLOT.elementAt(index);
+                    color:
+                    selectedTime == TIME_SLOT.elementAt(index)
+                        ? Colors.green
+                        : Colors.brown[100];
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
