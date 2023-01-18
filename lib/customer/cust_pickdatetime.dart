@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/common%20method/utils.dart';
 import 'package:intl/intl.dart';
 
 class PickDateTime extends StatefulWidget {
@@ -11,6 +12,7 @@ class PickDateTime extends StatefulWidget {
 
 class _PickDateTimeState extends State<PickDateTime> {
   DateTime date = DateTime.now();
+  String selectedTime = '';
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +81,37 @@ class _PickDateTimeState extends State<PickDateTime> {
                   ),
                 ],
               ),
+            ),
+            GridView.builder(
+              shrinkWrap: true,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemCount: TIME_SLOT.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    selectedTime = TIME_SLOT.elementAt(index);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      color: Colors.brown[100],
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('${TIME_SLOT.elementAt(index)}'),
+                            Text('Available'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
