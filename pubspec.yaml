@@ -57,7 +57,9 @@ dependencies:
   geocoder2: any
   booking_calendar: any
   mockito: any
-
+  riverpod: any
+  flutter_datetime_picker: any
+  
   
 
 
