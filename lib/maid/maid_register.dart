@@ -19,10 +19,6 @@ class _RegisterMaidState extends State<RegisterMaid> {
   CollectionReference ref = FirebaseFirestore.instance.collection('maid');
   final _maidfname = TextEditingController();
   final _maidlname = TextEditingController();
-  final _maidaddress = TextEditingController();
-  final _maidcity = TextEditingController();
-  final _maidstate = TextEditingController();
-  final _maidpostcode = TextEditingController();
   final _maidbirthdate = TextEditingController();
   final _maidgender = TextEditingController();
   final _password = TextEditingController();
@@ -30,46 +26,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
   final _maidemail = TextEditingController();
   final _maidpnum = TextEditingController();
   String? _selectedgender = "Male";
-  String? _selectedpostcode = "75000";
-  String? _selectedcity = "Alor Gajah";
   final _genderList = ["Male", "Female"];
-  final _postcodeList = [
-    "75000",
-    "75050",
-    "75100",
-    "75150",
-    "75200",
-    "75250",
-    "75260",
-    "75300",
-    "75350",
-    "75400",
-    "75430",
-    "75450",
-    "75460",
-    "76300",
-    "76400",
-    "76450",
-    "77200"
-  ];
-  final _cityList = [
-    "Alor Gajah",
-    "Asahan",
-    "Ayer Keroh",
-    "Bemban",
-    "Durian Tunggal",
-    "Jasin",
-    "Kem Trendak",
-    "Kuala Sungai Baru",
-    "Lubok China",
-    "Masjid Tanah",
-    "Melaka",
-    "Merlimau",
-    "Selandar",
-    "Sungai Rambai",
-    "Sungai Udang",
-    "Tanjong Kling"
-  ];
 
   bool showProgress = false;
 
@@ -91,10 +48,6 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 'image':
                     'https://firebasestorage.googleapis.com/v0/b/freelancemaid-8de13.appspot.com/o/dummyprofile.jpg?alt=media&token=86896df5-3e37-471e-9845-2f97ec3427ab',
                 'phonenum': _maidpnum.text.trim(),
-                'address': _maidaddress.text.trim(),
-                'postcode': _maidpostcode.text.trim(),
-                'city': _maidcity.text.trim(),
-                'state': _maidstate.text.trim(),
                 'gender': _maidgender.text.trim(),
                 'cleaningtype': 'cleaningtype',
                 'birthdate': _maidbirthdate.text.trim(),
@@ -303,149 +256,9 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 ),
               ),
               getTextFormField(
-                controller: _maidaddress,
-                hintName: 'Address',
-                icon: Icons.home,
-                inputType: TextInputType.name,
-                validator: _requiredValidator,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 12.0),
-                      child: Text(
-                        "Postcode",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    DropdownButtonFormField(
-                      value: _selectedpostcode,
-                      items: _postcodeList
-                          .map((e) => DropdownMenuItem(
-                                child: Text(e),
-                                value: e,
-                              ))
-                          .toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          _selectedpostcode = val as String;
-                          _maidpostcode.text = _selectedpostcode!;
-                        });
-                      },
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide(
-                              color: Colors.green.shade200, width: 3.0),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.location_on,
-                          color: Colors.black,
-                        ),
-                        hintText: "Enter Postcode",
-                        hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 12.0),
-                      child: Text(
-                        "City",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    DropdownButtonFormField(
-                      value: _selectedcity,
-                      items: _cityList
-                          .map((e) => DropdownMenuItem(
-                                child: Text(e),
-                                value: e,
-                              ))
-                          .toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          _selectedcity = val as String;
-                          _maidcity.text = _selectedcity!;
-                        });
-                      },
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide(
-                              color: Colors.green.shade200, width: 3.0),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.location_city,
-                          color: Colors.black,
-                        ),
-                        hintText: 'Enter City',
-                        hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Colors.white,
-                        filled: true,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              getTextFormField(
-                controller: _maidstate,
-                hintName: 'State',
-                icon: Icons.location_on,
-                inputType: TextInputType.name,
-                validator: _requiredValidator,
-              ),
-              getTextFormField(
                 controller: _password,
                 hintName: 'Password',
-                icon: Icons.lock,
+                icon: Icons.remove_red_eye_rounded,
                 isObscureText: true,
                 inputType: TextInputType.name,
                 validator: _requiredValidator,

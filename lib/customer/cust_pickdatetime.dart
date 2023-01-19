@@ -88,30 +88,26 @@ class _PickDateTimeState extends State<PickDateTime> {
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               itemCount: TIME_SLOT.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
+                return ElevatedButton(
+                  onPressed: () {
                     selectedTime = TIME_SLOT.elementAt(index);
-                    color:
-                    selectedTime == TIME_SLOT.elementAt(index)
-                        ? Colors.green
-                        : Colors.brown[100];
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      color: Colors.brown[100],
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('${TIME_SLOT.elementAt(index)}'),
-                            Text('Available'),
-                          ],
-                        ),
-                      ),
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed))
+                          return Colors.green; //<-- SEE HERE
+                        return null; // Defer to the widget's default.
+                      },
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.brown[100]),
+                  ),
+                  child: Text(
+                    '${TIME_SLOT.elementAt(index)}',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 );

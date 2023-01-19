@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'customer/cust_login.dart';
 import 'maid/maid_login.dart';
 
@@ -8,7 +9,7 @@ class SplashScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue.shade100,
+      backgroundColor: Colors.deepPurple[200],
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -24,14 +25,14 @@ class SplashScreen2 extends StatelessWidget {
               ),
             ),
             SizedBox(height: 30),
-            Text(
-              'Please choose your login method',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
+            Text('Please choose your login method',
+                style: GoogleFonts.heebo(
+                  textStyle: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                )),
             SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,14 +57,16 @@ class SplashScreen2 extends StatelessWidget {
                         topRight: Radius.circular(50),
                         bottomRight: Radius.circular(50),
                       ),
-                      color: Colors.black38,
+                      color: Colors.white,
                     ),
                     child: Text(
                       'Customer',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
@@ -94,16 +97,16 @@ class SplashScreen2 extends StatelessWidget {
                         topRight: Radius.circular(50),
                         bottomRight: Radius.circular(50),
                       ),
-                      color: Colors.black38,
+                      color: Colors.white,
                     ),
-                    child: Text(
-                      'Maid',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: Text('Maid',
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        )),
                   ),
                 ),
               ],

@@ -3,6 +3,7 @@ import 'package:freelance_maid_phase_1/DataHandler/appData.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_pickdatetime.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/geolocation/trytrymaps.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
-          primarySwatch: Colors.lightBlue,
+          primarySwatch: Colors.deepPurple,
           inputDecorationTheme: const InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(width: 2, color: Colors.white),
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
             hintStyle: TextStyle(color: Colors.white70),
           ),
         ),
-        home: PickDateTime(),
+        home: Maps2(),
       ),
     );
   }
