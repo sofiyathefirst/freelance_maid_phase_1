@@ -3,19 +3,19 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Maps2 extends StatefulWidget {
-  Maps2({Key? key}) : super(key: key);
+class MaidMaps extends StatefulWidget {
+  MaidMaps({Key? key}) : super(key: key);
 
   @override
-  State<Maps2> createState() => _Maps2State();
+  State<MaidMaps> createState() => _MaidMapsState();
 }
 
-class _Maps2State extends State<Maps2> {
+class _MaidMapsState extends State<MaidMaps> {
   final Completer<GoogleMapController> _googleMapController = Completer();
   String? addressLoc;
   String? postalCode;
@@ -54,7 +54,7 @@ class _Maps2State extends State<Maps2> {
           googleMapApiKey: "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
       addressLoc = data.address;
       await FirebaseFirestore.instance
-          .collection('customer')
+          .collection('maid')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('location')
           .add({
@@ -107,7 +107,7 @@ class _Maps2State extends State<Maps2> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
+                  builder: (context) => MaidHomePage(),
                 ),
               );
             },

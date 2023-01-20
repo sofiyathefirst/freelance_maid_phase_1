@@ -6,6 +6,7 @@ import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_login.dart';
 import 'package:freelance_maid_phase_1/database/auth.dart';
 import 'package:freelance_maid_phase_1/geolocation/try_maps.dart';
+import 'package:freelance_maid_phase_1/geolocation/trytrymaps.dart';
 import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -62,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
           (value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Maps(),
+              builder: (context) => Maps2(),
             ),
           ),
         );

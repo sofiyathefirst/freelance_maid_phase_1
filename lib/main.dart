@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             hintStyle: TextStyle(color: Colors.white70),
           ),
         ),
-        home: Maps2(),
+        home: SplashScreen2(),
       ),
     );
   }

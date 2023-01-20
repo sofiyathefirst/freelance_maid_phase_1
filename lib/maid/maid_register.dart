@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/geolocation/mapsmaid.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_login.dart';
 import 'package:intl/intl.dart';
@@ -62,7 +63,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
           (value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => MaidHomePage(),
+              builder: (context) => MaidMaps(),
             ),
           ),
         );
