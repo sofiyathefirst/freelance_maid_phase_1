@@ -96,7 +96,7 @@ class _Maps2State extends State<Maps2> {
           onPressed: () {},
         ),
         title: const Text(
-          "Pinned Location",
+          "Get Location",
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),

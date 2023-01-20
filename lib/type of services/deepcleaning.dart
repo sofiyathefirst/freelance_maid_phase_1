@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
+import 'package:freelance_maid_phase_1/customer/cust_pickdatetime.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
@@ -209,7 +210,7 @@ class _DeepCleaningState extends State<DeepCleaning> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      Custbooking(data: maid),
+                                                      PickDateTime(data: maid),
                                                 ),
                                               );
                                             },

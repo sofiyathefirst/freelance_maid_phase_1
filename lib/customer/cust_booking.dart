@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
@@ -12,6 +13,13 @@ import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:intl/intl.dart';
+
+const TIME_SLOTS = [
+  '8:00 am - 10:00 am',
+  '12:00 pm - 2:00 pm',
+  '4:00 pm - 6:00 pm',
+  '8:00 pm - 10:00 pm'
+];
 
 class Custbooking extends StatefulWidget {
   final QueryDocumentSnapshot<Object?>? data;
@@ -24,11 +32,9 @@ class Custbooking extends StatefulWidget {
 class _CustbookingState extends State<Custbooking> {
   final _formKey = GlobalKey<FormState>();
   final dropdownState = GlobalKey<FormFieldState>();
+  DateTime date = DateTime.now();
+  String selectedTime = '';
 
-  final TextEditingController date = TextEditingController();
-  final TextEditingController timestart = TextEditingController();
-  final TextEditingController timeend = TextEditingController();
-  final TextEditingController hour = TextEditingController();
   final TextEditingController bedrooms = TextEditingController();
   final TextEditingController bathrooms = TextEditingController();
   final TextEditingController office = TextEditingController();
@@ -67,12 +73,6 @@ class _CustbookingState extends State<Custbooking> {
   late int kitchensum = 0;
   late int pantrysum = 0;
   late int gardensum = 0;
-  late int totbedroom = 0;
-  late int totbathroom = 0;
-  late int totoffice = 0;
-  late int totkitchen = 0;
-  late int totpantry = 0;
-  late int totgarden = 0;
   late int totalpayment = 0;
   late int sum = 0;
   String type1 = "Deep Cleaning";
@@ -159,9 +159,6 @@ class _CustbookingState extends State<Custbooking> {
         String email,
         String gender,
         String date,
-        String timestart,
-        String timeend,
-        String hour,
         int totalpayment,
         var uid) {
       try {
@@ -188,9 +185,6 @@ class _CustbookingState extends State<Custbooking> {
           'custemail': email,
           'custgender': gender,
           'bookingdate': date,
-          'timestart': timestart,
-          'timeend': timeend,
-          'hour': hour,
           'totalpayment': totalpayment,
           'uid': uid,
         }).then(
@@ -316,6 +310,105 @@ class _CustbookingState extends State<Custbooking> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Column(
+              children: [
+                Container(
+                  color: Colors.brown[500],
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 80,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                  width: 250,
+                                ),
+                                Text(
+                                  '${date.day}' +
+                                      '\t' +
+                                      '${DateFormat.MMMM().format(date)}' +
+                                      '\t' +
+                                      '${date.year}',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (BuildContext context) => SizedBox(
+                              height: 270,
+                              child: CupertinoDatePicker(
+                                mode: CupertinoDatePickerMode.date,
+                                backgroundColor: Colors.white,
+                                minimumDate: DateTime.now(),
+                                initialDateTime: DateTime.now(),
+                                onDateTimeChanged: (value) {
+                                  if (value != null && value != date)
+                                    setState(() {
+                                      date = value;
+                                    });
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.calendar_today_rounded,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Pick Time Slot',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 400,
+                  child: ListView.builder(
+                      itemCount: TIME_SLOTS.length,
+                      itemBuilder: ((context, index) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedTime = TIME_SLOTS.elementAt(index);
+                            });
+                          },
+                          child: Card(
+                            elevation: 10,
+                            color: selectedTime == TIME_SLOTS.elementAt(index)
+                                ? Colors.brown[50]
+                                : Colors.white,
+                            child: SizedBox(
+                              height: 60,
+                              child: ListTile(
+                                title: Text('${TIME_SLOTS.elementAt(index)}'),
+                                subtitle: Text('Available'),
+                                leading:
+                                    selectedTime == TIME_SLOTS.elementAt(index)
+                                        ? const Icon(Icons.check)
+                                        : null,
+                              ),
+                            ),
+                          )))),
+                ),
+              ],
+            ),
             Column(
               children: [
                 const SizedBox(height: 15),
@@ -446,7 +539,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbedroom = val as String;
                             bedrooms.text = _selectedbedroom!;
                           });
-                          totbedroom = totalbedroom(bedrooms.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -480,7 +572,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbathroom = val as String;
                             bathrooms.text = _selectedbathroom!;
                           });
-                          totbathroom = totalbathroom(bathrooms.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -514,7 +605,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedkitchen = val as String;
                             kitchens.text = _selectedkitchen!;
                           });
-                          totkitchen = totalkitchen(kitchens.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -548,7 +638,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedpantries = val as String;
                             pantries.text = _selectedpantries!;
                           });
-                          totpantry = totalpantries(pantries.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -582,8 +671,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedoffice = val as String;
                             office.text = _selectedoffice!;
                           });
-                          totoffice = totaloffice(office.text);
-                          totgarden = 0;
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -626,7 +713,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbedroom = val as String;
                             bedrooms.text = _selectedbedroom!;
                           });
-                          totbedroom = totalbedroom(bedrooms.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -660,7 +746,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbathroom = val as String;
                             bathrooms.text = _selectedbathroom!;
                           });
-                          totbathroom = totalbathroom(bathrooms.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -694,7 +779,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedkitchen = val as String;
                             kitchens.text = _selectedkitchen!;
                           });
-                          totkitchen = totalkitchen(kitchens.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -728,7 +812,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedpantries = val as String;
                             pantries.text = _selectedpantries!;
                           });
-                          totpantry = totalpantries(pantries.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -762,8 +845,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedoffice = val as String;
                             office.text = _selectedoffice!;
                           });
-                          totoffice = totaloffice(office.text);
-                          totgarden = 0;
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -806,12 +887,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedgarden = val as String;
                             gardenarea.text = _selectedgarden!;
                           });
-                          totgarden = totalgarden(gardenarea.text);
-                          totbathroom = 0;
-                          totbedroom = 0;
-                          totkitchen = 0;
-                          totoffice = 0;
-                          totpantry = 0;
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -854,7 +929,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbedroom = val as String;
                             bedrooms.text = _selectedbedroom!;
                           });
-                          totbedroom = totalbedroom(bedrooms.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -888,7 +962,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbathroom = val as String;
                             bathrooms.text = _selectedbathroom!;
                           });
-                          totbathroom = totalbathroom(bathrooms.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -922,7 +995,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedkitchen = val as String;
                             kitchens.text = _selectedkitchen!;
                           });
-                          totkitchen = totalkitchen(kitchens.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -956,7 +1028,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedpantries = val as String;
                             pantries.text = _selectedpantries!;
                           });
-                          totpantry = totalpantries(pantries.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -990,8 +1061,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedoffice = val as String;
                             office.text = _selectedoffice!;
                           });
-                          totoffice = totaloffice(office.text);
-                          totgarden = 0;
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1034,8 +1103,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbathroom = val as String;
                             bathrooms.text = _selectedbathroom!;
                           });
-                          totbathroom = totalbathroom(bathrooms.text);
-                          totbedroom = 0;
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1069,8 +1136,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedpantries = val as String;
                             pantries.text = _selectedpantries!;
                           });
-                          totpantry = totalpantries(pantries.text);
-                          totkitchen = 0;
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1104,8 +1169,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedoffice = val as String;
                             office.text = _selectedoffice!;
                           });
-                          totoffice = totaloffice(office.text);
-                          totgarden = 0;
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1182,7 +1245,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedbathroom = val as String;
                             bathrooms.text = _selectedbathroom!;
                           });
-                          totbathroom = totalbathroom(bathrooms.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1216,7 +1278,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedkitchen = val as String;
                             kitchens.text = _selectedkitchen!;
                           });
-                          totkitchen = totalkitchen(kitchens.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1250,7 +1311,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedpantries = val as String;
                             pantries.text = _selectedpantries!;
                           });
-                          totpantry = totalpantries(pantries.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1284,7 +1344,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedoffice = val as String;
                             office.text = _selectedoffice!;
                           });
-                          totoffice = totaloffice(office.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1318,7 +1377,6 @@ class _CustbookingState extends State<Custbooking> {
                             _selectedgarden = val as String;
                             gardenarea.text = _selectedgarden!;
                           });
-                          totgarden = totalgarden(gardenarea.text);
                         },
                         style: TextStyle(
                           fontSize: 20,
@@ -1344,107 +1402,6 @@ class _CustbookingState extends State<Custbooking> {
                 ),
                 const SizedBox(
                   height: 10,
-                ),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: date,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your date',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                          prefixIcon: const Icon(
-                            Icons.calendar_today_rounded,
-                            color: Colors.black,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        readOnly:
-                            true, //set it true, so that user will not able to edit text
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime
-                                  .now(), //DateTime.now() - not to allow to choose before today.
-                              lastDate: DateTime(2025));
-
-                          if (pickedDate != null) {
-                            print(
-                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                            String formattedDate =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                            print(
-                                formattedDate); //formatted date output using intl package =>  2021-03-16
-                            //you can implement different kind of Date Format here according to your requirement
-
-                            setState(() {
-                              date.text =
-                                  formattedDate; //set output date to TextField value.
-                            });
-                          } else {
-                            print("Date is not selected");
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: timestart,
-                  decoration: InputDecoration(
-                    hintText: 'Enter time start',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onChanged: (value) {},
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: timeend,
-                  decoration: InputDecoration(
-                    hintText: 'Enter time end',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onChanged: (value) {},
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: hour,
-                  decoration: InputDecoration(
-                    hintText: 'Enter duration (hour)',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      sum = (int.parse(rateperhour.toString()) *
-                          int.parse(hour.text.toString()));
-                    });
-                  },
                 ),
                 const SizedBox(height: 15),
                 Text(
@@ -1483,10 +1440,7 @@ class _CustbookingState extends State<Custbooking> {
                           pnum ?? "null",
                           email ?? "null",
                           gender ?? "null",
-                          date.text,
-                          timestart.text,
-                          timeend.text,
-                          hour.text,
+                          date.toString(),
                           totalpayment,
                           currentUser,
                         );
@@ -1622,12 +1576,6 @@ class _CustbookingState extends State<Custbooking> {
   }
 
   totalall() {
-    return totalpayment = totbedroom +
-        totbathroom +
-        totgarden +
-        totkitchen +
-        totoffice +
-        totpantry +
-        sum;
+    return totalpayment = sum;
   }
 }

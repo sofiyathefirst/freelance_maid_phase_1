@@ -96,7 +96,7 @@ class _MaidMapsState extends State<MaidMaps> {
           onPressed: () {},
         ),
         title: const Text(
-          "Pinned Location",
+          "Get Location",
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),
