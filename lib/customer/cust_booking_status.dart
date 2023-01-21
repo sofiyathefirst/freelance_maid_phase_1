@@ -216,13 +216,8 @@ class _CustBookingStatusState extends State<CustBookingStatus> {
                                   Text('Booking Date: ' +
                                       bookstatus.get('bookingdate')),
                                   SizedBox(height: 5),
-                                  Text('Time Start: ' +
-                                      bookstatus.get('timestart')),
-                                  SizedBox(height: 5),
-                                  Text(
-                                      'Time End: ' + bookstatus.get('timeend')),
-                                  SizedBox(height: 5),
-                                  Text('Total Hour: ' + bookstatus.get('hour')),
+                                  Text('Time Slot: ' +
+                                      bookstatus.get('timeslot')),
                                   SizedBox(height: 5),
                                   Text('Total Payment: RM' +
                                       bookstatus

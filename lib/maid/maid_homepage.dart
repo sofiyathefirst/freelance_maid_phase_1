@@ -20,8 +20,8 @@ class MaidHomePage extends StatefulWidget {
 }
 
 class _MaidHomePageState extends State<MaidHomePage> {
-  final bookingMaid = FirebaseFirestore.instance.collection('bookingmaids');
-  var currentUser = FirebaseAuth.instance.currentUser?.email;
+  final bookingMaid = FirebaseFirestore.instance.collection('bookmaids');
+  var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
   Future<void> _delete(String bookingId) async {
     await bookingMaid.doc(bookingId).delete();
@@ -155,7 +155,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
                     (i) {
                       final bookmaid = sd[i];
 
-                      if (currentUser == bookmaid.get('maidemail')) {
+                      if (currentUser == bookmaid.get('maiduid')) {
                         return Column(
                           children: [
                             SizedBox(height: 20),
@@ -207,12 +207,8 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                   Text('Booking Date: ' +
                                       bookmaid.get('bookingdate')),
                                   SizedBox(height: 5),
-                                  Text('Time Start: ' +
-                                      bookmaid.get('timestart')),
-                                  SizedBox(height: 5),
-                                  Text('Time End: ' + bookmaid.get('timeend')),
-                                  SizedBox(height: 5),
-                                  Text('Total Hour: ' + bookmaid.get('hour')),
+                                  Text(
+                                      'Time Slot: ' + bookmaid.get('timeslot')),
                                   SizedBox(height: 5),
                                   Text('Total Payment: RM' +
                                       bookmaid.get('totalpayment').toString()),

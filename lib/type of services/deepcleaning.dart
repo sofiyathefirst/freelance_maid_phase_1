@@ -197,8 +197,6 @@ class _DeepCleaningState extends State<DeepCleaning> {
                                       SizedBox(height: 20),
                                       Text('Gender: ' + maid.get('gender')),
                                       SizedBox(height: 20),
-                                      Text('State: ' + maid.get('state')),
-                                      SizedBox(height: 20),
                                       Text('Rate per hour: RM' +
                                           maid.get('rateperhour')),
                                       SizedBox(height: 20),
@@ -210,7 +208,7 @@ class _DeepCleaningState extends State<DeepCleaning> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      PickDateTime(data: maid),
+                                                      Custbooking(data: maid),
                                                 ),
                                               );
                                             },

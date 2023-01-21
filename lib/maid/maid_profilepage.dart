@@ -23,9 +23,6 @@ class _MaidProfileState extends State<MaidProfile> {
   String? gender = '';
   String? birthdate = '';
   String? address = '';
-  String? city = '';
-  String? postcode = '';
-  String? state = '';
   String? image = '';
   String? cleaningtype = '';
   String? rateperhour;
@@ -47,10 +44,6 @@ class _MaidProfileState extends State<MaidProfile> {
           gender = snapshot.data()!['gender'];
           birthdate = snapshot.data()!['birthdate'];
           image = snapshot.data()!['image'];
-          address = snapshot.data()!['address'];
-          city = snapshot.data()!['city'];
-          postcode = snapshot.data()!['postcode'];
-          state = snapshot.data()!['state'];
           cleaningtype = snapshot.data()!['cleaningtype'];
           rateperhour = snapshot.data()!['rateperhour'];
           serviceoffered = snapshot.data()!['serviceoffered'];
@@ -284,7 +277,7 @@ class _MaidProfileState extends State<MaidProfile> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  /*SizedBox(height: 20),
                   Row(
                     children: [
                       Icon(
@@ -301,61 +294,7 @@ class _MaidProfileState extends State<MaidProfile> {
                         ),
                       ),
                     ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_city,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        city!,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_city,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        postcode!,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_city,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        state!,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                  ),*/
                   SizedBox(height: 20),
                   Center(
                     child: Row(

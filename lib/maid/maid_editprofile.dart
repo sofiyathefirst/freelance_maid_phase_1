@@ -29,9 +29,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   String? gender = '';
   String? birthdate = '';
   String? address = '';
-  String? city = '';
-  String? postcode = '';
-  String? state = '';
   String? image = '';
   String? password = '';
   String? cleaningtype = '';
@@ -48,53 +45,13 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   TextEditingController displaygender = TextEditingController();
   TextEditingController displaybirthdate = TextEditingController();
   TextEditingController displayaddress = TextEditingController();
-  TextEditingController displaycity = TextEditingController();
-  TextEditingController displaypostcode = TextEditingController();
-  TextEditingController displaystate = TextEditingController();
   TextEditingController displaypassword = TextEditingController();
   TextEditingController displaycleaningtype = TextEditingController();
   TextEditingController displayrateperhour = TextEditingController();
   TextEditingController displayserviceoffered = TextEditingController();
-  TextEditingController _confirmpass = TextEditingController();
 
   final _genderList = ["Male", "Female"];
-  final _postcodeList = [
-    "75000",
-    "75050",
-    "75100",
-    "75150",
-    "75200",
-    "75250",
-    "75260",
-    "75300",
-    "75350",
-    "75400",
-    "75430",
-    "75450",
-    "75460",
-    "76300",
-    "76400",
-    "76450",
-    "77200"
-  ];
-  final _cityList = [
-    "Alor Gajah",
-    "Asahan",
-    "Ayer Keroh",
-    "Bemban",
-    "Durian Tunggal",
-    "Jasin",
-    "Kem Trendak",
-    "Kuala Sungai Baru",
-    "Lubok China",
-    "Masjid Tanah",
-    "Melaka",
-    "Merlimau",
-    "Selandar",
-    "Sungai Rambai",
-    "Sungai Udang",
-    "Tanjong Kling"
-  ];
+
   final _cleaningtypeList = [
     "Deep Cleaning",
     "Disinfection Services",
@@ -117,8 +74,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       "Deep Cleaning: Whole house cleaning under furniture, vacuuming and cleaning upholstery, scrubbing walls, polishing furniture, organizing";
   String? _selectedVal = "Deep Cleaning";
   String? _selectedrate = "50";
-  String? _selectedpostcode = "75000";
-  String? _selectedcity = "Alor Gajah";
+
   bool _fname = true;
   bool _lname = true;
   bool _pnum = true;
@@ -126,9 +82,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
   bool _gender = true;
   bool _birthdate = true;
   bool _address = true;
-  bool _city = true;
-  bool _postcode = true;
-  bool _state = true;
   bool _image = true;
   bool _password = true;
   bool _cleaningtype = true;
@@ -160,9 +113,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
           birthdate = snapshot.data()!['birthdate'];
           image = snapshot.data()!['image'];
           address = snapshot.data()!['address'];
-          city = snapshot.data()!['city'];
-          postcode = snapshot.data()!['postcode'];
-          state = snapshot.data()!['state'];
           cleaningtype = snapshot.data()!['cleaningtype'];
           rateperhour = snapshot.data()!['rateperhour'];
           serviceoffered = snapshot.data()!['serviceoffered'];
@@ -173,10 +123,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         displayimg.text = image!;
         displaygender.text = gender!;
         displaybirthdate.text = birthdate!;
-        displayaddress.text = address!;
-        displaycity.text = city!;
-        displaypostcode.text = postcode!;
-        displaystate.text = state!;
+        //displayaddress.text = address!;
         displaycleaningtype.text = cleaningtype!;
         displayrateperhour.text = rateperhour!;
         displayserviceoffered.text = serviceoffered!;
@@ -192,10 +139,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displayimg.text.isEmpty ? _image = false : _image = true;
       displaygender.text.isEmpty ? _gender = false : _gender = true;
       displaybirthdate.text.isEmpty ? _birthdate = false : _birthdate = true;
-      displayaddress.text.isEmpty ? _address = false : _address = true;
-      displaypostcode.text.isEmpty ? _postcode = false : _postcode = true;
-      displaycity.text.isEmpty ? _city = false : _city = true;
-      displaystate.text.isEmpty ? _state = false : _state = true;
+      //displayaddress.text.isEmpty ? _address = false : _address = true;
       displaycleaningtype.text.isEmpty
           ? _cleaningtype = false
           : _cleaningtype = true;
@@ -213,10 +157,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         _pnum &&
         _gender &&
         _birthdate &&
-        _address &&
-        _postcode &&
-        _city &&
-        _state &&
+        //_address &&
         _cleaningtype &&
         _rateperhour &&
         _serviceoffered) {
@@ -230,10 +171,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         "gender": displaygender.text.trim(),
         "birthdate": displaybirthdate.text.trim(),
         "image": displayimg.text.trim(),
-        "address": displayaddress.text.trim(),
-        "postcode": displaypostcode.text.trim(),
-        "city": displaycity.text.trim(),
-        "state": displaystate.text.trim(),
+        //"address": displayaddress.text.trim(),
         "cleaningtype": displaycleaningtype.text.trim(),
         "rateperhour": displayrateperhour.text.trim(),
         "serviceoffered": displayserviceoffered.text.trim(),
@@ -652,7 +590,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                     ],
                   ),
                 ),
-                Container(
+                /*Container(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   margin: EdgeInsets.only(top: 20.0),
                   child: Column(
@@ -698,178 +636,8 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  margin: EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 12.0),
-                        child: Text(
-                          "Postcode",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      DropdownButtonFormField(
-                        value: _selectedpostcode,
-                        items: _postcodeList
-                            .map((e) => DropdownMenuItem(
-                                  child: Text(e),
-                                  value: e,
-                                ))
-                            .toList(),
-                        onChanged: (val) {
-                          setState(() {
-                            _selectedpostcode = val as String;
-                            displaypostcode.text = _selectedpostcode!;
-                          });
-                        },
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(
-                                color: Colors.green.shade200, width: 3.0),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.location_on,
-                            color: Colors.black,
-                          ),
-                          hintStyle: TextStyle(color: Colors.black),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  margin: EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 12.0),
-                        child: Text(
-                          "City",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      DropdownButtonFormField(
-                        value: _selectedcity,
-                        items: _cityList
-                            .map((e) => DropdownMenuItem(
-                                  child: Text(e),
-                                  value: e,
-                                ))
-                            .toList(),
-                        onChanged: (val) {
-                          setState(() {
-                            _selectedcity = val as String;
-                            displaycity.text = _selectedcity!;
-                          });
-                        },
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(
-                                color: Colors.green.shade200, width: 3.0),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.location_city_outlined,
-                            color: Colors.black,
-                          ),
-                          hintStyle: TextStyle(color: Colors.black),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  margin: EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 12.0),
-                        child: Text(
-                          "State",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        controller: displaystate,
-                        decoration: InputDecoration(
-                          hintText: "Update State",
-                          errorText: _state ? null : "State invalid",
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(
-                                color: Colors.green.shade200, width: 3.0),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.location_on,
-                            color: Colors.black,
-                          ),
-                          hintStyle: TextStyle(color: Colors.black),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                ),*/
+
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   margin: EdgeInsets.only(top: 20.0),
@@ -1019,17 +787,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         ),
       ),
     );
-  }
-
-  String? _confirmPasswordValidator(String? _maidconfirmPassword) {
-    if (_maidconfirmPassword == null || _maidconfirmPassword.trim().isEmpty) {
-      return 'This field is required';
-    }
-
-    if (displaypassword.text != _confirmpass) {
-      return 'Password did not match';
-    }
-    return null;
   }
 
   imagePicker() async {

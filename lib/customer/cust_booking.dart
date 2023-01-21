@@ -34,13 +34,17 @@ class _CustbookingState extends State<Custbooking> {
   final dropdownState = GlobalKey<FormFieldState>();
   DateTime date = DateTime.now();
   String selectedTime = '';
+  final _bookdate = TextEditingController();
 
+  //controller
   final TextEditingController bedrooms = TextEditingController();
   final TextEditingController bathrooms = TextEditingController();
   final TextEditingController office = TextEditingController();
   final TextEditingController kitchens = TextEditingController();
   final TextEditingController pantries = TextEditingController();
   final TextEditingController gardenarea = TextEditingController();
+
+  //display bathrooms
   String? _bathrooms = "0";
   String? _bedrooms = "0";
   String? _office = "0";
@@ -48,16 +52,18 @@ class _CustbookingState extends State<Custbooking> {
   String? _pantries = "0";
   String? _gardenarea = "0sqft";
 
+  //dapat data drpd database
   late String maidfname = widget.data!.get('maidfirstname');
   late String maidlname = widget.data!.get('maidlastname');
+  late String maiduid = widget.data!.get('uid');
   late String maidimage = widget.data!.get('image');
   late String maidpnum = widget.data!.get('phonenum');
   late String maidemail = widget.data!.get('maidemail');
   late String maidgender = widget.data!.get('gender');
-  late String maidstate = widget.data!.get('state');
   late String cleaningtype = widget.data!.get('cleaningtype');
   late String rateperhour = widget.data!.get('rateperhour');
 
+  //data cust
   late String? fname = '';
   late String? lname = '';
   late String? pnum = '';
@@ -65,8 +71,13 @@ class _CustbookingState extends State<Custbooking> {
   late String? gender = '';
   late String? image = '';
   File? imageXFile;
-
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
+
+  //data maid
+  late String? bookdate = '';
+  late String? timeslot = '';
+  late String? maidsid = '';
+
   late int bathsum = 0;
   late int bedsum = 0;
   late int officesum = 0;
@@ -126,16 +137,33 @@ class _CustbookingState extends State<Custbooking> {
     });
   }
 
+  Future _getDataMaid() async {
+    await FirebaseFirestore.instance
+        .collection("bookmaids")
+        .doc(maiduid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          bookdate = snapshot.data()!['bookingdate'];
+          timeslot = snapshot.data()!['timeslot'];
+          maidsid = snapshot.data()!['maiduid'];
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _getDataFromDatabase();
+    _getDataMaid();
   }
 
   @override
   Widget build(BuildContext context) {
     CollectionReference bookingmaid =
-        FirebaseFirestore.instance.collection('bookingmaids');
+        FirebaseFirestore.instance.collection('bookmaids');
     Add(
         String maidfname,
         String maidlname,
@@ -143,7 +171,6 @@ class _CustbookingState extends State<Custbooking> {
         String maidpnum,
         String maidemail,
         String maidgender,
-        String maidstate,
         String cleaningtype,
         String bathrooms,
         String bedrooms,
@@ -159,8 +186,10 @@ class _CustbookingState extends State<Custbooking> {
         String email,
         String gender,
         String date,
+        String time,
         int totalpayment,
-        var uid) {
+        var uid,
+        String maiduid) {
       try {
         return bookingmaid.add({
           'maidfirstname': maidfname,
@@ -169,7 +198,6 @@ class _CustbookingState extends State<Custbooking> {
           'maidpnum': maidpnum,
           'maidemail': maidemail,
           'maidgender': maidgender,
-          'maidstate': maidstate,
           'cleaningtype': cleaningtype,
           'bathrooms': bathrooms,
           'bedrooms': bedrooms,
@@ -185,8 +213,10 @@ class _CustbookingState extends State<Custbooking> {
           'custemail': email,
           'custgender': gender,
           'bookingdate': date,
+          'timeslot': selectedTime,
           'totalpayment': totalpayment,
-          'uid': uid,
+          'custuid': uid,
+          'maiduid': maiduid
         }).then(
           (value) => ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -312,64 +342,68 @@ class _CustbookingState extends State<Custbooking> {
           children: [
             Column(
               children: [
+                SizedBox(
+                  height: 50,
+                ),
                 Container(
-                  color: Colors.brown[500],
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 80,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                  width: 250,
-                                ),
-                                Text(
-                                  '${date.day}' +
-                                      '\t' +
-                                      '${DateFormat.MMMM().format(date)}' +
-                                      '\t' +
-                                      '${date.year}',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _bookdate,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(color: Colors.white),
                             ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              borderSide: BorderSide(
+                                  color: Colors.green.shade200, width: 3.0),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.calendar_today_rounded,
+                              color: Colors.black,
+                            ),
+                            hintText: 'Enter your booking date',
+                            hintStyle: TextStyle(color: Colors.black),
+                            fillColor: Colors.white,
+                            filled: true,
                           ),
+                          readOnly:
+                              true, //set it true, so that user will not able to edit text
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime
+                                    .now(), //DateTime.now() - not to allow to choose before today.
+                                lastDate: DateTime(2026));
+
+                            if (pickedDate != null) {
+                              print(
+                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                              String formattedDate =
+                                  DateFormat('yyyy-MMMM-dd').format(pickedDate);
+                              print(
+                                  formattedDate); //formatted date output using intl package =>  2021-03-16
+                              //you can implement different kind of Date Format here according to your requirement
+
+                              setState(() {
+                                _bookdate.text =
+                                    formattedDate; //set output date to TextField value.
+                              });
+                            } else {
+                              print("Date is not selected");
+                            }
+                          },
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showCupertinoModalPopup(
-                            context: context,
-                            builder: (BuildContext context) => SizedBox(
-                              height: 270,
-                              child: CupertinoDatePicker(
-                                mode: CupertinoDatePickerMode.date,
-                                backgroundColor: Colors.white,
-                                minimumDate: DateTime.now(),
-                                initialDateTime: DateTime.now(),
-                                onDateTimeChanged: (value) {
-                                  if (value != null && value != date)
-                                    setState(() {
-                                      date = value;
-                                    });
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.calendar_today_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -379,8 +413,40 @@ class _CustbookingState extends State<Custbooking> {
                   'Pick Time Slot',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
+                if (maidsid == null) ...[
+                  SizedBox(
+                    height: 300,
+                    child: ListView.builder(
+                        itemCount: TIME_SLOTS.length,
+                        itemBuilder: ((context, index) => GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedTime = TIME_SLOTS.elementAt(index);
+                              });
+                            },
+                            child: Card(
+                              elevation: 10,
+                              color: selectedTime == TIME_SLOTS.elementAt(index)
+                                  ? Colors.brown[50]
+                                  : Colors.white,
+                              child: SizedBox(
+                                height: 60,
+                                child: ListTile(
+                                  title: Text('${TIME_SLOTS.elementAt(index)}'),
+                                  subtitle: Text('Available'),
+                                  leading: selectedTime ==
+                                          TIME_SLOTS.elementAt(index)
+                                      ? const Icon(Icons.check)
+                                      : null,
+                                ),
+                              ),
+                            )))),
+                  ),
+                ] else if (maidsid == maiduid) ...[
+                  if (bookdate == _bookdate.text) ...[]
+                ],
                 SizedBox(
-                  height: 400,
+                  height: 300,
                   child: ListView.builder(
                       itemCount: TIME_SLOTS.length,
                       itemBuilder: ((context, index) => GestureDetector(
@@ -448,14 +514,6 @@ class _CustbookingState extends State<Custbooking> {
                 const SizedBox(height: 15),
                 Text(
                   'Maid Email:' + maidemail,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  'Maid State:' + maidstate,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -1419,31 +1477,31 @@ class _CustbookingState extends State<Custbooking> {
                           () {},
                         );
                         Add(
-                          maidfname,
-                          maidlname,
-                          maidimage,
-                          maidpnum,
-                          maidemail,
-                          maidgender,
-                          maidstate,
-                          cleaningtype,
-                          bathrooms.text,
-                          bedrooms.text,
-                          kitchens.text,
-                          pantries.text,
-                          office.text,
-                          gardenarea.text,
-                          rateperhour,
-                          fname ?? "null",
-                          lname ?? "null",
-                          image ?? "null",
-                          pnum ?? "null",
-                          email ?? "null",
-                          gender ?? "null",
-                          date.toString(),
-                          totalpayment,
-                          currentUser,
-                        );
+                            maidfname,
+                            maidlname,
+                            maidimage,
+                            maidpnum,
+                            maidemail,
+                            maidgender,
+                            cleaningtype,
+                            bathrooms.text,
+                            bedrooms.text,
+                            kitchens.text,
+                            pantries.text,
+                            office.text,
+                            gardenarea.text,
+                            rateperhour,
+                            fname ?? "null",
+                            lname ?? "null",
+                            image ?? "null",
+                            pnum ?? "null",
+                            email ?? "null",
+                            gender ?? "null",
+                            _bookdate.text,
+                            selectedTime,
+                            totalpayment,
+                            currentUser,
+                            maiduid);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -1579,3 +1637,148 @@ class _CustbookingState extends State<Custbooking> {
     return totalpayment = sum;
   }
 }
+
+/*FutureBuilder(
+                    future: maidbook.get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Unsuccesful'),
+                          ),
+                        );
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      final sm = snapshot.data!.docs;
+                      return Column(
+                        children: List.generate(
+                          sm.length,
+                          (i) {
+                            final b = sm[i];
+                            if (b.get('maiduid') == null) {
+                              //if (b.get('bookingdate') == _bookdate.text) {
+                              //var ListTimeSlot =
+                              //b.get('timeslot') as List<String>;
+                              return SizedBox(
+                                height: 400,
+                                child: ListView.builder(
+                                  itemCount: TIME_SLOTS.length,
+                                  itemBuilder: ((context, index) =>
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedTime =
+                                                TIME_SLOTS.elementAt(index);
+                                          });
+                                        },
+                                        child: Card(
+                                          elevation: 10,
+                                          color: selectedTime ==
+                                                  TIME_SLOTS.elementAt(index)
+                                              ? Colors.brown[50]
+                                              : Colors.white,
+                                          child: SizedBox(
+                                            height: 60,
+                                            child: ListTile(
+                                              title: Text(
+                                                  '${TIME_SLOTS.elementAt(index)}'),
+                                              subtitle: Text('Available'),
+                                              leading: selectedTime ==
+                                                      TIME_SLOTS
+                                                          .elementAt(index)
+                                                  ? const Icon(Icons.check)
+                                                  : null,
+                                            ),
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                              );
+                              //} else {
+                              /*return SizedBox(
+                                  height: 400,
+                                  child: ListView.builder(
+                                      itemCount: TIME_SLOTS.length,
+                                      itemBuilder: ((context, index) =>
+                                          GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedTime = TIME_SLOTS
+                                                      .elementAt(index);
+                                                });
+                                              },
+                                              child: Card(
+                                                elevation: 10,
+                                                color: selectedTime ==
+                                                        TIME_SLOTS
+                                                            .elementAt(index)
+                                                    ? Colors.brown[50]
+                                                    : Colors.white,
+                                                child: SizedBox(
+                                                  height: 60,
+                                                  child: ListTile(
+                                                    title: Text(
+                                                        '${TIME_SLOTS.elementAt(index)}'),
+                                                    subtitle: Text('Available'),
+                                                    leading: selectedTime ==
+                                                            TIME_SLOTS
+                                                                .elementAt(
+                                                                    index)
+                                                        ? const Icon(
+                                                            Icons.check)
+                                                        : null,
+                                                  ),
+                                                ),
+                                              )))),
+                                );
+                              }*/
+                            } /*else if (b.get('maiduid') != maiduid) {
+                              return SizedBox(
+                                height: 400,
+                                child: ListView.builder(
+                                    itemCount: TIME_SLOTS.length,
+                                    itemBuilder: ((context, index) =>
+                                        GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedTime =
+                                                    TIME_SLOTS.elementAt(index);
+                                              });
+                                            },
+                                            child: Card(
+                                              elevation: 10,
+                                              color: selectedTime ==
+                                                      TIME_SLOTS
+                                                          .elementAt(index)
+                                                  ? Colors.brown[50]
+                                                  : Colors.white,
+                                              child: SizedBox(
+                                                height: 60,
+                                                child: ListTile(
+                                                  title: Text(
+                                                      '${TIME_SLOTS.elementAt(index)}'),
+                                                  subtitle: Text('Available'),
+                                                  leading: selectedTime ==
+                                                          TIME_SLOTS
+                                                              .elementAt(index)
+                                                      ? const Icon(Icons.check)
+                                                      : null,
+                                                ),
+                                              ),
+                                            )))),
+                              );
+                            }*/
+                            else {
+                              return Column(
+                                children: [],
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    }),*/

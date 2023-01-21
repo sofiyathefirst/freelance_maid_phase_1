@@ -209,7 +209,7 @@ class _DisinfectionState extends State<Disinfection> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      PickDateTime(data: maid),
+                                                      Custbooking(data: maid),
                                                 ),
                                               );
                                             },
