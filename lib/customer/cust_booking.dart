@@ -74,9 +74,6 @@ class _CustbookingState extends State<Custbooking> {
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
   //data maid
-  late String? bookdate = '';
-  late String? timeslot = '';
-  late String? maidsid = '';
 
   late int bathsum = 0;
   late int bedsum = 0;
@@ -137,27 +134,10 @@ class _CustbookingState extends State<Custbooking> {
     });
   }
 
-  Future _getDataMaid() async {
-    await FirebaseFirestore.instance
-        .collection("bookmaids")
-        .doc(maiduid)
-        .get()
-        .then((snapshot) async {
-      if (snapshot.exists) {
-        setState(() {
-          bookdate = snapshot.data()!['bookingdate'];
-          timeslot = snapshot.data()!['timeslot'];
-          maidsid = snapshot.data()!['maiduid'];
-        });
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     _getDataFromDatabase();
-    _getDataMaid();
   }
 
   @override
@@ -340,141 +320,6 @@ class _CustbookingState extends State<Custbooking> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _bookdate,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
-                              borderSide: BorderSide(
-                                  color: Colors.green.shade200, width: 3.0),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.calendar_today_rounded,
-                              color: Colors.black,
-                            ),
-                            hintText: 'Enter your booking date',
-                            hintStyle: TextStyle(color: Colors.black),
-                            fillColor: Colors.white,
-                            filled: true,
-                          ),
-                          readOnly:
-                              true, //set it true, so that user will not able to edit text
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime
-                                    .now(), //DateTime.now() - not to allow to choose before today.
-                                lastDate: DateTime(2026));
-
-                            if (pickedDate != null) {
-                              print(
-                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                              String formattedDate =
-                                  DateFormat('yyyy-MMMM-dd').format(pickedDate);
-                              print(
-                                  formattedDate); //formatted date output using intl package =>  2021-03-16
-                              //you can implement different kind of Date Format here according to your requirement
-
-                              setState(() {
-                                _bookdate.text =
-                                    formattedDate; //set output date to TextField value.
-                              });
-                            } else {
-                              print("Date is not selected");
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Pick Time Slot',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                if (maidsid == null) ...[
-                  SizedBox(
-                    height: 300,
-                    child: ListView.builder(
-                        itemCount: TIME_SLOTS.length,
-                        itemBuilder: ((context, index) => GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedTime = TIME_SLOTS.elementAt(index);
-                              });
-                            },
-                            child: Card(
-                              elevation: 10,
-                              color: selectedTime == TIME_SLOTS.elementAt(index)
-                                  ? Colors.brown[50]
-                                  : Colors.white,
-                              child: SizedBox(
-                                height: 60,
-                                child: ListTile(
-                                  title: Text('${TIME_SLOTS.elementAt(index)}'),
-                                  subtitle: Text('Available'),
-                                  leading: selectedTime ==
-                                          TIME_SLOTS.elementAt(index)
-                                      ? const Icon(Icons.check)
-                                      : null,
-                                ),
-                              ),
-                            )))),
-                  ),
-                ] else if (maidsid == maiduid) ...[
-                  if (bookdate == _bookdate.text) ...[]
-                ],
-                SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                      itemCount: TIME_SLOTS.length,
-                      itemBuilder: ((context, index) => GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedTime = TIME_SLOTS.elementAt(index);
-                            });
-                          },
-                          child: Card(
-                            elevation: 10,
-                            color: selectedTime == TIME_SLOTS.elementAt(index)
-                                ? Colors.brown[50]
-                                : Colors.white,
-                            child: SizedBox(
-                              height: 60,
-                              child: ListTile(
-                                title: Text('${TIME_SLOTS.elementAt(index)}'),
-                                subtitle: Text('Available'),
-                                leading:
-                                    selectedTime == TIME_SLOTS.elementAt(index)
-                                        ? const Icon(Icons.check)
-                                        : null,
-                              ),
-                            ),
-                          )))),
-                ),
-              ],
-            ),
             Column(
               children: [
                 const SizedBox(height: 15),

@@ -58,7 +58,8 @@ dependencies:
   mockito: any
   responsive_grid: any
   google_fonts: any
-  lottie: any
+  booking_calendar: any
+  table_calendar: any
   
 
 

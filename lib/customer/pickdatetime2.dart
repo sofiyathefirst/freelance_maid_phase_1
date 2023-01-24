@@ -1,9 +1,8 @@
+import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import 'custreceipt.dart';
+import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 const TIME_SLOTS = [
   '8:00 am - 10:00 am',
@@ -21,12 +20,19 @@ class PickDate2 extends StatefulWidget {
 
 class _PickDate2State extends State<PickDate2> {
   final _formKey = GlobalKey<FormState>();
-  DateTime date = DateTime.now();
-  String selectedTime = '';
-  String dates = '';
-  final _bookdate = TextEditingController();
+  CalendarFormat _format = CalendarFormat.month;
+  DateTime _focusDay = DateTime.now();
+  DateTime _currentDay = DateTime.now();
+  int? _currentIndex;
+  bool _dateSelected = false;
+  bool _timeSelected = false;
 
-  CollectionReference bookingmaid =
+  //DateTime date = DateTime.now();
+  //String selectedTime = '';
+  //String dates = '';
+  //final _bookdate = TextEditingController();
+
+  /*CollectionReference bookingmaid =
       FirebaseFirestore.instance.collection('timeslott');
   Add(
     String date,
@@ -48,14 +54,158 @@ class _PickDate2State extends State<PickDate2> {
         content: Text(e.code),
       ));
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CustHomePage(),
+              ),
+            );
+          },
+        ),
+        title: const Text(
+          "Choose Slot",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
+        child: SizedBox(
+          height: 800,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: Column(
+                  children: <Widget>[
+                    //display calendar here
+                    _tableCalendar(),
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+                      child: Center(
+                        child: Text(
+                          'Select Time Slot',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return InkWell(
+                      splashColor: Colors.transparent,
+                      onTap: () {
+                        setState(() {
+                          _currentIndex = index;
+                          _timeSelected = true;
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: _currentIndex == index
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                          color: _currentIndex == index ? Colors.brown : null,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${index + index + index + 8}:00 ${index + 10 > 11 ? "PM" : "AM"}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: _currentIndex == index ? Colors.white : null,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  childCount: 4,
+                ),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, childAspectRatio: 1.5),
+              ),
+              SliverToBoxAdapter(
+                  child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _timeSelected && _dateSelected ? false : true;
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.orangeAccent),
+                  ),
+                  child: const Text(
+                    'Book Slot',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _tableCalendar() {
+    return TableCalendar(
+      focusedDay: _focusDay,
+      firstDay: DateTime.now(),
+      lastDay: DateTime(2025, 12, 31),
+      calendarFormat: _format,
+      currentDay: _currentDay,
+      rowHeight: 48,
+      calendarStyle: const CalendarStyle(
+        todayDecoration:
+            BoxDecoration(color: Colors.brown, shape: BoxShape.circle),
+      ),
+      availableCalendarFormats: const {
+        CalendarFormat.month: 'Month',
+      },
+      onFormatChanged: (format) {
+        setState(() {
+          _format = format;
+        });
+      },
+      onDaySelected: ((selectedDay, focusedDay) {
+        setState(() {
+          _currentDay = selectedDay;
+          _focusDay = focusedDay;
+          _dateSelected = true;
+        });
+      }),
+    );
+  }
+}
+
+/*children: [
             SizedBox(
               height: 50,
             ),
@@ -165,9 +315,4 @@ class _PickDate2State extends State<PickDate2> {
                   'Book',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
-          ],
-        ),
-      ),
-    );
-  }
-}
+          ],*/

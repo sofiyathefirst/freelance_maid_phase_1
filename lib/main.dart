@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/DataHandler/appData.dart';
+import 'package:freelance_maid_phase_1/customer/bookingcalendar.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_pickdatetime.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
             hintStyle: TextStyle(color: Colors.white70),
           ),
         ),
-        home: SplashScreen2(),
+        home: BookSlot(),
       ),
     );
   }
