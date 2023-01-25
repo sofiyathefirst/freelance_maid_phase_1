@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/bookingcalendar.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
@@ -208,7 +209,7 @@ class _DeepCleaningState extends State<DeepCleaning> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      Custbooking(data: maid),
+                                                      BookSlot(data: maid),
                                                 ),
                                               );
                                             },

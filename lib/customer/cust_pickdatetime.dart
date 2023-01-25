@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+import '../common method/BookSlotModel.dart';
 
 const TIME_SLOT = [
   '8:00 am - 10:00 am',
@@ -20,32 +23,64 @@ class PickDateTime extends StatefulWidget {
 }
 
 class _PickDateTimeState extends State<PickDateTime> {
-  final booktimeslot = FirebaseFirestore.instance.collection('bookingmaids');
+  CollectionReference booktimeslot =
+      FirebaseFirestore.instance.collection('bookslot');
   late String maiduid = widget.data!.get('uid');
-  DateTime date = DateTime.now();
+  CalendarFormat _format = CalendarFormat.month;
+  DateTime _focusDay = DateTime.now();
+  DateTime _currentDay = DateTime.now();
+  int? _currentIndex;
+  bool _dateSelected = false;
+  bool _timeSelected = false;
+  String? formattedDate;
   String selectedTime = '';
-  String? bookingdate = '';
-  String? bookingtime = '';
+  bool isFetching = false;
+  //List<SlotModel> list;
 
-  /* Future _getDataFromDatabase() async {
-    await FirebaseFirestore.instance
-        .collection("bookingmaids")
-        .doc()
-        .get()
-        .then((snapshot) async {
-      if (snapshot.exists) {
-        setState(() {
-          bookingdate = snapshot.data()!['bookingdate'];
-        });
-      }
+  /*Future<List<UserTask>> getUserTaskList() async {
+
+    QuerySnapshot qShot = 
+      await FirebaseFirestore.instance.collection('userTasks').get();
+
+    return qShot.docs.map(
+      (doc) => UserTask(
+            doc.data['id'],
+            doc.data['Description'],
+            )
+    ).toList();
+  }*/
+
+  /*Future<List<SlotsModel>> getTimeSlot() async {
+    List<SlotsModel> list;
+    var result = new List<SlotModel>.empty(growable: true);
+    var bookingRef = FirebaseFirestore.instance.collection('bookslot');
+    QuerySnapshot snapshot = await bookingRef.get();
+    snapshot.docs.forEach((element) {
+      SlotsModel slotModel = SlotModel(
+        
+      );
     });
+    return result;
+  }*/
+
+  Future _getDataFromDatabase() async {
+    List<SlotModel> list;
+    FirebaseFirestore.instance.collection("bookslot").get().then(
+      (value) {
+        value.docs.forEach(
+          (doc) {
+            print(doc.data());
+          },
+        );
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
     _getDataFromDatabase();
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,135 +88,76 @@ class _PickDateTimeState extends State<PickDateTime> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              color: Colors.brown[500],
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              '${DateFormat.MMMM().format(date)}',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              '${date.day}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22),
-                            ),
-                            Text(
-                              '${date.year}',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showCupertinoModalPopup(
-                        context: context,
-                        builder: (BuildContext context) => SizedBox(
-                          height: 250,
-                          child: CupertinoDatePicker(
-                            mode: CupertinoDatePickerMode.date,
-                            backgroundColor: Colors.white,
-                            initialDateTime: DateTime.now(),
-                            onDateTimeChanged: (value) {
-                              if (value != null && value != date)
-                                setState(() {
-                                  date = value;
-                                });
-                            },
+            _tableCalendar(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+            ),
+            Text(
+              'Pick Time Slot',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            SizedBox(
+              height: 400,
+              child: ListView.builder(
+                  itemCount: TIME_SLOT.length,
+                  itemBuilder: ((context, index) => GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedTime = TIME_SLOT.elementAt(index);
+                        });
+                        _getDataFromDatabase();
+                      },
+                      child: Card(
+                        elevation: 10,
+                        color: selectedTime == TIME_SLOT.elementAt(index)
+                            ? Colors.brown[50]
+                            : Colors.white,
+                        child: SizedBox(
+                          height: 60,
+                          child: ListTile(
+                            title: Text('${TIME_SLOT.elementAt(index)}'),
+                            subtitle: Text('Available'),
+                            leading: selectedTime == TIME_SLOT.elementAt(index)
+                                ? const Icon(Icons.check)
+                                : null,
                           ),
                         ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.calendar_today_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
+                      )))),
             ),
-            FutureBuilder(
-                future: booktimeslot.get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Unsuccesful'),
-                      ),
-                    );
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  final snapd = snapshot.data!.docs;
-                  return Column(
-                    children: List.generate(
-                      snapd.length,
-                      (i) {
-                        final bb = snapd[i];
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 160,
-                                  childAspectRatio: 3 / 2,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20),
-                          itemCount: TIME_SLOT.length,
-                          itemBuilder: (context, index) {
-                            /*for (int i = 0; i < TIME_SLOT.length; i++)
-                           {
-                            if(bb.get('maiduid') == maiduid) {
-                              if(TIME_SLOT.elementAt(index) != )
-                            }
-                           
-                          }*/
-                            return ElevatedButton(
-                              onPressed: () {
-                                selectedTime = TIME_SLOT.elementAt(index);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.all(10),
-                                fixedSize: Size(100, 50),
-                                primary: Colors.brown[100],
-                                onPrimary: Colors.black,
-                                elevation: 15,
-                              ),
-                              child: Text(
-                                '${TIME_SLOT.elementAt(index)}',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  );
-                }),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _tableCalendar() {
+    return TableCalendar(
+      focusedDay: _focusDay,
+      firstDay: DateTime.now(),
+      lastDay: DateTime(2025, 12, 31),
+      calendarFormat: _format,
+      currentDay: _currentDay,
+      rowHeight: 48,
+      calendarStyle: const CalendarStyle(
+        todayDecoration:
+            BoxDecoration(color: Colors.brown, shape: BoxShape.circle),
+      ),
+      availableCalendarFormats: const {
+        CalendarFormat.month: 'Month',
+      },
+      onFormatChanged: (format) {
+        setState(() {
+          _format = format;
+        });
+      },
+      onDaySelected: ((selectedDay, focusedDay) {
+        setState(() {
+          _currentDay = selectedDay;
+          formattedDate = DateFormat('MM/dd/yyyy').format(_currentDay);
+          _focusDay = focusedDay;
+          _dateSelected = true;
+        });
+      }),
     );
   }
 }
