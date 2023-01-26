@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             hintStyle: TextStyle(color: Colors.white70),
           ),
         ),
-        home: PickDateTime(),
+        home: SplashScreen2(),
       ),
     );
   }

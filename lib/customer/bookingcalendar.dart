@@ -9,6 +9,20 @@ import 'package:table_calendar/table_calendar.dart';
 
 enum TimeSlotEnum { Eightam, Elevenam, Twopm, Fivepm }
 
+const TIME_SLOT = [
+  'TimeSlotEnum.Eightam',
+  'TimeSlotEnum.Elevenam',
+  'TimeSlotEnum.Twopm',
+  'TimeSlotEnum.Fivepm'
+];
+
+const TIME_DURATION = [
+  '8:00 am - 10:00 am',
+  '12:00 pm - 2:00 pm',
+  '4:00 pm - 6:00 pm',
+  '8:00 pm - 10:00 pm'
+];
+
 class BookSlot extends StatefulWidget {
   final QueryDocumentSnapshot<Object?>? data;
   BookSlot({Key? key, this.data}) : super(key: key);
@@ -33,8 +47,22 @@ class _BookSlotState extends State<BookSlot> {
   late String muid = widget.data!.get('uid');
 
   //fetch data from database
-  final bs = FirebaseFirestore.instance.collection("bookslot");
+  final bs = FirebaseFirestore.instance
+      .collection('maid')
+      .doc()
+      .collection("bookslot");
+  final CollectionReference booktimeslot = FirebaseFirestore.instance
+      .collection('maid')
+      .doc()
+      .collection('bookslot');
+
   //List<SlotModel> list = [];
+  final _slotList = [
+    'TimeSlotEnum.Eightam',
+    'TimeSlotEnum.Elevenam',
+    'TimeSlotEnum.Twopm',
+    'TimeSlotEnum.Fivepm'
+  ];
   String slot1 = 'TimeSlotEnum.Eightam';
   String slot2 = 'TimeSlotEnum.Elevenam';
   String slot3 = 'TimeSlotEnum.Twopm';
@@ -45,15 +73,40 @@ class _BookSlotState extends State<BookSlot> {
   String uslot4 = '';
   String? custuid = FirebaseAuth.instance.currentUser!.uid;
 
+  late Future<QuerySnapshot> _futureData;
+  List<Map> _bookslotItems = [];
+  String selectedTime = '';
+
+  List<Map> parseData(QuerySnapshot querySnapshot) {
+    List<QueryDocumentSnapshot> listDocs = querySnapshot.docs;
+    List<Map> listItems = listDocs
+        .map((e) => {
+              'maiduid': e['maiduid'],
+              'custuid': e['custuid'],
+              'bookdate': e['bookdate'],
+              'timeslot': e['timeslot'],
+            })
+        .toList();
+    return listItems;
+  }
+
   @override
   void initState() {
     super.initState();
+    _futureData = booktimeslot.get();
+    _futureData.then((value) {
+      setState(() {
+        _bookslotItems = parseData(value);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference bookslot =
-        FirebaseFirestore.instance.collection('bookslot');
+    CollectionReference bookslot = FirebaseFirestore.instance
+        .collection('maid')
+        .doc(muid)
+        .collection('bookslot');
     Add(String maiduid, String timeslot, String bookdate, String custuid) {
       try {
         return bookslot.add({
@@ -78,7 +131,7 @@ class _BookSlotState extends State<BookSlot> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
-          height: 800,
+          height: 1000,
           child: CustomScrollView(
             slivers: <Widget>[
               SliverToBoxAdapter(
@@ -92,7 +145,11 @@ class _BookSlotState extends State<BookSlot> {
                     ),
                     //start sini !!!
                     FutureBuilder(
-                        future: bs.get(),
+                        future: FirebaseFirestore.instance
+                            .collection('maid')
+                            .doc(muid)
+                            .collection('bookslot')
+                            .get(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (snapshot.hasError) {
@@ -102,6 +159,7 @@ class _BookSlotState extends State<BookSlot> {
                               ),
                             );
                           }
+
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const Center(
@@ -115,139 +173,85 @@ class _BookSlotState extends State<BookSlot> {
                               (i) {
                                 final slot = snapd[i];
 
-                                if (slot.get('maiduid') == muid) {
-                                  if (slot.get('bookdate') == formattedDate) {
-                                    return Column(
+                                return Column(
+                                  children: [
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            if (slot.get('timeslot') ==
-                                                slot1) ...[
-                                              Expanded(
-                                                child: RadioListTile<
-                                                        TimeSlotEnum>(
-                                                    value: TimeSlotEnum.Eightam,
-                                                    title: Text(
-                                                        '8:00AM \n Unavailable'),
-                                                    groupValue: _timeSlotEnum,
-                                                    onChanged: null),
-                                              ),
-                                            ] else if (slot.get('timeslot') ==
-                                                slot2) ...[
-                                              Expanded(
-                                                child: RadioListTile<
-                                                        TimeSlotEnum>(
-                                                    value:
-                                                        TimeSlotEnum.Elevenam,
-                                                    title: Text(
-                                                        '11:00AM \n Unavailable'),
-                                                    groupValue: _timeSlotEnum,
-                                                    onChanged: null),
-                                              ),
-                                            ] else if (slot.get('timeslot') ==
-                                                slot3) ...[
-                                              Expanded(
-                                                child: RadioListTile<
-                                                        TimeSlotEnum>(
-                                                    value: TimeSlotEnum.Twopm,
-                                                    title: Text(
-                                                        '2:00PM \n Unavailable'),
-                                                    groupValue: _timeSlotEnum,
-                                                    onChanged: null),
-                                              ),
-                                            ] else if (slot.get('timeslot') ==
-                                                slot4) ...[
-                                              Expanded(
-                                                child: RadioListTile<
-                                                        TimeSlotEnum>(
-                                                    value: TimeSlotEnum.Fivepm,
-                                                    title: Text(
-                                                        '5:00PM \n Unavailable'),
-                                                    groupValue: _timeSlotEnum,
-                                                    onChanged: null),
-                                              ),
-                                            ],
-                                          ],
-                                        ),
+                                        if (slot.get('timeslot') != slot1) ...[
+                                          Expanded(
+                                            child: RadioListTile<TimeSlotEnum>(
+                                              value: TimeSlotEnum.Eightam,
+                                              title: Text('8:00AM'),
+                                              groupValue: _timeSlotEnum,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _timeSlotEnum = value;
+                                                });
+
+                                                ts = _timeSlotEnum.toString();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                        if (slot.get('timeslot') != slot2) ...[
+                                          Expanded(
+                                            child: RadioListTile<TimeSlotEnum>(
+                                              value: TimeSlotEnum.Elevenam,
+                                              title: Text('11:00AM'),
+                                              groupValue: _timeSlotEnum,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _timeSlotEnum = value;
+                                                });
+
+                                                ts = _timeSlotEnum.toString();
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ],
-                                    );
-                                  } else {
-                                    return Column(
-                                      children: [],
-                                    );
-                                  }
-                                } else {
-                                  return Column(
-                                    children: [],
-                                  );
-                                }
+                                    ),
+                                    Row(
+                                      children: [
+                                        if (slot.get('timeslot') != slot3) ...[
+                                          Expanded(
+                                            child: RadioListTile<TimeSlotEnum>(
+                                              value: TimeSlotEnum.Twopm,
+                                              title: Text('2:00PM'),
+                                              groupValue: _timeSlotEnum,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _timeSlotEnum = value;
+                                                });
+
+                                                ts = _timeSlotEnum.toString();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                        if (slot.get('timeslot') != slot4) ...[
+                                          Expanded(
+                                            child: RadioListTile<TimeSlotEnum>(
+                                              value: TimeSlotEnum.Fivepm,
+                                              title: Text('5:00PM'),
+                                              groupValue: _timeSlotEnum,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _timeSlotEnum = value;
+                                                });
+                                                ts = _timeSlotEnum.toString();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ],
+                                );
                               },
                             ),
                           );
                         }),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile<TimeSlotEnum>(
-                            value: TimeSlotEnum.Eightam,
-                            title: Text('8:00AM'),
-                            groupValue: _timeSlotEnum,
-                            onChanged: (value) {
-                              setState(() {
-                                _timeSlotEnum = value;
-                              });
-
-                              ts = _timeSlotEnum.toString();
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: RadioListTile<TimeSlotEnum>(
-                            value: TimeSlotEnum.Elevenam,
-                            title: Text('11:00AM'),
-                            groupValue: _timeSlotEnum,
-                            onChanged: (value) {
-                              setState(() {
-                                _timeSlotEnum = value;
-                              });
-
-                              ts = _timeSlotEnum.toString();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: RadioListTile<TimeSlotEnum>(
-                            value: TimeSlotEnum.Twopm,
-                            title: Text('2:00PM'),
-                            groupValue: _timeSlotEnum,
-                            onChanged: (value) {
-                              setState(() {
-                                _timeSlotEnum = value;
-                              });
-
-                              ts = _timeSlotEnum.toString();
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: RadioListTile<TimeSlotEnum>(
-                            value: TimeSlotEnum.Fivepm,
-                            title: Text('5:00PM'),
-                            groupValue: _timeSlotEnum,
-                            onChanged: (value) {
-                              setState(() {
-                                _timeSlotEnum = value;
-                              });
-                              ts = _timeSlotEnum.toString();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
 
                     ElevatedButton(
                         onPressed: () {
@@ -378,3 +382,59 @@ class _BookSlotState extends State<BookSlot> {
                         ),
                       ],
                     ),*/
+
+/* SizedBox(
+                                        height: 400,
+                                        child: ListView.builder(
+                                          itemCount: TIME_SLOT.length,
+                                          itemBuilder: ((context, index) =>
+                                              GestureDetector(
+                                                onTap: slot.get('timeslot') ==
+                                                        TIME_SLOT
+                                                            .elementAt(index)
+                                                    ? null
+                                                    : () {
+                                                        setState(() {
+                                                          selectedTime =
+                                                              TIME_SLOT
+                                                                  .elementAt(
+                                                                      index);
+                                                        });
+                                                      },
+                                                child: Card(
+                                                  elevation: 10,
+                                                  color: slot.get('timeslot') ==
+                                                          TIME_SLOT
+                                                              .elementAt(index)
+                                                      ? Colors.white10
+                                                      : selectedTime ==
+                                                              TIME_SLOT
+                                                                  .elementAt(
+                                                                      index)
+                                                          ? Colors.brown[50]
+                                                          : Colors.white,
+                                                  child: SizedBox(
+                                                    height: 60,
+                                                    child: ListTile(
+                                                      title: Text(
+                                                          '${TIME_DURATION.elementAt(index)}'),
+                                                      subtitle: Text(slot.get(
+                                                                  'timeslot') ==
+                                                              TIME_SLOT
+                                                                  .elementAt(
+                                                                      index)
+                                                          ? 'Full'
+                                                          : 'Available'),
+                                                      leading: selectedTime ==
+                                                              TIME_SLOT
+                                                                  .elementAt(
+                                                                      index)
+                                                          ? const Icon(
+                                                              Icons.check)
+                                                          : null,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )),
+                                        ),
+                                      ),*/

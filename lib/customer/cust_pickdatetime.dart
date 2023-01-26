@@ -23,9 +23,10 @@ class PickDateTime extends StatefulWidget {
 }
 
 class _PickDateTimeState extends State<PickDateTime> {
-  CollectionReference booktimeslot =
+  final CollectionReference booktimeslot =
       FirebaseFirestore.instance.collection('bookslot');
   late String maiduid = widget.data!.get('uid');
+
   CalendarFormat _format = CalendarFormat.month;
   DateTime _focusDay = DateTime.now();
   DateTime _currentDay = DateTime.now();
@@ -35,35 +36,11 @@ class _PickDateTimeState extends State<PickDateTime> {
   String? formattedDate;
   String selectedTime = '';
   bool isFetching = false;
-  //List<SlotModel> list;
 
-  /*Future<List<UserTask>> getUserTaskList() async {
+  late Future<QuerySnapshot> _futureData;
+  List<Map> _bookslotItems = [];
 
-    QuerySnapshot qShot = 
-      await FirebaseFirestore.instance.collection('userTasks').get();
-
-    return qShot.docs.map(
-      (doc) => UserTask(
-            doc.data['id'],
-            doc.data['Description'],
-            )
-    ).toList();
-  }*/
-
-  /*Future<List<SlotsModel>> getTimeSlot() async {
-    List<SlotsModel> list;
-    var result = new List<SlotModel>.empty(growable: true);
-    var bookingRef = FirebaseFirestore.instance.collection('bookslot');
-    QuerySnapshot snapshot = await bookingRef.get();
-    snapshot.docs.forEach((element) {
-      SlotsModel slotModel = SlotModel(
-        
-      );
-    });
-    return result;
-  }*/
-
-  Future _getDataFromDatabase() async {
+  /*Future _getDataFromDatabase() async {
     List<SlotModel> list;
     FirebaseFirestore.instance.collection("bookslot").get().then(
       (value) {
@@ -74,12 +51,31 @@ class _PickDateTimeState extends State<PickDateTime> {
         );
       },
     );
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
-    _getDataFromDatabase();
+    _futureData = booktimeslot.get();
+    _futureData.then((value) {
+      setState(() {
+        _bookslotItems = parseData(value);
+      });
+    });
+    //_getDataFromDatabase();
+  }
+
+  List<Map> parseData(QuerySnapshot querySnapshot) {
+    List<QueryDocumentSnapshot> listDocs = querySnapshot.docs;
+    List<Map> listItems = listDocs
+        .map((e) => {
+              'maiduid': e['maiduid'],
+              'custuid': e['custuid'],
+              'bookdate': e['bookdate'],
+              'timeslot': e['timeslot'],
+            })
+        .toList();
+    return listItems;
   }
 
   @override
@@ -105,7 +101,6 @@ class _PickDateTimeState extends State<PickDateTime> {
                         setState(() {
                           selectedTime = TIME_SLOT.elementAt(index);
                         });
-                        _getDataFromDatabase();
                       },
                       child: Card(
                         elevation: 10,
