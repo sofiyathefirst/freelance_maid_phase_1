@@ -29,7 +29,7 @@ class _DeepCleaningState extends State<DeepCleaning> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -209,7 +209,7 @@ class _DeepCleaningState extends State<DeepCleaning> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      BookSlot(data: maid),
+                                                      Custbooking(data: maid),
                                                 ),
                                               );
                                             },

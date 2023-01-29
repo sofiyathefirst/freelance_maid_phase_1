@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
-import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/geolocation/maidgeolocation.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
@@ -178,15 +176,6 @@ class _MaidReceiptState extends State<MaidReceipt> {
                                   Text('Customer Gender: ' +
                                       bookstatus.get('custgender')),
                                   SizedBox(height: 5),
-                                  Text('Customer Address: ' +
-                                      bookstatus.get('custaddress') +
-                                      '\n' +
-                                      bookstatus.get('custcity') +
-                                      '\t' +
-                                      bookstatus.get('custpostcode') +
-                                      '\t' +
-                                      bookstatus.get('custstate')),
-                                  SizedBox(height: 5),
                                   Text('Cleaning type: ' +
                                       bookstatus.get('cleaningtype')),
                                   SizedBox(height: 5),
@@ -204,25 +193,16 @@ class _MaidReceiptState extends State<MaidReceipt> {
                                   SizedBox(height: 5),
                                   Text('Garden: ' + bookstatus.get('garden')),
                                   SizedBox(height: 5),
-                                  Text('Rate Per Hour: ' +
-                                      bookstatus.get('rateperhour')),
-                                  SizedBox(height: 5),
                                   Text('Booking Date: ' +
-                                      bookstatus.get('bookingdate')),
+                                      bookstatus.get('bookdate')),
                                   SizedBox(height: 5),
-                                  Text('Time Start: ' +
-                                      bookstatus.get('timestart')),
-                                  SizedBox(height: 5),
-                                  Text(
-                                      'Time End: ' + bookstatus.get('timeend')),
-                                  SizedBox(height: 5),
-                                  Text('Total Hour: ' + bookstatus.get('hour')),
+                                  Text('Time Slot: ' +
+                                      bookstatus.get('timeslot')),
                                   SizedBox(height: 5),
                                   Text('Total Payment: RM' +
                                       bookstatus
                                           .get('totalpayment')
                                           .toString()),
-                                  SizedBox(height: 20),
                                   SizedBox(height: 5),
                                   Text('Status: ' + bookstatus.get('status')),
                                 ],

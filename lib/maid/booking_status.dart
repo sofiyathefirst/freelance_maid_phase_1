@@ -38,21 +38,14 @@ class _UpdateBookingState extends State<UpdateBooking> {
   late String custpnum = widget.data!.get('custpnum');
   late String custemail = widget.data!.get('custemail');
   late String custgender = widget.data!.get('custgender');
-  late String custaddress = widget.data!.get('custaddress');
-  late String custpostcode = widget.data!.get('custpostcode');
-  late String custcity = widget.data!.get('custcity');
-  late String custstate = widget.data!.get('custstate');
-  late String maidstate = widget.data!.get('maidstate');
   late String bedroom = widget.data!.get('bedrooms');
   late String bathroom = widget.data!.get('bathrooms');
   late String kitchen = widget.data!.get('kitchen');
   late String pantry = widget.data!.get('pantry');
   late String office = widget.data!.get('office');
   late String garden = widget.data!.get('garden');
-  late String date = widget.data!.get('bookingdate');
-  late String timestart = widget.data!.get('timestart');
-  late String timeend = widget.data!.get('timeend');
-  late String hour = widget.data!.get('hour');
+  late String date = widget.data!.get('bookdate');
+  late String timeslot = widget.data!.get('timeslot');
   late int totalpayment = widget.data!.get('totalpayment');
   late String cleaningtype = widget.data!.get('cleaningtype');
   late String rateperhour = widget.data!.get('rateperhour');
@@ -84,7 +77,6 @@ class _UpdateBookingState extends State<UpdateBooking> {
         String maidpnum,
         String maidemail,
         String maidgender,
-        String maidstate,
         String cleaningtype,
         String bathrooms,
         String bedrooms,
@@ -100,9 +92,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
         String email,
         String gender,
         String date,
-        String timestart,
-        String timeend,
-        String hour,
+        String timeslot,
         int totalpayment,
         String status) {
       try {
@@ -113,7 +103,6 @@ class _UpdateBookingState extends State<UpdateBooking> {
           'maidpnum': maidpnum,
           'maidemail': maidemail,
           'maidgender': maidgender,
-          'maidstate': maidstate,
           'cleaningtype': cleaningtype,
           'bathrooms': bathrooms,
           'bedrooms': bedrooms,
@@ -129,9 +118,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
           'custemail': email,
           'custgender': gender,
           'bookingdate': date,
-          'timestart': timestart,
-          'timeend': timeend,
-          'hour': hour,
+          'timestart': timeslot,
           'totalpayment': totalpayment,
           'status': status,
         }).then(
@@ -266,23 +253,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Time Start: $timestart',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'Time End: $timeend',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      'Hour: $hour',
+                      'Time Start: $timeslot',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -383,7 +354,6 @@ class _UpdateBookingState extends State<UpdateBooking> {
                             maidpnum,
                             maidemail,
                             maidgender,
-                            maidstate,
                             cleaningtype,
                             bathroom,
                             bedroom,
@@ -399,9 +369,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                             custemail,
                             custgender,
                             date,
-                            timestart,
-                            timeend,
-                            hour,
+                            timeslot,
                             totalpayment,
                             displaystatus.text,
                           );
