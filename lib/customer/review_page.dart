@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_review.dart';
@@ -19,13 +20,13 @@ class ReviewPage extends StatefulWidget {
 }
 
 class _ReviewPageState extends State<ReviewPage> {
-  final rreview = FirebaseFirestore.instance.collection('review');
+  final rreview = FirebaseFirestore.instance.collection('reviews');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -159,7 +160,11 @@ class _ReviewPageState extends State<ReviewPage> {
                           children: [
                             SizedBox(height: 20),
                             Container(
-                              color: Colors.teal[300],
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: Colors.deepPurple[50],
+                              ),
                               width: double.infinity,
                               child: Column(
                                 children: [
@@ -182,6 +187,20 @@ class _ReviewPageState extends State<ReviewPage> {
                                   SizedBox(height: 10),
                                   Text('Review: ' + review.get('reviews')),
                                   SizedBox(height: 10),
+                                  RatingBar.builder(
+                                      initialRating: review.get("rating"),
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      ignoreGestures: true,
+                                      itemPadding:
+                                          EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                      onRatingUpdate: (rating) => {}),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,

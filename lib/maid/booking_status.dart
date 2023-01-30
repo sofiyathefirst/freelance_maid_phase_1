@@ -26,6 +26,8 @@ class _UpdateBookingState extends State<UpdateBooking> {
   ProductTypeEnum? _productTypeEnum;
   final GlobalKey<FormState> _abcKey = GlobalKey<FormState>();
 
+  late String maiduid = widget.data!.get('maiduid');
+  late String custuid = widget.data!.get('custuid');
   late String maidfname = widget.data!.get('maidfirstname');
   late String maidlname = widget.data!.get('maidlastname');
   late String maidpnum = widget.data!.get('maidpnum');
@@ -38,18 +40,18 @@ class _UpdateBookingState extends State<UpdateBooking> {
   late String custpnum = widget.data!.get('custpnum');
   late String custemail = widget.data!.get('custemail');
   late String custgender = widget.data!.get('custgender');
-  late String bedroom = widget.data!.get('bedrooms');
-  late String bathroom = widget.data!.get('bathrooms');
+  late String bedroom = widget.data!.get('bedroom');
+  late String bathroom = widget.data!.get('bathroom');
   late String kitchen = widget.data!.get('kitchen');
   late String pantry = widget.data!.get('pantry');
   late String office = widget.data!.get('office');
   late String garden = widget.data!.get('garden');
   late String date = widget.data!.get('bookdate');
   late String timeslot = widget.data!.get('timeslot');
-  late int totalpayment = widget.data!.get('totalpayment');
+  late String totalpayment = widget.data!.get('totalpayment');
   late String cleaningtype = widget.data!.get('cleaningtype');
-  late String rateperhour = widget.data!.get('rateperhour');
-  late String status = '';
+  late String status = widget.data!.get('status');
+  bool isLoading = false;
 
   TextEditingController displaystatus = TextEditingController();
 
@@ -64,79 +66,55 @@ class _UpdateBookingState extends State<UpdateBooking> {
   @override
   void initState() {
     super.initState();
+    updateBookStatus();
+  }
+
+  Future updateBookStatus() async {
+    final qs = await FirebaseFirestore.instance
+        .collection("bookmaids")
+        .where("maiduid", isEqualTo: maiduid)
+        .where("bookdate", isEqualTo: date)
+        .where("timeslot", isEqualTo: timeslot)
+        .get();
+
+    final batch = FirebaseFirestore.instance.batch();
+
+    qs.docs.forEach((element) {
+      batch.update(element.reference, {
+        "status": displaystatus.text.trim(),
+        'custfirstname': custfname,
+        'cuslastname': custlname,
+        'custpnum': custpnum,
+        'custgender': custgender,
+        'custemail': custemail,
+        'custuid': custuid,
+        'custimage': custimage,
+        'maidfirstname': maidfname,
+        'maidlastname': maidlname,
+        'maidpnum': maidpnum,
+        'maidgender': maidgender,
+        'maidemail': maidemail,
+        'maiduid': maiduid,
+        'maidimage': maidimage,
+        'bedroom': bedroom,
+        'bathroom': bathroom,
+        'kitchen': kitchen,
+        'pantry': pantry,
+        'office': office,
+        'garden': garden,
+        'bookdate': date,
+        'timeslot': timeslot,
+        'cleaningtype': cleaningtype,
+        'totalpayment': totalpayment,
+      });
+    });
+    await batch.commit();
   }
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference bookingstatus =
-        FirebaseFirestore.instance.collection('bookstatus');
-    Add(
-        String maidfname,
-        String maidlname,
-        String maidimage,
-        String maidpnum,
-        String maidemail,
-        String maidgender,
-        String cleaningtype,
-        String bathrooms,
-        String bedrooms,
-        String kitchen,
-        String pantry,
-        String office,
-        String garden,
-        String rateperhour,
-        String fname,
-        String lname,
-        String custimage,
-        String pnum,
-        String email,
-        String gender,
-        String date,
-        String timeslot,
-        int totalpayment,
-        String status) {
-      try {
-        return bookingstatus.add({
-          'maidfirstname': maidfname,
-          'maidlastname': maidlname,
-          'maidimage': maidimage,
-          'maidpnum': maidpnum,
-          'maidemail': maidemail,
-          'maidgender': maidgender,
-          'cleaningtype': cleaningtype,
-          'bathrooms': bathrooms,
-          'bedrooms': bedrooms,
-          'kitchen': kitchen,
-          'pantry': pantry,
-          'office': office,
-          'garden': garden,
-          'rateperhour': rateperhour,
-          'custfirstname': fname,
-          'cuslastname': lname,
-          'custimage': custimage,
-          'custpnum': pnum,
-          'custemail': email,
-          'custgender': gender,
-          'bookingdate': date,
-          'timestart': timeslot,
-          'totalpayment': totalpayment,
-          'status': status,
-        }).then(
-          (value) => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Booking Status Updated!'),
-            ),
-          ),
-        );
-      } on FirebaseException catch (e) {
-        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.code),
-        ));
-      }
-    }
-
     return Scaffold(
-        backgroundColor: Colors.teal.shade200,
+        backgroundColor: Colors.deepPurple[100],
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -230,7 +208,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 child: Column(
@@ -261,7 +239,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Rate per hour: RM $rateperhour',
+                      'Total Payment: RM $totalpayment',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -308,17 +286,17 @@ class _UpdateBookingState extends State<UpdateBooking> {
                       ],
                     ),
                     if (displaystatus.text == "Decline") ...[
+                      SizedBox(
+                        height: 10,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: 12.0),
-                            child: Text(
-                              "Reason of Decline",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
                           DropdownButtonFormField(
+                            decoration: InputDecoration(
+                                labelText: 'Reason of Decline',
+                                labelStyle: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20)),
                             value: _selectedstatus,
                             items: _declineList
                                 .map((e) => DropdownMenuItem(
@@ -347,32 +325,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                     const SizedBox(height: 15),
                     ElevatedButton(
                         onPressed: () {
-                          Add(
-                            maidfname,
-                            maidlname,
-                            maidimage,
-                            maidpnum,
-                            maidemail,
-                            maidgender,
-                            cleaningtype,
-                            bathroom,
-                            bedroom,
-                            kitchen,
-                            pantry,
-                            office,
-                            garden,
-                            rateperhour,
-                            custfname,
-                            custlname,
-                            custimage,
-                            custpnum,
-                            custemail,
-                            custgender,
-                            date,
-                            timeslot,
-                            totalpayment,
-                            displaystatus.text,
-                          );
+                          updateBookStatus();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

@@ -36,7 +36,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -160,85 +160,114 @@ class _MaidHomePageState extends State<MaidHomePage> {
                           children: [
                             SizedBox(height: 20),
                             Container(
-                              color: Colors.teal[300],
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: Colors.deepPurple[100],
+                              ),
                               width: double.infinity,
-                              child: Column(
+                              child: Row(
                                 children: [
-                                  SizedBox(height: 20),
-                                  Text('Customer Information',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  SizedBox(height: 5),
-                                  Text('Customer Name: ' +
-                                      bookmaid.get('custfirstname') +
-                                      '\t' +
-                                      bookmaid.get('cuslastname')),
-                                  SizedBox(height: 5),
-                                  Text('Customer Phone Number: ' +
-                                      bookmaid.get('custpnum')),
-                                  SizedBox(height: 5),
-                                  Text('Customer Email: ' +
-                                      bookmaid.get('custemail')),
-                                  SizedBox(height: 5),
-                                  Text('Customer Gender: ' +
-                                      bookmaid.get('custgender')),
-                                  SizedBox(height: 5),
-                                  Text('Cleaning type: ' +
-                                      bookmaid.get('cleaningtype')),
-                                  SizedBox(height: 5),
-                                  Text('Bedroom: ' + bookmaid.get('bedrooms')),
-                                  SizedBox(height: 5),
-                                  Text(
-                                      'Bathroom: ' + bookmaid.get('bathrooms')),
-                                  SizedBox(height: 5),
-                                  Text('Kitchen: ' + bookmaid.get('kitchen')),
-                                  SizedBox(height: 5),
-                                  Text('Pantry: ' + bookmaid.get('pantry')),
-                                  SizedBox(height: 5),
-                                  Text('Office: ' + bookmaid.get('office')),
-                                  SizedBox(height: 5),
-                                  Text('Garden: ' + bookmaid.get('garden')),
-                                  SizedBox(height: 5),
-                                  Text('Rate Per Hour: ' +
-                                      bookmaid.get('rateperhour')),
-                                  SizedBox(height: 5),
-                                  Text('Booking Date: ' +
-                                      bookmaid.get('bookingdate')),
-                                  SizedBox(height: 5),
-                                  Text(
-                                      'Time Slot: ' + bookmaid.get('timeslot')),
-                                  SizedBox(height: 5),
-                                  Text('Total Payment: RM' +
-                                      bookmaid.get('totalpayment').toString()),
-                                  SizedBox(height: 10),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdateBooking(data: bookmaid),
-                                        ),
-                                      );
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.green.shade800),
-                                    ),
-                                    child: Text(
-                                      'Update Status',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image(
+                                      image: NetworkImage(
+                                          bookmaid.get('custimage')),
                                     ),
                                   ),
+                                  SizedBox(width: 15),
+                                  Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text('Customer Information',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text('Customer Name: ' +
+                                          bookmaid.get('custfirstname') +
+                                          '\t' +
+                                          bookmaid.get('cuslastname')),
+                                      SizedBox(height: 5),
+                                      Text('Customer Phone Number: ' +
+                                          bookmaid.get('custpnum')),
+                                      SizedBox(height: 5),
+                                      Text('Customer Email: ' +
+                                          bookmaid.get('custemail')),
+                                      SizedBox(height: 5),
+                                      Text('Customer Gender: ' +
+                                          bookmaid.get('custgender')),
+                                      SizedBox(height: 5),
+                                      Text('Cleaning type: ' +
+                                          bookmaid.get('cleaningtype')),
+                                      SizedBox(height: 5),
+                                      Text('Bedroom: ' +
+                                          bookmaid.get('bedroom')),
+                                      SizedBox(height: 5),
+                                      Text('Bathroom: ' +
+                                          bookmaid.get('bathroom')),
+                                      SizedBox(height: 5),
+                                      Text('Kitchen: ' +
+                                          bookmaid.get('kitchen')),
+                                      SizedBox(height: 5),
+                                      Text('Pantry: ' + bookmaid.get('pantry')),
+                                      SizedBox(height: 5),
+                                      Text('Office: ' + bookmaid.get('office')),
+                                      SizedBox(height: 5),
+                                      Text('Garden: ' + bookmaid.get('garden')),
+                                      SizedBox(height: 5),
+                                      Text('Booking Date: ' +
+                                          bookmaid.get('bookdate')),
+                                      SizedBox(height: 5),
+                                      Text('Time Slot: ' +
+                                          bookmaid.get('timeslot')),
+                                      SizedBox(height: 5),
+                                      Text('Total Payment: RM' +
+                                          bookmaid
+                                              .get('totalpayment')
+                                              .toString()),
+                                      SizedBox(height: 5),
+                                      Text('Status: \n' +
+                                          bookmaid.get('status')),
+                                      SizedBox(height: 10),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UpdateBooking(data: bookmaid),
+                                            ),
+                                          );
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.green.shade800),
+                                        ),
+                                        child: Text(
+                                          'Update Status',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                  ),
                                 ],
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                               ),
                             )
                           ],

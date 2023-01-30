@@ -135,24 +135,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     inputType: TextInputType.phone,
                     validator: _requiredValidator,
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 12.0),
-                          child: Text(
-                            "Gender",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
                         DropdownButtonFormField(
                           value: _selectedgender,
                           items: _genderList
@@ -173,14 +163,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: Colors.black,
                           ),
                           decoration: InputDecoration(
+                            labelText: 'Gender',
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.grey),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide(color: Colors.white),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30.0)),
+                                  BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide(
                                   color: Colors.green.shade200, width: 3.0),
                             ),
@@ -211,12 +206,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0)),
+                                    BorderRadius.all(Radius.circular(20.0)),
                                 borderSide: BorderSide(color: Colors.white),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0)),
+                                    BorderRadius.all(Radius.circular(20.0)),
                                 borderSide: BorderSide(
                                     color: Colors.green.shade200, width: 3.0),
                               ),

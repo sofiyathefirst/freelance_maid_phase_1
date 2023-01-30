@@ -17,13 +17,20 @@ class MaidReceipt extends StatefulWidget {
 }
 
 class _MaidReceiptState extends State<MaidReceipt> {
-  final bookingStatus = FirebaseFirestore.instance.collection('bookingstatus');
+  final bookingStatus = FirebaseFirestore.instance.collection('bookmaids');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
+
+  Future<QuerySnapshot> getData() async {
+    return await FirebaseFirestore.instance
+        .collection('bookmaids')
+        .where("maidemail", isEqualTo: currentUser)
+        .get();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -145,69 +152,91 @@ class _MaidReceiptState extends State<MaidReceipt> {
                           children: [
                             SizedBox(height: 20),
                             Container(
-                              color: Colors.teal[300],
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: Colors.deepPurple[50],
+                              ),
                               width: double.infinity,
-                              child: Column(
+                              child: Row(
                                 children: [
-                                  SizedBox(height: 20),
-                                  Text('Customer Information',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  SizedBox(height: 5),
-                                  Center(
-                                    child: Image(
-                                        image: NetworkImage(
-                                            bookstatus.get('custimage'))),
+                                  SizedBox(
+                                    width: 15,
                                   ),
-                                  SizedBox(height: 5),
-                                  Text('Customer Name: ' +
-                                      bookstatus.get('custfirstname') +
-                                      '\t' +
-                                      bookstatus.get('cuslastname')),
-                                  SizedBox(height: 5),
-                                  Text('Customer Phone Number: ' +
-                                      bookstatus.get('custpnum')),
-                                  SizedBox(height: 5),
-                                  Text('Customer Email: ' +
-                                      bookstatus.get('custemail')),
-                                  SizedBox(height: 5),
-                                  Text('Customer Gender: ' +
-                                      bookstatus.get('custgender')),
-                                  SizedBox(height: 5),
-                                  Text('Cleaning type: ' +
-                                      bookstatus.get('cleaningtype')),
-                                  SizedBox(height: 5),
-                                  Text(
-                                      'Bedroom: ' + bookstatus.get('bedrooms')),
-                                  SizedBox(height: 5),
-                                  Text('Bathroom: ' +
-                                      bookstatus.get('bathrooms')),
-                                  SizedBox(height: 5),
-                                  Text('Kitchen: ' + bookstatus.get('kitchen')),
-                                  SizedBox(height: 5),
-                                  Text('Pantry: ' + bookstatus.get('pantry')),
-                                  SizedBox(height: 5),
-                                  Text('Office: ' + bookstatus.get('office')),
-                                  SizedBox(height: 5),
-                                  Text('Garden: ' + bookstatus.get('garden')),
-                                  SizedBox(height: 5),
-                                  Text('Booking Date: ' +
-                                      bookstatus.get('bookdate')),
-                                  SizedBox(height: 5),
-                                  Text('Time Slot: ' +
-                                      bookstatus.get('timeslot')),
-                                  SizedBox(height: 5),
-                                  Text('Total Payment: RM' +
-                                      bookstatus
-                                          .get('totalpayment')
-                                          .toString()),
-                                  SizedBox(height: 5),
-                                  Text('Status: ' + bookstatus.get('status')),
+                                  SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: Image(
+                                      image: NetworkImage(
+                                          bookstatus.get('custimage')),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Column(
+                                    children: [
+                                      SizedBox(height: 20),
+                                      Text('Customer Information',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                      SizedBox(height: 5),
+                                      Text('Customer Name: ' +
+                                          bookstatus.get('custfirstname') +
+                                          '\t' +
+                                          bookstatus.get('cuslastname')),
+                                      SizedBox(height: 5),
+                                      Text('Customer Phone Number: ' +
+                                          bookstatus.get('custpnum')),
+                                      SizedBox(height: 5),
+                                      Text('Customer Email: ' +
+                                          bookstatus.get('custemail')),
+                                      SizedBox(height: 5),
+                                      Text('Customer Gender: ' +
+                                          bookstatus.get('custgender')),
+                                      SizedBox(height: 5),
+                                      Text('Cleaning type: ' +
+                                          bookstatus.get('cleaningtype')),
+                                      SizedBox(height: 5),
+                                      Text('Bedroom: ' +
+                                          bookstatus.get('bedroom')),
+                                      SizedBox(height: 5),
+                                      Text('Bathroom: ' +
+                                          bookstatus.get('bathroom')),
+                                      SizedBox(height: 5),
+                                      Text('Kitchen: ' +
+                                          bookstatus.get('kitchen')),
+                                      SizedBox(height: 5),
+                                      Text('Pantry: ' +
+                                          bookstatus.get('pantry')),
+                                      SizedBox(height: 5),
+                                      Text('Office: ' +
+                                          bookstatus.get('office')),
+                                      SizedBox(height: 5),
+                                      Text('Garden: ' +
+                                          bookstatus.get('garden')),
+                                      SizedBox(height: 5),
+                                      Text('Booking Date: ' +
+                                          bookstatus.get('bookdate')),
+                                      SizedBox(height: 5),
+                                      Text('Time Slot: ' +
+                                          bookstatus.get('timeslot')),
+                                      SizedBox(height: 5),
+                                      Text('Total Payment: RM' +
+                                          bookstatus
+                                              .get('totalpayment')
+                                              .toString()),
+                                      SizedBox(height: 5),
+                                      Text('Status: \n' +
+                                          bookstatus.get('status')),
+                                    ],
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                  ),
                                 ],
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                               ),
                             )
                           ],

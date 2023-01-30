@@ -60,6 +60,7 @@ dependencies:
   google_fonts: any
   booking_calendar: any
   table_calendar: any
+  flutter_rating_bar: ^4.0.1
   
 
 

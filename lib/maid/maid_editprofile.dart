@@ -60,7 +60,17 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
     "Office Cleaning",
     "Post Renovation"
   ];
-  final _rateperhourList = ["50", "70", "100", "150", "170"];
+  final _rateperhourList = [
+    "50",
+    "70",
+    "100",
+    "150",
+    "170",
+    "200",
+    "250",
+    "270",
+    "300"
+  ];
   final _serviceofferedList = [
     "Deep Cleaning: Whole house cleaning under furniture, vacuuming and cleaning upholstery, scrubbing walls, polishing furniture, organizing",
     "Disinfection Services: Sanitizing whole house or office area",

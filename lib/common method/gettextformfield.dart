@@ -31,11 +31,11 @@ class getTextFormField extends StatelessWidget {
         keyboardType: inputType,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
             borderSide: BorderSide(color: Colors.white),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
             borderSide: BorderSide(color: Colors.blue.shade200, width: 3.0),
           ),
           prefixIcon: Icon(

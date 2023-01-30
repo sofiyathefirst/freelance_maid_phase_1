@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
@@ -32,13 +33,13 @@ class _ReviewState extends State<Review> {
   late String custemail = widget.data!.get('custemail');
   late String maidemail = widget.data!.get('maidemail');
   late String cleaningtype = widget.data!.get('cleaningtype');
-  late String date = widget.data!.get('bookingdate');
-  late String timestart = widget.data!.get('timestart');
-  late String timeend = widget.data!.get('timeend');
+  late String date = widget.data!.get('bookdate');
+  late String timeslot = widget.data!.get('timeslot');
   late String reviews = '';
-  late int totalpayment = widget.data?.get('totalpayment');
+  late String totalpayment = widget.data?.get('totalpayment');
 
   final TextEditingController reviewcontroller = TextEditingController();
+  late double _rating;
 
   @override
   void initState() {
@@ -48,7 +49,7 @@ class _ReviewState extends State<Review> {
   @override
   Widget build(BuildContext context) {
     CollectionReference reviewref =
-        FirebaseFirestore.instance.collection('review');
+        FirebaseFirestore.instance.collection('reviews');
     Add(
         String maidfname,
         String maidlname,
@@ -58,10 +59,10 @@ class _ReviewState extends State<Review> {
         String custlname,
         String custemail,
         String date,
-        String timestart,
-        String timeend,
-        int totalpayment,
-        String reviews) {
+        String timeslot,
+        String totalpayment,
+        String reviews,
+        double rating) {
       try {
         return reviewref.add({
           'maidfirstname': maidfname,
@@ -71,11 +72,11 @@ class _ReviewState extends State<Review> {
           'custfirstname': custfname,
           'cuslastname': custlname,
           'custemail': custemail,
-          'bookingdate': date,
-          'timestart': timestart,
-          'timeend': timeend,
+          'bookdate': date,
+          'timeslot': timeslot,
           'totalpayment': totalpayment,
           'reviews': reviews,
+          'rating': rating
         }).then(
           (value) => ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -91,7 +92,7 @@ class _ReviewState extends State<Review> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -241,7 +242,7 @@ class _ReviewState extends State<Review> {
                 controller: reviewcontroller,
                 decoration: InputDecoration(
                   hintText: 'Leave your review',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                   ),
@@ -250,6 +251,21 @@ class _ReviewState extends State<Review> {
                   ),
                 ),
                 onChanged: (value) {},
+              ),
+              RatingBar.builder(
+                initialRating: 0,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) => setState(() {
+                  _rating = rating;
+                }),
               ),
               const SizedBox(height: 15),
               ElevatedButton(
@@ -263,14 +279,15 @@ class _ReviewState extends State<Review> {
                         custlname,
                         custemail,
                         date,
-                        timestart,
-                        timeend,
+                        timeslot,
                         totalpayment,
-                        reviewcontroller.text);
+                        reviewcontroller.text,
+                        _rating);
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => Maidreview(),
+                        builder: (_) => CustHomePage(),
                       ),
                     );
                   },

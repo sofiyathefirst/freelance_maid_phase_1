@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
 import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
@@ -19,6 +20,7 @@ class Receipt extends StatefulWidget {
 class _ReceiptState extends State<Receipt> {
   final bookingMaid = FirebaseFirestore.instance.collection('bookmaids');
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
+
   Future<void> _delete(String bookingId) async {
     await bookingMaid.doc(bookingId).delete();
 
@@ -32,7 +34,7 @@ class _ReceiptState extends State<Receipt> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -168,7 +170,11 @@ class _ReceiptState extends State<Receipt> {
                           children: [
                             SizedBox(height: 20),
                             Container(
-                              color: Colors.teal[300],
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: Colors.deepPurple[50],
+                              ),
                               width: double.infinity,
                               child: Row(
                                 children: [
@@ -202,10 +208,10 @@ class _ReceiptState extends State<Receipt> {
                                           bookmaid.get('cleaningtype')),
                                       SizedBox(height: 5),
                                       Text('Bedroom: ' +
-                                          bookmaid.get('bedrooms')),
+                                          bookmaid.get('bedroom')),
                                       SizedBox(height: 5),
                                       Text('Bathroom: ' +
-                                          bookmaid.get('bathrooms')),
+                                          bookmaid.get('bathroom')),
                                       SizedBox(height: 5),
                                       Text('Kitchen: ' +
                                           bookmaid.get('kitchen')),
@@ -216,11 +222,11 @@ class _ReceiptState extends State<Receipt> {
                                       SizedBox(height: 5),
                                       Text('Garden: ' + bookmaid.get('garden')),
                                       SizedBox(height: 5),
-                                      Text('Rate Per Hour: ' +
-                                          bookmaid.get('rateperhour')),
-                                      SizedBox(height: 5),
                                       Text('Booking Date: ' +
                                           bookmaid.get('bookdate')),
+                                      SizedBox(height: 5),
+                                      Text('Status: \n' +
+                                          bookmaid.get('status')),
                                       SizedBox(height: 5),
                                       Text('Time Slot: ' +
                                           bookmaid.get('timeslot')),
@@ -230,6 +236,13 @@ class _ReceiptState extends State<Receipt> {
                                               .get('totalpayment')
                                               .toString()),
                                       SizedBox(height: 10),
+                                      Text(
+                                        'Cancellation must be 3 days \n before the booking date!',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                       Row(
                                         children: [
                                           ElevatedButton(
@@ -264,8 +277,9 @@ class _ReceiptState extends State<Receipt> {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CustBookingStatus(),
+                                                  builder: (context) => Review(
+                                                    data: bookmaid,
+                                                  ),
                                                 ),
                                               );
                                             },
@@ -276,7 +290,7 @@ class _ReceiptState extends State<Receipt> {
                                                       Colors.green.shade800),
                                             ),
                                             child: Text(
-                                              'View Update',
+                                              'Leave Review',
                                               style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,

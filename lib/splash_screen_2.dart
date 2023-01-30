@@ -51,14 +51,19 @@ class SplashScreen2 extends StatelessWidget {
                       vertical: 30,
                     ),
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        bottomLeft: Radius.circular(50),
-                        topRight: Radius.circular(50),
-                        bottomRight: Radius.circular(50),
-                      ),
-                      color: Colors.white,
-                    ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          bottomLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(5.0, 5.0),
+                              color: Colors.black,
+                              blurStyle: BlurStyle.outer)
+                        ]),
                     child: Text(
                       'Customer',
                       style: GoogleFonts.heebo(
@@ -91,14 +96,19 @@ class SplashScreen2 extends StatelessWidget {
                       vertical: 30,
                     ),
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        bottomLeft: Radius.circular(50),
-                        topRight: Radius.circular(50),
-                        bottomRight: Radius.circular(50),
-                      ),
-                      color: Colors.white,
-                    ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          bottomLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(5.0, 5.0),
+                              color: Colors.black,
+                              blurStyle: BlurStyle.outer)
+                        ]),
                     child: Text('Maid',
                         style: GoogleFonts.heebo(
                           textStyle: TextStyle(

@@ -141,6 +141,7 @@ class _CustbookingState extends State<Custbooking> {
   String? _selectedkitchen = "0";
   String? _selectedpantries = "0";
   String? _selectedgarden = "0sqft";
+  String _status = "No Status";
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -186,7 +187,6 @@ class _CustbookingState extends State<Custbooking> {
         String pantry,
         String office,
         String garden,
-        String rateperhour,
         String fname,
         String lname,
         String image,
@@ -196,6 +196,7 @@ class _CustbookingState extends State<Custbooking> {
         String date,
         String time,
         String totalpayment,
+        String status,
         var uid,
         String maiduid) {
       try {
@@ -207,13 +208,12 @@ class _CustbookingState extends State<Custbooking> {
           'maidemail': maidemail,
           'maidgender': maidgender,
           'cleaningtype': cleaningtype,
-          'bathrooms': bathrooms,
-          'bedrooms': bedrooms,
+          'bathroom': bathrooms,
+          'bedroom': bedrooms,
           'kitchen': kitchen,
           'pantry': pantry,
           'office': office,
           'garden': garden,
-          'rateperhour': rateperhour,
           'custfirstname': fname,
           'cuslastname': lname,
           'custimage': image,
@@ -223,6 +223,7 @@ class _CustbookingState extends State<Custbooking> {
           'bookdate': formattedDate,
           'timeslot': selectedTime,
           'totalpayment': rateperhour,
+          'status': _status,
           'custuid': uid,
           'maiduid': maiduid
         }).then(
@@ -240,7 +241,7 @@ class _CustbookingState extends State<Custbooking> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -1323,7 +1324,6 @@ class _CustbookingState extends State<Custbooking> {
                       pantries.text,
                       office.text,
                       gardenarea.text,
-                      rateperhour,
                       fname ?? "null",
                       lname ?? "null",
                       image ?? "null",
@@ -1333,6 +1333,7 @@ class _CustbookingState extends State<Custbooking> {
                       formattedDate.toString(),
                       selectedTime,
                       rateperhour,
+                      _status,
                       currentUser,
                       maiduid);
                   Navigator.pushReplacement(
