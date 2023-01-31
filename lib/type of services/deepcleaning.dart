@@ -11,8 +11,6 @@ import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../geolocation/geolocation.dart';
-
 class DeepCleaning extends StatefulWidget {
   DeepCleaning({Key? key}) : super(key: key);
 
@@ -52,12 +50,12 @@ class _DeepCleaningState extends State<DeepCleaning> {
           IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Geolocation(),
+                  builder: (context){},
                 ),
-              );
+              );*/
             },
           ),
           IconButton(

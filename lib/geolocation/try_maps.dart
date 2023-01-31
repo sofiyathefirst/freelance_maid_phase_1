@@ -24,6 +24,7 @@ class _MapsState extends State<Maps> {
   String? postalCode;
   String? country;
   Location location = Location();
+  bool locationtapped = false;
 
   void getMarkers(double lat, double long) {
     MarkerId markerId = MarkerId(lat.toString() + long.toString());
@@ -55,7 +56,7 @@ class _MapsState extends State<Maps> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -71,12 +72,14 @@ class _MapsState extends State<Maps> {
           IconButton(
             icon: Icon(Icons.arrow_forward_ios_outlined),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
-                ),
-              );
+              if (locationtapped) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustHomePage(),
+                  ),
+                );
+              }
             },
           ),
           SizedBox(
@@ -91,25 +94,28 @@ class _MapsState extends State<Maps> {
               height: 600,
               child: GoogleMap(
                   onTap: (tapped) async {
-                    GeoData data = await Geocoder2.getDataFromCoordinates(
-                        latitude: tapped.latitude,
-                        longitude: tapped.longitude,
-                        googleMapApiKey:
-                            "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
-                    addressLoc = data.address;
-                    getMarkers(tapped.latitude, tapped.longitude);
-                    await FirebaseFirestore.instance
-                        .collection('customer')
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection('location')
-                        .add({
-                      'latitude': tapped.latitude,
-                      'longitude': tapped.longitude,
-                      'Address': data.address,
-                    });
-                    setState(() {
+                    if (!locationtapped) {
+                      locationtapped = true;
+                      GeoData data = await Geocoder2.getDataFromCoordinates(
+                          latitude: tapped.latitude,
+                          longitude: tapped.longitude,
+                          googleMapApiKey:
+                              "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
                       addressLoc = data.address;
-                    });
+                      getMarkers(tapped.latitude, tapped.longitude);
+                      await FirebaseFirestore.instance
+                          .collection('customer')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection('location')
+                          .add({
+                        'latitude': tapped.latitude,
+                        'longitude': tapped.longitude,
+                        'Address': data.address,
+                      });
+                      setState(() {
+                        addressLoc = data.address;
+                      });
+                    }
                   },
                   mapType: MapType.hybrid,
                   compassEnabled: true,

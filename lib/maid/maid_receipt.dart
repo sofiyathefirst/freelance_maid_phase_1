@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/geolocation/maidgeolocation.dart';
+
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
@@ -55,12 +55,12 @@ class _MaidReceiptState extends State<MaidReceipt> {
           IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => MaidGeolocation(),
                 ),
-              );
+              );*/
             },
           ),
           IconButton(

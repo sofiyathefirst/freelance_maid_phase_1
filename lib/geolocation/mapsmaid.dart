@@ -7,6 +7,7 @@ import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class MaidMaps extends StatefulWidget {
   MaidMaps({Key? key}) : super(key: key);
@@ -16,79 +17,46 @@ class MaidMaps extends StatefulWidget {
 }
 
 class _MaidMapsState extends State<MaidMaps> {
-  final Completer<GoogleMapController> _googleMapController = Completer();
+  late GoogleMapController googlemapcontroller;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  Position? positions;
   String? addressLoc;
   String? postalCode;
   String? country;
-  static const CameraPosition _cameraPosition =
-      CameraPosition(target: LatLng(2.225674, 102.454676), zoom: 14);
+  Location location = Location();
+  bool locationtapped = false;
 
-  final List<Marker> _markers = <Marker>[
-    Marker(
-        markerId: MarkerId('1'),
-        position: LatLng(2.225674, 102.454676),
-        infoWindow: InfoWindow(title: 'Fixed Location'))
-  ];
-
-  loadData() {
-    getUserCurrentLocation().then((value) async {
-      print('my current location');
-      print(value.latitude.toString() + " " + value.longitude.toString());
-
-      _markers.add(
-        Marker(
-          markerId: MarkerId('1'),
-          position: LatLng(value.latitude, value.longitude),
-          infoWindow:
-              InfoWindow(title: 'My Current Location', snippet: addressLoc),
-        ),
-      );
-
-      CameraPosition cameraPosition = CameraPosition(
-          target: LatLng(value.latitude, value.longitude), zoom: 14);
-
-      final GoogleMapController controller = await _googleMapController.future;
-      GeoData data = await Geocoder2.getDataFromCoordinates(
-          latitude: value.latitude,
-          longitude: value.longitude,
-          googleMapApiKey: "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
-      addressLoc = data.address;
-      await FirebaseFirestore.instance
-          .collection('maid')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('location')
-          .add({
-        'latitude': value.latitude,
-        'longitude': value.longitude,
-        'Address': data.address,
-      });
-
-      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-      Text('Address: $addressLoc');
-      setState(() {});
+  void getMarkers(double lat, double long) {
+    MarkerId markerId = MarkerId(lat.toString() + long.toString());
+    Marker _marker = Marker(
+        markerId: markerId,
+        position: LatLng(lat, long),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
+        infoWindow: InfoWindow(snippet: addressLoc));
+    setState(() {
+      markers[markerId] = _marker;
     });
   }
 
-  Future<Position> getUserCurrentLocation() async {
-    await Geolocator.requestPermission()
-        .then((value) {})
-        .onError((error, stackTrace) {
-      print("error" + error.toString());
-    });
+  void getCurrentLocation() async {
+    Position currentPosition =
+        await GeolocatorPlatform.instance.getCurrentPosition();
 
-    return await Geolocator.getCurrentPosition();
+    setState(() {
+      positions = currentPosition;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    loadData();
+    getCurrentLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -117,16 +85,51 @@ class _MaidMapsState extends State<MaidMaps> {
           ),
         ],
       ),
-      body: GoogleMap(
-        initialCameraPosition: _cameraPosition,
-        markers: Set<Marker>.of(_markers),
-        onMapCreated: (GoogleMapController controller) {
-          _googleMapController.complete(controller);
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {},
-        child: Icon(Icons.location_searching),
+      body: Container(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 600,
+              child: GoogleMap(
+                  onTap: (tapped) async {
+                    if (!locationtapped) {
+                      locationtapped = true;
+                      GeoData data = await Geocoder2.getDataFromCoordinates(
+                          latitude: tapped.latitude,
+                          longitude: tapped.longitude,
+                          googleMapApiKey:
+                              "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
+                      addressLoc = data.address;
+                      getMarkers(tapped.latitude, tapped.longitude);
+                      await FirebaseFirestore.instance
+                          .collection('maid')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection('location')
+                          .add({
+                        'latitude': tapped.latitude,
+                        'longitude': tapped.longitude,
+                        'Address': data.address,
+                      });
+                      setState(() {
+                        addressLoc = data.address;
+                      });
+                    }
+                  },
+                  mapType: MapType.hybrid,
+                  compassEnabled: true,
+                  trafficEnabled: true,
+                  onMapCreated: (GoogleMapController controller) {
+                    googlemapcontroller = controller;
+                  },
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(positions!.latitude.toDouble(),
+                          positions!.longitude.toDouble()),
+                      zoom: 14.476),
+                  markers: Set<Marker>.of(markers.values)),
+            ),
+            Text('Address: $addressLoc'),
+          ],
+        ),
       ),
     );
   }

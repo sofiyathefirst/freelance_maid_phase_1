@@ -10,8 +10,6 @@ import 'package:freelance_maid_phase_1/customer/review_page.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../geolocation/geolocation.dart';
-
 class HouseCleaning extends StatefulWidget {
   HouseCleaning({Key? key}) : super(key: key);
 
@@ -52,12 +50,12 @@ class _HouseCleaningState extends State<HouseCleaning> {
           IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Geolocation(),
                 ),
-              );
+              );*/
             },
           ),
           IconButton(

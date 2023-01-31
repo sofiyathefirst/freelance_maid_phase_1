@@ -9,7 +9,6 @@ import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-import '../geolocation/geolocation.dart';
 import 'cust_profilepage.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -51,12 +50,12 @@ class _ReviewPageState extends State<ReviewPage> {
           IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Geolocation(),
                 ),
-              );
+              );*/
             },
           ),
           IconButton(

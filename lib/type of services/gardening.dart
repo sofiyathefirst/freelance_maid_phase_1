@@ -7,7 +7,7 @@ import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
-import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
+
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -51,12 +51,12 @@ class _GardeningState extends State<Gardening> {
           IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Geolocation(),
                 ),
-              );
+              );*/
             },
           ),
           IconButton(

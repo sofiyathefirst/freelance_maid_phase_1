@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
-import 'package:freelance_maid_phase_1/geolocation/geolocation.dart';
-import 'package:freelance_maid_phase_1/geolocation/maidgeolocation.dart';
+
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
@@ -49,12 +48,12 @@ class _MaidreviewState extends State<Maidreview> {
           IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => MaidGeolocation(),
                 ),
-              );
+              );*/
             },
           ),
           IconButton(

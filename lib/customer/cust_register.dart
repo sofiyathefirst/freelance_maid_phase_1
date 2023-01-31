@@ -63,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
           (value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Maps2(),
+              builder: (context) => Maps(),
             ),
           ),
         );
