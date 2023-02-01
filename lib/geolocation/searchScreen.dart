@@ -71,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             padding: EdgeInsets.all(3.0),
                             child: TextField(
                               controller: custController,
-                              decoration: InputDecoration(
+                              /*decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(30.0)),
@@ -87,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 hintStyle: TextStyle(color: Colors.black),
                                 fillColor: Colors.white,
                                 filled: true,
-                              ),
+                              ),*/
                             ),
                           ),
                         ),
@@ -107,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             padding: EdgeInsets.all(3.0),
                             child: TextField(
                               controller: maidController,
-                              decoration: InputDecoration(
+                              /*decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(30.0)),
@@ -123,7 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 hintStyle: TextStyle(color: Colors.black),
                                 fillColor: Colors.white,
                                 filled: true,
-                              ),
+                              ),*/
                             ),
                           ),
                         ),

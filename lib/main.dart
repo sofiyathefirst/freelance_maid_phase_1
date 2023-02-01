@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
           primarySwatch: Colors.deepPurple,
-          inputDecorationTheme: const InputDecorationTheme(
+          inputDecorationTheme: InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(width: 2, color: Colors.white),
               borderRadius: BorderRadius.all(Radius.circular(10)),

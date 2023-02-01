@@ -11,17 +11,37 @@ class DisplayAllLocation extends StatefulWidget {
 }
 
 class _DisplayAllLocationState extends State<DisplayAllLocation> {
-  List<Map<String, dynamic>> _locations = [];
+  // List<Map<String, dynamic>> _locations = [];
+  late GoogleMapController myController;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
-  Future<void> _getLocationsFromDatabase() async {
-    // retrieve all locations from FirebaseFirestore
-    var locations = FirebaseFirestore.instance
+  void initMarker(specify, specifyId) async {
+    var markerIdVal = specifyId;
+    final MarkerId markerId = MarkerId(markerIdVal);
+    final Marker marker = Marker(
+        markerId: markerId,
+        position: LatLng(specify['latitude'], specify['longitude']),
+        infoWindow: InfoWindow(title: 'Maid', snippet: specify['Address']));
+    setState(() {
+      markers[markerId] = marker;
+    });
+  }
+
+  _getLocationsFromDatabase() async {
+    FirebaseFirestore.instance
         .collection('maid')
         .doc()
-        .collection('location');
-    setState(() {
-      _locations = locations as List<Map<String, dynamic>>;
-    });
+        .collection('location')
+        .get()
+        .then(
+      (value) {
+        if (value.docs.isNotEmpty) {
+          for (int i = 0; i < value.docs.length; i++) {
+            initMarker(value.docs[i].data(), value.docs[i].get('maidemail'));
+          }
+        }
+      },
+    );
   }
 
   @override
@@ -32,63 +52,45 @@ class _DisplayAllLocationState extends State<DisplayAllLocation> {
 
   @override
   Widget build(BuildContext context) {
+    Set<Marker> _getLocations() {
+      return <Marker>[
+        Marker(
+            markerId: MarkerId('Maid'),
+            position: LatLng(2.1649, 102.4330),
+            icon: BitmapDescriptor.defaultMarker,
+            infoWindow: InfoWindow(title: 'Home'))
+      ].toSet();
+    }
+
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CustHomePage(),
+              ),
+            );
+          },
         ),
         title: const Text(
           "Maids Location",
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_forward_ios_outlined),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            width: 15,
-          ),
-        ],
       ),
-      body: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 600,
-              child: GoogleMap(
-                mapType: MapType.hybrid,
-                markers: Set<Marker>.of(
-                  [
-                    for (var location in _locations)
-                      Marker(
-                        markerId: MarkerId('Maid'),
-                        position:
-                            LatLng(location["latitude"], location["longitude"]),
-                        infoWindow: InfoWindow(
-                          title: location["Address"],
-                        ),
-                      ),
-                  ],
-                ),
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(2.225674, 102.454676), zoom: 14),
-              ),
-            )
-          ],
-        ),
-      ),
+      body: GoogleMap(
+          markers: Set<Marker>.of(markers.values),
+          mapType: MapType.hybrid,
+          initialCameraPosition:
+              CameraPosition(target: LatLng(2.1649, 102.4330), zoom: 18),
+          onMapCreated: (GoogleMapController controller) {
+            controller = controller;
+          }),
     );
   }
 }

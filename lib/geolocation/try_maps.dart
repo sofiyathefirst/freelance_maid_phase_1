@@ -17,6 +17,7 @@ class Maps extends StatefulWidget {
 }
 
 class _MapsState extends State<Maps> {
+  late LatLng _selectedLocation;
   late GoogleMapController googlemapcontroller;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Position? positions;
@@ -93,41 +94,31 @@ class _MapsState extends State<Maps> {
             SizedBox(
               height: 600,
               child: GoogleMap(
-                  onTap: (tapped) async {
-                    if (!locationtapped) {
-                      locationtapped = true;
-                      GeoData data = await Geocoder2.getDataFromCoordinates(
-                          latitude: tapped.latitude,
-                          longitude: tapped.longitude,
-                          googleMapApiKey:
-                              "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
-                      addressLoc = data.address;
-                      getMarkers(tapped.latitude, tapped.longitude);
-                      await FirebaseFirestore.instance
-                          .collection('customer')
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .collection('location')
-                          .add({
-                        'latitude': tapped.latitude,
-                        'longitude': tapped.longitude,
-                        'Address': data.address,
-                      });
-                      setState(() {
-                        addressLoc = data.address;
-                      });
-                    }
-                  },
-                  mapType: MapType.hybrid,
-                  compassEnabled: true,
-                  trafficEnabled: true,
-                  onMapCreated: (GoogleMapController controller) {
-                    googlemapcontroller = controller;
-                  },
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(positions!.latitude.toDouble(),
-                          positions!.longitude.toDouble()),
-                      zoom: 14.476),
-                  markers: Set<Marker>.of(markers.values)),
+                onMapCreated: (GoogleMapController controller) {
+                  googlemapcontroller = controller;
+                },
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(positions!.latitude.toDouble(),
+                        positions!.longitude.toDouble()),
+                    zoom: 14.476),
+                onTap: (LatLng location) {
+                  setState(() {
+                    _selectedLocation = location;
+                  });
+                  FirebaseFirestore.instance
+                      .collection('maid')
+                      .doc()
+                      .collection('location')
+                      .add({
+                    'latitude': _selectedLocation.latitude,
+                    'longitude': _selectedLocation.longitude,
+                    'maidemail': FirebaseAuth.instance.currentUser?.email
+                  });
+                },
+                mapType: MapType.hybrid,
+                compassEnabled: true,
+                trafficEnabled: true,
+              ),
             ),
             Text('Address: $addressLoc'),
           ],
