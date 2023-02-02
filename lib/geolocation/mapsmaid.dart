@@ -102,13 +102,13 @@ class _MaidMapsState extends State<MaidMaps> {
                       addressLoc = data.address;
                       getMarkers(tapped.latitude, tapped.longitude);
                       await FirebaseFirestore.instance
-                          .collection('maid')
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
                           .collection('location')
-                          .add({
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .set({
                         'latitude': tapped.latitude,
                         'longitude': tapped.longitude,
                         'Address': data.address,
+                        'email': FirebaseAuth.instance.currentUser?.email
                       });
                       setState(() {
                         addressLoc = data.address;

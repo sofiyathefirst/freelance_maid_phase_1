@@ -11,57 +11,34 @@ class DisplayAllLocation extends StatefulWidget {
 }
 
 class _DisplayAllLocationState extends State<DisplayAllLocation> {
-  // List<Map<String, dynamic>> _locations = [];
-  late GoogleMapController myController;
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-
-  void initMarker(specify, specifyId) async {
-    var markerIdVal = specifyId;
-    final MarkerId markerId = MarkerId(markerIdVal);
-    final Marker marker = Marker(
-        markerId: markerId,
-        position: LatLng(specify['latitude'], specify['longitude']),
-        infoWindow: InfoWindow(title: 'Maid', snippet: specify['Address']));
-    setState(() {
-      markers[markerId] = marker;
-    });
-  }
-
-  _getLocationsFromDatabase() async {
-    FirebaseFirestore.instance
-        .collection('maid')
-        .doc()
-        .collection('location')
-        .get()
-        .then(
-      (value) {
-        if (value.docs.isNotEmpty) {
-          for (int i = 0; i < value.docs.length; i++) {
-            initMarker(value.docs[i].data(), value.docs[i].get('maidemail'));
-          }
-        }
-      },
-    );
-  }
+  List<Marker> markers = [];
 
   @override
   void initState() {
     super.initState();
-    _getLocationsFromDatabase();
+    getDataFromFirestore();
+  }
+
+  getDataFromFirestore() async {
+    var firestore = FirebaseFirestore.instance;
+    QuerySnapshot snap = await firestore.collection('location').get();
+    snap.docs.forEach((element) {
+      markers.add(
+        Marker(
+          markerId: MarkerId(element.id),
+          position: LatLng(
+            element['latitude'],
+            element['longitude'],
+          ),
+          infoWindow: InfoWindow(title: element['email']),
+        ),
+      );
+    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    Set<Marker> _getLocations() {
-      return <Marker>[
-        Marker(
-            markerId: MarkerId('Maid'),
-            position: LatLng(2.1649, 102.4330),
-            icon: BitmapDescriptor.defaultMarker,
-            infoWindow: InfoWindow(title: 'Home'))
-      ].toSet();
-    }
-
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
@@ -84,13 +61,12 @@ class _DisplayAllLocationState extends State<DisplayAllLocation> {
         ),
       ),
       body: GoogleMap(
-          markers: Set<Marker>.of(markers.values),
-          mapType: MapType.hybrid,
-          initialCameraPosition:
-              CameraPosition(target: LatLng(2.1649, 102.4330), zoom: 18),
-          onMapCreated: (GoogleMapController controller) {
-            controller = controller;
-          }),
+        markers: Set<Marker>.of(markers),
+        initialCameraPosition: CameraPosition(
+          target: LatLng(2.1638028, 102.427727),
+          zoom: 15,
+        ),
+      ),
     );
   }
 }
