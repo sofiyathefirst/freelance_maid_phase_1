@@ -1,21 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-class MaidMaps extends StatefulWidget {
-  MaidMaps({Key? key}) : super(key: key);
+class UpdateMaidLocation extends StatefulWidget {
+  UpdateMaidLocation({Key? key}) : super(key: key);
 
   @override
-  State<MaidMaps> createState() => _MaidMapsState();
+  State<UpdateMaidLocation> createState() => _UpdateMaidLocationState();
 }
 
-//dapatkan location maid
-class _MaidMapsState extends State<MaidMaps> {
+class _UpdateMaidLocationState extends State<UpdateMaidLocation> {
   late GoogleMapController googlemapcontroller;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Position? positions;
@@ -63,7 +62,7 @@ class _MaidMapsState extends State<MaidMaps> {
           onPressed: () {},
         ),
         title: const Text(
-          "Get Location",
+          "Pinned Location",
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),
@@ -71,12 +70,14 @@ class _MaidMapsState extends State<MaidMaps> {
           IconButton(
             icon: Icon(Icons.arrow_forward_ios_outlined),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MaidHomePage(),
-                ),
-              );
+              if (locationtapped) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MaidProfile(),
+                  ),
+                );
+              }
             },
           ),
           SizedBox(
@@ -103,11 +104,11 @@ class _MaidMapsState extends State<MaidMaps> {
                       await FirebaseFirestore.instance
                           .collection('location')
                           .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .set({
+                          .update({
                         'latitude': tapped.latitude,
                         'longitude': tapped.longitude,
                         'Address': data.address,
-                        'email': FirebaseAuth.instance.currentUser?.email
+                        'email': FirebaseAuth.instance.currentUser!.email
                       });
                       setState(() {
                         addressLoc = data.address;

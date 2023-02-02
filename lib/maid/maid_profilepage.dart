@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/geolocation/update_maid_location.dart';
 import 'package:freelance_maid_phase_1/maid/maid_editprofile.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_update_email_pass.dart';
@@ -103,6 +104,31 @@ class _MaidProfileState extends State<MaidProfile> {
               );
             },
             icon: Icon(Icons.arrow_back_ios_new)),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UpdateMaidLocation(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+            ),
+            child: Text(
+              'Update Location',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

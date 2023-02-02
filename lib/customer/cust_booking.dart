@@ -109,6 +109,16 @@ class _CustbookingState extends State<Custbooking> {
   File? imageXFile;
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
 
+  //data cust location
+  late double? latitude = 0;
+  late double? longitude = 0;
+  late String? address = '';
+
+  //data maid location
+  late double? mlatitude = 0;
+  late double? mlongitude = 0;
+  late String? maddress = '';
+
   late int totalpayment = 0;
   String type1 = "Deep Cleaning";
   String type2 = "Disinfection Services";
@@ -162,10 +172,44 @@ class _CustbookingState extends State<Custbooking> {
     });
   }
 
+  Future _getLocFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("custlocation")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          latitude = snapshot.data()!['latitude'];
+          longitude = snapshot.data()!['longitude'];
+          address = snapshot.data()!['Address'];
+        });
+      }
+    });
+  }
+
+  Future _getMaidLocFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("location")
+        .doc(maiduid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          mlatitude = snapshot.data()!['latitude'];
+          mlongitude = snapshot.data()!['longitude'];
+          maddress = snapshot.data()!['Address'];
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _getDataFromDatabase();
+    _getLocFromDatabase();
+    _getMaidLocFromDatabase();
     checkAvailability(timeSlots);
   }
 
@@ -174,31 +218,38 @@ class _CustbookingState extends State<Custbooking> {
     CollectionReference bookingmaid =
         FirebaseFirestore.instance.collection('bookmaids');
     Add(
-        String maidfname,
-        String maidlname,
-        String maidimage,
-        String maidpnum,
-        String maidemail,
-        String maidgender,
-        String cleaningtype,
-        String bathrooms,
-        String bedrooms,
-        String kitchen,
-        String pantry,
-        String office,
-        String garden,
-        String fname,
-        String lname,
-        String image,
-        String pnum,
-        String email,
-        String gender,
-        String date,
-        String time,
-        String totalpayment,
-        String status,
-        var uid,
-        String maiduid) {
+      String maidfname,
+      String maidlname,
+      String maidimage,
+      String maidpnum,
+      String maidemail,
+      String maidgender,
+      String cleaningtype,
+      String bathrooms,
+      String bedrooms,
+      String kitchen,
+      String pantry,
+      String office,
+      String garden,
+      String fname,
+      String lname,
+      String image,
+      String pnum,
+      String email,
+      String gender,
+      String date,
+      String time,
+      String totalpayment,
+      String status,
+      var uid,
+      String maiduid,
+      double latitude,
+      double longitude,
+      String address,
+      double mlatitude,
+      double mlongitude,
+      String maddress,
+    ) {
       try {
         return bookingmaid.add({
           'maidfirstname': maidfname,
@@ -225,7 +276,13 @@ class _CustbookingState extends State<Custbooking> {
           'totalpayment': rateperhour,
           'status': _status,
           'custuid': uid,
-          'maiduid': maiduid
+          'maiduid': maiduid,
+          'custlatitude': latitude,
+          'custlongitude': longitude,
+          'custaddress': address,
+          'maidlatitude': mlatitude,
+          'maidlongitude': mlongitude,
+          'maidaddress': maddress
         }).then(
           (value) => ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -1335,7 +1392,13 @@ class _CustbookingState extends State<Custbooking> {
                       rateperhour,
                       _status,
                       currentUser,
-                      maiduid);
+                      maiduid,
+                      latitude ?? 0,
+                      longitude ?? 0,
+                      address ?? "null",
+                      mlatitude ?? 0,
+                      mlongitude ?? 0,
+                      maddress ?? "null");
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -1396,36 +1459,3 @@ class _CustbookingState extends State<Custbooking> {
     );
   }
 }
-
-/*_tableCalendar(),
-            SizedBox(
-              height: 300,
-              
-                child: ListView.builder(
-                  itemCount: avs.length,
-                  itemBuilder: ((context, index) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedTime = avs[index];
-                          });
-                        },
-                        child: Card(
-                          elevation: 10,
-                          color: selectedTime == avs[index]
-                              ? Colors.brown[50]
-                              : Colors.white,
-                          child: SizedBox(
-                            height: 60,
-                            child: ListTile(
-                              title: Text(avs[index]),
-                              subtitle: Text('Available'),
-                              leading: selectedTime == avs[index]
-                                  ? const Icon(Icons.check)
-                                  : null,
-                            ),
-                          ),
-                        ),
-                      )),
-                ),
-              
-            ),*/

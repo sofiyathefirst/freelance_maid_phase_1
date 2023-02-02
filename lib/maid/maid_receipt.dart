@@ -194,6 +194,9 @@ class _MaidReceiptState extends State<MaidReceipt> {
                                       Text('Customer Email: ' +
                                           bookstatus.get('custemail')),
                                       SizedBox(height: 5),
+                                      Text('Customer Address: ' +
+                                          bookstatus.get('custaddress')),
+                                      SizedBox(height: 5),
                                       Text('Customer Gender: ' +
                                           bookstatus.get('custgender')),
                                       SizedBox(height: 5),

@@ -50,6 +50,12 @@ class _UpdateBookingState extends State<UpdateBooking> {
   late String totalpayment = widget.data!.get('totalpayment');
   late String cleaningtype = widget.data!.get('cleaningtype');
   late String status = widget.data!.get('status');
+  late double latitude = widget.data!.get('custlatitude');
+  late double longitude = widget.data!.get('custlongitude');
+  late String? address = widget.data!.get('custaddress');
+  late double? mlatitude = widget.data!.get('maidlatitude');
+  late double? mlongitude = widget.data!.get('maidlongitude');
+  late String? maddress = widget.data!.get('maidaddress');
   bool isLoading = false;
 
   TextEditingController displaystatus = TextEditingController();
@@ -105,6 +111,12 @@ class _UpdateBookingState extends State<UpdateBooking> {
         'timeslot': timeslot,
         'cleaningtype': cleaningtype,
         'totalpayment': totalpayment,
+        'custlatitude': latitude,
+        'custlongitude': longitude,
+        'custaddress': address,
+        'maidlatitude': mlatitude,
+        'maidlongitude': mlongitude,
+        'maidaddress': maddress
       });
     });
     await batch.commit();

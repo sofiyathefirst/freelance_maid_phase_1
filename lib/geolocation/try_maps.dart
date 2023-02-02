@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
-import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:location/location.dart';
-import 'package:location/location.dart' as loc;
 
 class Maps extends StatefulWidget {
   Maps({Key? key}) : super(key: key);
@@ -16,8 +14,9 @@ class Maps extends StatefulWidget {
   State<Maps> createState() => _MapsState();
 }
 
+//dapatkan location customer
 class _MapsState extends State<Maps> {
-  late GoogleMapController googlemapcontroller;
+  GoogleMapController? googlemapcontroller;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Position? positions;
   String? addressLoc;
@@ -96,24 +95,24 @@ class _MapsState extends State<Maps> {
                   onTap: (tapped) async {
                     if (!locationtapped) {
                       locationtapped = true;
-                      GeoData data = await Geocoder2.getDataFromCoordinates(
+                      /*GeoData data = await Geocoder2.getDataFromCoordinates(
                           latitude: tapped.latitude,
                           longitude: tapped.longitude,
                           googleMapApiKey:
-                              "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
-                      addressLoc = data.address;
+                              "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");*/
+                      //addressLoc = data.address;
                       getMarkers(tapped.latitude, tapped.longitude);
                       await FirebaseFirestore.instance
-                          .collection('location')
+                          .collection('custlocation')
                           .doc(FirebaseAuth.instance.currentUser!.uid)
                           .set({
                         'latitude': tapped.latitude,
                         'longitude': tapped.longitude,
-                        'Address': data.address,
+                        //'Address': data.address,
                         'custemail': FirebaseAuth.instance.currentUser?.email
                       });
                       setState(() {
-                        addressLoc = data.address;
+                        //addressLoc = data.address;
                       });
                     }
                   },
@@ -124,12 +123,13 @@ class _MapsState extends State<Maps> {
                     googlemapcontroller = controller;
                   },
                   initialCameraPosition: CameraPosition(
-                      target: LatLng(positions!.latitude.toDouble(),
-                          positions!.longitude.toDouble()),
+                      target: positions != null
+                          ? LatLng(positions!.latitude.toDouble(),
+                              positions!.longitude.toDouble())
+                          : LatLng(2.3113, 102.4309),
                       zoom: 14.476),
                   markers: Set<Marker>.of(markers.values)),
             ),
-            Text('Address: $addressLoc'),
           ],
         ),
       ),

@@ -202,6 +202,9 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                       Text('Customer Email: ' +
                                           bookmaid.get('custemail')),
                                       SizedBox(height: 5),
+                                      Text('Customer Address: ' +
+                                          bookmaid.get('custaddress')),
+                                      SizedBox(height: 5),
                                       Text('Customer Gender: ' +
                                           bookmaid.get('custgender')),
                                       SizedBox(height: 5),

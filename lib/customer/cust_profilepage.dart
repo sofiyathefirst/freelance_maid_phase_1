@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_editprofile.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_update_email_pass.dart';
+import 'package:freelance_maid_phase_1/geolocation/update_cust_location.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 
 class CustProfile extends StatefulWidget {
@@ -98,6 +99,31 @@ class _CustProfileState extends State<CustProfile> {
               );
             },
             icon: Icon(Icons.arrow_back_ios_new)),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UpdateCustLocation(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+            ),
+            child: Text(
+              'Update Location',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(

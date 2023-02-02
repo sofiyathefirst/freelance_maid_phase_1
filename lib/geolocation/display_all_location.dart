@@ -11,6 +11,7 @@ class DisplayAllLocation extends StatefulWidget {
 }
 
 class _DisplayAllLocationState extends State<DisplayAllLocation> {
+  //untuk display semua location maid dekat maps
   List<Marker> markers = [];
 
   @override
