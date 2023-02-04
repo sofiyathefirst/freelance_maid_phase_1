@@ -26,8 +26,18 @@ class _RegisterMaidState extends State<RegisterMaid> {
   final _confirmpass = TextEditingController();
   final _maidemail = TextEditingController();
   final _maidpnum = TextEditingController();
+  final _maidcleaningtype = TextEditingController();
   String? _selectedgender = "Male";
+  String? _selectedVal = "Deep Cleaning";
   final _genderList = ["Male", "Female"];
+  final _cleaningtypeList = [
+    "Deep Cleaning",
+    "Disinfection Services",
+    "Gardening",
+    "House Cleaning",
+    "Office Cleaning",
+    "Post Renovation"
+  ];
 
   bool showProgress = false;
 
@@ -50,7 +60,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
                     'https://firebasestorage.googleapis.com/v0/b/freelancemaid-8de13.appspot.com/o/dummyprofile.jpg?alt=media&token=86896df5-3e37-471e-9845-2f97ec3427ab',
                 'phonenum': _maidpnum.text.trim(),
                 'gender': _maidgender.text.trim(),
-                'cleaningtype': 'cleaningtype',
+                'cleaningtype': _maidcleaningtype.text.trim(),
                 'birthdate': _maidbirthdate.text.trim(),
                 'rateperhour': 'RM50',
                 'serviceoffered': 'choose',
@@ -254,6 +264,68 @@ class _RegisterMaidState extends State<RegisterMaid> {
                       ),
                     ],
                   ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.0),
+                      child: Text(
+                        "Cleaning Type",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    DropdownButtonFormField(
+                      value: _selectedVal,
+                      items: _cleaningtypeList
+                          .map((e) => DropdownMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectedVal = val as String;
+                          _maidcleaningtype.text = _selectedVal!;
+                        });
+                      },
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          borderSide: BorderSide(
+                              color: Colors.green.shade200, width: 3.0),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.cleaning_services_rounded,
+                          color: Colors.black,
+                        ),
+                        hintStyle: TextStyle(color: Colors.black),
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               getTextFormField(

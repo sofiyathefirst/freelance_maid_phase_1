@@ -26,13 +26,14 @@ class _DisplayAllLocationState extends State<DisplayAllLocation> {
     snap.docs.forEach((element) {
       markers.add(
         Marker(
-          markerId: MarkerId(element.id),
-          position: LatLng(
-            element['latitude'],
-            element['longitude'],
-          ),
-          infoWindow: InfoWindow(title: element['email']),
-        ),
+            markerId: MarkerId(element.id),
+            position: LatLng(
+              element['latitude'],
+              element['longitude'],
+            ),
+            infoWindow: InfoWindow(title: element['email']),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueViolet)),
       );
     });
     setState(() {});
@@ -65,7 +66,7 @@ class _DisplayAllLocationState extends State<DisplayAllLocation> {
         markers: Set<Marker>.of(markers),
         initialCameraPosition: CameraPosition(
           target: LatLng(2.1638028, 102.427727),
-          zoom: 15,
+          zoom: 17,
         ),
       ),
     );

@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 
 import 'package:freelance_maid_phase_1/maid/booking_status.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MaidHomePage extends StatefulWidget {
@@ -31,6 +31,41 @@ class _MaidHomePageState extends State<MaidHomePage> {
     );
   }
 
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MaidReceipt(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Maidreview(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MaidProfile(),
+          ),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +73,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.home_filled),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -57,17 +92,6 @@ class _MaidHomePageState extends State<MaidHomePage> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: () {
-              /*Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MaidGeolocation(),
-                ),
-              );*/
-            },
-          ),
-          IconButton(
             icon: Icon(Icons.logout_rounded),
             onPressed: () {
               Navigator.pushReplacement(
@@ -83,48 +107,23 @@ class _MaidHomePageState extends State<MaidHomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: GNav(
-        backgroundColor: Colors.white,
-        tabBackgroundColor: Colors.grey.shade400,
-        gap: 2,
-        tabs: [
-          GButton(
-            icon: Icons.person_rounded,
-            text: "Profile",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MaidProfile(),
-                ),
-              );
-            },
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
+            label: "Book",
           ),
-          GButton(
-            icon: Icons.receipt_rounded,
-            text: "Receipt",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MaidReceipt(),
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.reviews_rounded),
+            label: "Review",
           ),
-          GButton(
-            icon: Icons.reviews_rounded,
-            text: "Review",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Maidreview(),
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: "Profile",
           ),
         ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -159,8 +158,12 @@ class _MaidHomePageState extends State<MaidHomePage> {
                             SizedBox(height: 20),
                             Container(
                               decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(0),
+                                ),
                                 color: Colors.deepPurple[100],
                               ),
                               width: double.infinity,
@@ -191,24 +194,21 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      Text('Customer Name: ' +
+                                      Text('Customer Name: \n' +
                                           bookmaid.get('custfirstname') +
                                           '\t' +
                                           bookmaid.get('cuslastname')),
                                       SizedBox(height: 5),
-                                      Text('Customer Phone Number: ' +
+                                      Text('Customer Phone Number: \n' +
                                           bookmaid.get('custpnum')),
                                       SizedBox(height: 5),
                                       Text('Customer Email: ' +
                                           bookmaid.get('custemail')),
                                       SizedBox(height: 5),
-                                      Text('Customer Address: ' +
-                                          bookmaid.get('custaddress')),
-                                      SizedBox(height: 5),
                                       Text('Customer Gender: ' +
                                           bookmaid.get('custgender')),
                                       SizedBox(height: 5),
-                                      Text('Cleaning type: ' +
+                                      Text('Cleaning type: \n' +
                                           bookmaid.get('cleaningtype')),
                                       SizedBox(height: 5),
                                       Text('Bedroom: ' +
@@ -232,7 +232,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                       Text('Time Slot: ' +
                                           bookmaid.get('timeslot')),
                                       SizedBox(height: 5),
-                                      Text('Total Payment: RM' +
+                                      Text('Total Payment: ' +
                                           bookmaid
                                               .get('totalpayment')
                                               .toString()),
@@ -270,7 +270,41 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                                color: Colors.deepPurple[50],
+                              ),
+                              width: double.infinity,
+                              child: SizedBox(
+                                height: 150,
+                                width: 150,
+                                child: GoogleMap(
+                                  mapType: MapType.normal,
+                                  markers: <Marker>{
+                                    Marker(
+                                        markerId:
+                                            MarkerId(bookmaid.get('custemail')),
+                                        position: LatLng(
+                                          bookmaid.get('custlatitude'),
+                                          bookmaid.get('custlongitude'),
+                                        ),
+                                        infoWindow: InfoWindow(
+                                            title: bookmaid.get('custaddress')),
+                                        icon: BitmapDescriptor
+                                            .defaultMarkerWithHue(
+                                                BitmapDescriptor.hueMagenta))
+                                  }.toSet(),
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(bookmaid.get('custlatitude'),
+                                        bookmaid.get('custlongitude')),
+                                    zoom: 15,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         );
                       } else {

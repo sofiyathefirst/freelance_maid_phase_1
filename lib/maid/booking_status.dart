@@ -122,6 +122,41 @@ class _UpdateBookingState extends State<UpdateBooking> {
     await batch.commit();
   }
 
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MaidReceipt(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Maidreview(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MaidProfile(),
+          ),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,17 +183,6 @@ class _UpdateBookingState extends State<UpdateBooking> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.location_on),
-              onPressed: () {
-                /*Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MaidGeolocation(),
-                  ),
-                );*/
-              },
-            ),
-            IconButton(
               icon: Icon(Icons.logout_rounded),
               onPressed: () {
                 Navigator.pushReplacement(
@@ -174,48 +198,23 @@ class _UpdateBookingState extends State<UpdateBooking> {
             ),
           ],
         ),
-        bottomNavigationBar: GNav(
-          backgroundColor: Colors.white,
-          tabBackgroundColor: Colors.grey.shade400,
-          gap: 2,
-          tabs: [
-            GButton(
-              icon: Icons.person_rounded,
-              text: "Profile",
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MaidProfile(),
-                  ),
-                );
-              },
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long),
+              label: "Book",
             ),
-            GButton(
-              icon: Icons.receipt_rounded,
-              text: "Receipt",
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MaidReceipt(),
-                  ),
-                );
-              },
+            BottomNavigationBarItem(
+              icon: Icon(Icons.reviews_rounded),
+              label: "Review",
             ),
-            GButton(
-              icon: Icons.reviews_rounded,
-              text: "Review",
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Maidreview(),
-                  ),
-                );
-              },
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: "Profile",
             ),
           ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
         ),
         body: SingleChildScrollView(
           child: Column(

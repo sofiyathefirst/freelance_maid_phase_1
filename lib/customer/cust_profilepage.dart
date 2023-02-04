@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_editprofile.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_update_email_pass.dart';
+import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/geolocation/update_cust_location.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 
@@ -70,6 +71,41 @@ class _CustProfileState extends State<CustProfile> {
     );
   }
 
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustHomePage(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Receipt(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustProfile(),
+          ),
+        );
+        break;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -124,6 +160,24 @@ class _CustProfileState extends State<CustProfile> {
             width: 15,
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
+            label: "Book",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: "Profile",
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
       body: SingleChildScrollView(
         child: Container(

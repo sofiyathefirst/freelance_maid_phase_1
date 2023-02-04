@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
@@ -297,6 +296,41 @@ class _CustbookingState extends State<Custbooking> {
       }
     }
 
+    int _selectedIndex = 0;
+
+    void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+
+      switch (index) {
+        case 0:
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CustHomePage(),
+            ),
+          );
+          break;
+        case 1:
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Receipt(),
+            ),
+          );
+          break;
+        case 2:
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CustProfile(),
+            ),
+          );
+          break;
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
@@ -321,17 +355,6 @@ class _CustbookingState extends State<Custbooking> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: () {
-              /*Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Geolocation(),
-                ),
-              );*/
-            },
-          ),
-          IconButton(
             icon: Icon(Icons.logout_rounded),
             onPressed: () {
               Navigator.pushReplacement(
@@ -347,60 +370,23 @@ class _CustbookingState extends State<Custbooking> {
           ),
         ],
       ),
-      bottomNavigationBar: GNav(
-        backgroundColor: Colors.white,
-        tabBackgroundColor: Colors.grey.shade400,
-        gap: 2,
-        tabs: [
-          GButton(
-            icon: Icons.person_rounded,
-            text: "Profile",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustProfile(),
-                ),
-              );
-            },
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
           ),
-          GButton(
-            icon: Icons.receipt_rounded,
-            text: "Receipt",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Receipt(),
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
+            label: "Book",
           ),
-          GButton(
-            icon: Icons.book_online_rounded,
-            text: "Booking",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustBookingStatus(),
-                ),
-              );
-            },
-          ),
-          GButton(
-            icon: Icons.reviews_rounded,
-            text: "Review",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReviewPage(),
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: "Profile",
           ),
         ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
       body: SingleChildScrollView(
         dragStartBehavior: DragStartBehavior.down,
@@ -1355,7 +1341,7 @@ class _CustbookingState extends State<Custbooking> {
             ),
             const SizedBox(height: 15),
             Text(
-              'Total Payment: RM${rateperhour}',
+              'Total Payment: ${rateperhour}',
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,

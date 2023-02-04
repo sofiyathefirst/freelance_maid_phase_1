@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
-import 'package:freelance_maid_phase_1/customer/cust_booking_status.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
+import 'package:freelance_maid_phase_1/geolocation/display_all_location.dart';
 
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -23,10 +23,46 @@ class _GardeningState extends State<Gardening> {
       FirebaseFirestore.instance.collection('maid');
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
   String type = "Gardening";
+
+  int _selectedIndex = 1;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustHomePage(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Receipt(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustProfile(),
+          ),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade200,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -51,12 +87,12 @@ class _GardeningState extends State<Gardening> {
           IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              /*Navigator.pushReplacement(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Geolocation(),
+                  builder: (context) => DisplayAllLocation(),
                 ),
-              );*/
+              );
             },
           ),
           IconButton(
@@ -75,60 +111,23 @@ class _GardeningState extends State<Gardening> {
           ),
         ],
       ),
-      bottomNavigationBar: GNav(
-        backgroundColor: Colors.white,
-        tabBackgroundColor: Colors.grey.shade400,
-        gap: 2,
-        tabs: [
-          GButton(
-            icon: Icons.person_rounded,
-            text: "Profile",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustProfile(),
-                ),
-              );
-            },
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
           ),
-          GButton(
-            icon: Icons.receipt_rounded,
-            text: "Receipt",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Receipt(),
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
+            label: "Book",
           ),
-          GButton(
-            icon: Icons.book_online_rounded,
-            text: "Booking",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustBookingStatus(),
-                ),
-              );
-            },
-          ),
-          GButton(
-            icon: Icons.reviews_rounded,
-            text: "Review",
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReviewPage(),
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: "Profile",
           ),
         ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -194,8 +193,6 @@ class _GardeningState extends State<Gardening> {
                                       Text('Email: ' + maid.get('maidemail')),
                                       SizedBox(height: 20),
                                       Text('Gender: ' + maid.get('gender')),
-                                      SizedBox(height: 20),
-                                      Text('State: ' + maid.get('state')),
                                       SizedBox(height: 20),
                                       Text('Rate per 2 hour: RM' +
                                           maid.get('rateperhour')),
