@@ -171,6 +171,7 @@ class _CustbookingState extends State<Custbooking> {
     });
   }
 
+  //gett customer location from database
   Future _getLocFromDatabase() async {
     await FirebaseFirestore.instance
         .collection("custlocation")
@@ -187,6 +188,7 @@ class _CustbookingState extends State<Custbooking> {
     });
   }
 
+  //get maid location from
   Future _getMaidLocFromDatabase() async {
     await FirebaseFirestore.instance
         .collection("location")
@@ -203,6 +205,52 @@ class _CustbookingState extends State<Custbooking> {
     });
   }
 
+  //add data to database
+  Future addBooking() async {
+    FirebaseFirestore.instance.collection('bookmaids').doc().set({
+      'maidfirstname': maidfname,
+      'maidlastname': maidlname,
+      'maidimage': maidimage,
+      'maidpnum': maidpnum,
+      'maidemail': maidemail,
+      'maidgender': maidgender,
+      'cleaningtype': cleaningtype,
+      'bathroom': bathrooms.text.trim(),
+      'bedroom': bedrooms.text.trim(),
+      'kitchen': kitchens.text.trim(),
+      'pantry': pantries.text.trim(),
+      'office': office.text.trim(),
+      'garden': gardenarea.text.trim(),
+      'custfirstname': fname,
+      'cuslastname': lname,
+      'custimage': image,
+      'custpnum': pnum,
+      'custemail': email,
+      'custgender': gender,
+      'bookdate': formattedDate,
+      'timeslot': selectedTime,
+      'totalpayment': rateperhour,
+      'status': _status,
+      'custuid': currentUser,
+      'maiduid': maiduid,
+      'custlatitude': latitude,
+      'custlongitude': longitude,
+      'custaddress': address,
+      'maidlatitude': mlatitude,
+      'maidlongitude': mlongitude,
+      'maidaddress': maddress
+    }).then(
+      (value) => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Receipt(),
+        ),
+      ),
+    );
+    SnackBar snackbar = const SnackBar(content: Text("Booking Successful!"));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -212,125 +260,43 @@ class _CustbookingState extends State<Custbooking> {
     checkAvailability(timeSlots);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    CollectionReference bookingmaid =
-        FirebaseFirestore.instance.collection('bookmaids');
-    Add(
-      String maidfname,
-      String maidlname,
-      String maidimage,
-      String maidpnum,
-      String maidemail,
-      String maidgender,
-      String cleaningtype,
-      String bathrooms,
-      String bedrooms,
-      String kitchen,
-      String pantry,
-      String office,
-      String garden,
-      String fname,
-      String lname,
-      String image,
-      String pnum,
-      String email,
-      String gender,
-      String date,
-      String time,
-      String totalpayment,
-      String status,
-      var uid,
-      String maiduid,
-      double latitude,
-      double longitude,
-      String address,
-      double mlatitude,
-      double mlongitude,
-      String maddress,
-    ) {
-      try {
-        return bookingmaid.add({
-          'maidfirstname': maidfname,
-          'maidlastname': maidlname,
-          'maidimage': maidimage,
-          'maidpnum': maidpnum,
-          'maidemail': maidemail,
-          'maidgender': maidgender,
-          'cleaningtype': cleaningtype,
-          'bathroom': bathrooms,
-          'bedroom': bedrooms,
-          'kitchen': kitchen,
-          'pantry': pantry,
-          'office': office,
-          'garden': garden,
-          'custfirstname': fname,
-          'cuslastname': lname,
-          'custimage': image,
-          'custpnum': pnum,
-          'custemail': email,
-          'custgender': gender,
-          'bookdate': formattedDate,
-          'timeslot': selectedTime,
-          'totalpayment': rateperhour,
-          'status': _status,
-          'custuid': uid,
-          'maiduid': maiduid,
-          'custlatitude': latitude,
-          'custlongitude': longitude,
-          'custaddress': address,
-          'maidlatitude': mlatitude,
-          'maidlongitude': mlongitude,
-          'maidaddress': maddress
-        }).then(
-          (value) => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Booking Succesful'),
-            ),
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustHomePage(),
           ),
         );
-      } on FirebaseException catch (e) {
-        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.code),
-        ));
-      }
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Receipt(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustProfile(),
+          ),
+        );
+        break;
     }
+  }
 
-    int _selectedIndex = 0;
-
-    void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-
-      switch (index) {
-        case 0:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CustHomePage(),
-            ),
-          );
-          break;
-        case 1:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Receipt(),
-            ),
-          );
-          break;
-        case 2:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CustProfile(),
-            ),
-          );
-          break;
-      }
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
@@ -441,27 +407,33 @@ class _CustbookingState extends State<Custbooking> {
                   children: [
                     const SizedBox(height: 15),
                     Text(
-                      'Maid Name: $maidfname\t$maidlname',
+                      'Maid Name: \n$maidfname\t$maidlname',
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Maid Phone Number: $maidpnum',
+                      'Maid Phone Number: \n$maidpnum',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.black),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Maid Gender:$maidgender',
+                      'Maid Gender: $maidgender',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.black),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Maid Email:$maidemail',
+                      'Maid Email: \n$maidemail',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.black),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 15),
                   ],
@@ -1349,49 +1321,7 @@ class _CustbookingState extends State<Custbooking> {
             ),
             const SizedBox(height: 15),
             ElevatedButton(
-                onPressed: () {
-                  setState(
-                    () {},
-                  );
-                  Add(
-                      maidfname,
-                      maidlname,
-                      maidimage,
-                      maidpnum,
-                      maidemail,
-                      maidgender,
-                      cleaningtype,
-                      bathrooms.text,
-                      bedrooms.text,
-                      kitchens.text,
-                      pantries.text,
-                      office.text,
-                      gardenarea.text,
-                      fname ?? "null",
-                      lname ?? "null",
-                      image ?? "null",
-                      pnum ?? "null",
-                      email ?? "null",
-                      gender ?? "null",
-                      formattedDate.toString(),
-                      selectedTime,
-                      rateperhour,
-                      _status,
-                      currentUser,
-                      maiduid,
-                      latitude ?? 0,
-                      longitude ?? 0,
-                      address ?? "null",
-                      mlatitude ?? 0,
-                      mlongitude ?? 0,
-                      maddress ?? "null");
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => Receipt(),
-                    ),
-                  );
-                },
+                onPressed: addBooking,
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.orangeAccent),

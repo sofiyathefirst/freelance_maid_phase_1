@@ -40,91 +40,72 @@ class _ReviewState extends State<Review> {
   final TextEditingController reviewcontroller = TextEditingController();
   late double _rating;
 
+  Future addReview() async {
+    FirebaseFirestore.instance.collection('reviews').doc().set({
+      'maidfirstname': maidfname,
+      'maidlastname': maidlname,
+      'maidemail': maidemail,
+      'cleaningtype': cleaningtype,
+      'custfirstname': custfname,
+      'cuslastname': custlname,
+      'custemail': custemail,
+      'bookdate': date,
+      'timeslot': timeslot,
+      'totalpayment': totalpayment,
+      'reviews': reviewcontroller.text.trim(),
+      'rating': _rating
+    }).then((value) => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustHomePage(),
+          ),
+        ));
+    SnackBar snackbar = const SnackBar(content: Text("Review Posted"));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
   @override
   void initState() {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    CollectionReference reviewref =
-        FirebaseFirestore.instance.collection('reviews');
-    Add(
-        String maidfname,
-        String maidlname,
-        String maidemail,
-        String cleaningtype,
-        String custfname,
-        String custlname,
-        String custemail,
-        String date,
-        String timeslot,
-        String totalpayment,
-        String reviews,
-        double rating) {
-      try {
-        return reviewref.add({
-          'maidfirstname': maidfname,
-          'maidlastname': maidlname,
-          'maidemail': maidemail,
-          'cleaningtype': cleaningtype,
-          'custfirstname': custfname,
-          'cuslastname': custlname,
-          'custemail': custemail,
-          'bookdate': date,
-          'timeslot': timeslot,
-          'totalpayment': totalpayment,
-          'reviews': reviews,
-          'rating': rating
-        }).then(
-          (value) => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Review posted!'),
-            ),
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustHomePage(),
           ),
         );
-      } on FirebaseException catch (e) {
-        return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.code),
-        ));
-      }
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Receipt(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CustProfile(),
+          ),
+        );
+        break;
     }
+  }
 
-    int _selectedIndex = 0;
-
-    void _onItemTapped(int index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-
-      switch (index) {
-        case 0:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CustHomePage(),
-            ),
-          );
-          break;
-        case 1:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Receipt(),
-            ),
-          );
-          break;
-        case 2:
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CustProfile(),
-            ),
-          );
-          break;
-      }
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
@@ -255,28 +236,7 @@ class _ReviewState extends State<Review> {
               ),
               const SizedBox(height: 15),
               ElevatedButton(
-                  onPressed: () {
-                    Add(
-                        maidfname,
-                        maidlname,
-                        maidemail,
-                        cleaningtype,
-                        custfname,
-                        custlname,
-                        custemail,
-                        date,
-                        timeslot,
-                        totalpayment,
-                        reviewcontroller.text,
-                        _rating);
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CustHomePage(),
-                      ),
-                    );
-                  },
+                  onPressed: addReview,
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.orangeAccent),

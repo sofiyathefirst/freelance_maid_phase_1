@@ -5,7 +5,6 @@ import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 class UpdateCustLocation extends StatefulWidget {
   UpdateCustLocation({Key? key}) : super(key: key);
@@ -21,7 +20,9 @@ class _UpdateCustLocationState extends State<UpdateCustLocation> {
   String? addressLoc;
   String? postalCode;
   String? country;
-  Location location = Location();
+  CameraPosition _cameraposition =
+      CameraPosition(target: LatLng(2.1638, 102.1277), zoom: 12);
+
   bool locationtapped = false;
 
   void getMarkers(double lat, double long) {
@@ -45,10 +46,28 @@ class _UpdateCustLocationState extends State<UpdateCustLocation> {
     });
   }
 
+  Future<void> getCurrentLoc() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
+      setState(() {
+        _cameraposition = CameraPosition(
+            target: LatLng(position.latitude, position.longitude), zoom: 12);
+      });
+      print('get the position');
+      print(position.latitude);
+      print(position.longitude);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getCurrentLocation();
+    getCurrentLoc();
   }
 
   @override
@@ -121,10 +140,7 @@ class _UpdateCustLocationState extends State<UpdateCustLocation> {
                   onMapCreated: (GoogleMapController controller) {
                     googlemapcontroller = controller;
                   },
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(positions!.latitude.toDouble(),
-                          positions!.longitude.toDouble()),
-                      zoom: 14.476),
+                  initialCameraPosition: _cameraposition,
                   markers: Set<Marker>.of(markers.values)),
             ),
             Text('Address: $addressLoc'),

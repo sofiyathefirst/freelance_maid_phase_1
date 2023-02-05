@@ -241,38 +241,6 @@ class _MaidReceiptState extends State<MaidReceipt> {
                                       Text('Status: \n' +
                                           bookstatus.get('status')),
                                       const SizedBox(height: 15),
-
-                                      /*SizedBox(
-                                        height: 200,
-                                        child: GoogleMap(
-                                          mapType: MapType.normal,
-                                          markers: <Marker>{
-                                            Marker(
-                                                markerId: MarkerId(bookstatus
-                                                    .get('custemail')),
-                                                position: LatLng(
-                                                  bookstatus
-                                                      .get('custlatitude'),
-                                                  bookstatus
-                                                      .get('custlongitude'),
-                                                ),
-                                                infoWindow: InfoWindow(
-                                                    title: bookstatus
-                                                        .get('custaddress')),
-                                                icon: BitmapDescriptor
-                                                    .defaultMarkerWithHue(
-                                                        BitmapDescriptor
-                                                            .hueGreen))
-                                          }.toSet(),
-                                          initialCameraPosition: CameraPosition(
-                                            target: LatLng(
-                                                bookstatus.get('custlatitude'),
-                                                bookstatus
-                                                    .get('custlongitude')),
-                                            zoom: 15,
-                                          ),
-                                        ),
-                                      )*/
                                     ],
                                   ),
                                 ],

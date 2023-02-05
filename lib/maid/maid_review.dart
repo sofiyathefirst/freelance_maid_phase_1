@@ -18,7 +18,7 @@ class _MaidreviewState extends State<Maidreview> {
   final rreview = FirebaseFirestore.instance.collection('review');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -122,7 +122,7 @@ class _MaidreviewState extends State<Maidreview> {
                 if (snapshot.hasError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Delete Succesful'),
+                      content: Text('No Data Found'),
                     ),
                   );
                 }
@@ -142,7 +142,7 @@ class _MaidreviewState extends State<Maidreview> {
                           children: [
                             SizedBox(height: 20),
                             Container(
-                              color: Colors.teal[300],
+                              color: Colors.deepPurple[100],
                               width: double.infinity,
                               child: Column(
                                 children: [

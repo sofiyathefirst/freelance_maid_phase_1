@@ -22,7 +22,7 @@ class _MapsState extends State<Maps> {
   String? postalCode;
   String? country;
   CameraPosition _cameraposition =
-      CameraPosition(target: LatLng(2.1638, 102.1277), zoom: 17);
+      CameraPosition(target: LatLng(2.1638, 102.1277), zoom: 12);
 
   bool locationtapped = false;
 
@@ -41,11 +41,11 @@ class _MapsState extends State<Maps> {
   Future<void> getCurrentLoc() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+          desiredAccuracy: LocationAccuracy.high);
 
       setState(() {
         _cameraposition = CameraPosition(
-            target: LatLng(position.latitude, position.longitude), zoom: 15);
+            target: LatLng(position.latitude, position.longitude), zoom: 12);
       });
       print('get the position');
       print(position.latitude);

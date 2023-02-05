@@ -3,10 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
-import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'cust_profilepage.dart';
 
@@ -185,7 +183,10 @@ class _ReviewPageState extends State<ReviewPage> {
                                             Icons.star,
                                             color: Colors.amber,
                                           ),
+                                      glow: true,
+                                      itemSize: 30,
                                       onRatingUpdate: (rating) => {}),
+                                  SizedBox(height: 10),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,

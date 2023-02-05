@@ -19,6 +19,7 @@ class Receipt extends StatefulWidget {
 class _ReceiptState extends State<Receipt> {
   final bookingMaid = FirebaseFirestore.instance.collection('bookmaids');
   var currentUser = FirebaseAuth.instance.currentUser?.uid;
+  final review = FirebaseFirestore.instance.collection('reviews');
 
   Future<void> _delete(String bookingId) async {
     await bookingMaid.doc(bookingId).delete();
@@ -187,51 +188,137 @@ class _ReceiptState extends State<Receipt> {
                                   Column(
                                     children: [
                                       SizedBox(height: 5),
-                                      Text('Maid Name: ' +
-                                          bookmaid.get('maidfirstname') +
-                                          '\t' +
-                                          bookmaid.get('maidlastname')),
+                                      Text(
+                                        'Maid Name: \n' +
+                                            bookmaid.get('maidfirstname') +
+                                            '\t' +
+                                            bookmaid.get('maidlastname'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Maid Phone Number: ' +
-                                          bookmaid.get('maidpnum')),
+                                      Text(
+                                        'Maid Phone Number: \n' +
+                                            bookmaid.get('maidpnum'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Maid Email: ' +
-                                          bookmaid.get('maidemail')),
+                                      Text(
+                                        'Maid Email: \n' +
+                                            bookmaid.get('maidemail'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Maid Gender: ' +
-                                          bookmaid.get('maidgender')),
+                                      Text(
+                                        'Maid Gender: ' +
+                                            bookmaid.get('maidgender'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Cleaning type: ' +
-                                          bookmaid.get('cleaningtype')),
+                                      Text(
+                                        'Cleaning type: \n' +
+                                            bookmaid.get('cleaningtype'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Bedroom: ' +
-                                          bookmaid.get('bedroom')),
+                                      Text(
+                                        'Bedroom: ' + bookmaid.get('bedroom'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Bathroom: ' +
-                                          bookmaid.get('bathroom')),
+                                      Text(
+                                        'Bathroom: ' + bookmaid.get('bathroom'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Kitchen: ' +
-                                          bookmaid.get('kitchen')),
+                                      Text(
+                                        'Kitchen: ' + bookmaid.get('kitchen'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Pantry: ' + bookmaid.get('pantry')),
+                                      Text(
+                                        'Pantry: ' + bookmaid.get('pantry'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Office: ' + bookmaid.get('office')),
+                                      Text(
+                                        'Office: ' + bookmaid.get('office'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Garden: ' + bookmaid.get('garden')),
+                                      Text(
+                                        'Garden: ' + bookmaid.get('garden'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Booking Date: ' +
-                                          bookmaid.get('bookdate')),
+                                      Text(
+                                        'Booking Date: ' +
+                                            bookmaid.get('bookdate'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Status: \n' +
-                                          bookmaid.get('status')),
+                                      Text(
+                                        'Status: \n' + bookmaid.get('status'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Time Slot: ' +
-                                          bookmaid.get('timeslot')),
+                                      Text(
+                                        'Time Slot: ' +
+                                            bookmaid.get('timeslot'),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 5),
-                                      Text('Total Payment: ' +
-                                          bookmaid
-                                              .get('totalpayment')
-                                              .toString()),
+                                      Text(
+                                        'Total Payment: ' +
+                                            bookmaid
+                                                .get('totalpayment')
+                                                .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
                                       SizedBox(height: 10),
                                       Text(
                                         'Cancellation must be 3 days \n before the booking date!',

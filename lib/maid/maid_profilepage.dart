@@ -26,7 +26,7 @@ class _MaidProfileState extends State<MaidProfile> {
   String? address = '';
   String? image = '';
   String? cleaningtype = '';
-  String? rateperhour;
+  String? rateperhour = '';
   String? serviceoffered = '';
   File? imageXFile;
 
@@ -303,24 +303,6 @@ class _MaidProfileState extends State<MaidProfile> {
                       ),
                     ],
                   ),
-                  /*SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.house,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        address!,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),*/
                   SizedBox(height: 20),
                   Center(
                     child: Row(

@@ -24,7 +24,7 @@ class _MaidMapsState extends State<MaidMaps> {
 
   bool locationtapped = false;
   CameraPosition _cameraposition =
-      CameraPosition(target: LatLng(2.1638, 102.1277), zoom: 17);
+      CameraPosition(target: LatLng(2.1638, 102.1277), zoom: 12);
 
   void getMarkers(double lat, double long) {
     MarkerId markerId = MarkerId(lat.toString() + long.toString());
@@ -50,11 +50,11 @@ class _MaidMapsState extends State<MaidMaps> {
   Future<void> getCurrentLoc() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.medium);
+          desiredAccuracy: LocationAccuracy.high);
 
       setState(() {
         _cameraposition = CameraPosition(
-            target: LatLng(position.latitude, position.longitude), zoom: 15);
+            target: LatLng(position.latitude, position.longitude), zoom: 12);
       });
       print('get the position');
       print(position.latitude);

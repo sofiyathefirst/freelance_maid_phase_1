@@ -11,7 +11,7 @@ import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-enum ProductTypeEnum { Accept, Decline }
+enum ProductTypeEnum { Accept, Decline, Done }
 
 class UpdateBooking extends StatefulWidget {
   final QueryDocumentSnapshot<Object?>? data;
@@ -68,12 +68,6 @@ class _UpdateBookingState extends State<UpdateBooking> {
     "Other Reason"
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    updateBookStatus();
-  }
-
   Future updateBookStatus() async {
     final qs = await FirebaseFirestore.instance
         .collection("bookmaids")
@@ -84,7 +78,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
 
     final batch = FirebaseFirestore.instance.batch();
 
-    qs.docs.forEach((element) {
+    for (var element in qs.docs) {
       batch.update(element.reference, {
         "status": displaystatus.text.trim(),
         'custfirstname': custfname,
@@ -118,8 +112,16 @@ class _UpdateBookingState extends State<UpdateBooking> {
         'maidlongitude': mlongitude,
         'maidaddress': maddress
       });
-    });
+    }
     await batch.commit();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      updateBookStatus();
+    });
   }
 
   int _selectedIndex = 0;
@@ -249,7 +251,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      'Total Payment: RM $totalpayment',
+                      'Total Payment: $totalpayment',
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -258,6 +260,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                     const SizedBox(height: 15),
                     Row(
                       children: <Widget>[
+                        SizedBox(width: 25),
                         Expanded(
                           child: RadioListTile<ProductTypeEnum>(
                             contentPadding: const EdgeInsets.all(0.0),
@@ -289,6 +292,24 @@ class _UpdateBookingState extends State<UpdateBooking> {
                                 _productTypeEnum = val;
                                 displaystatus.text =
                                     ProductTypeEnum.Decline.name;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: RadioListTile<ProductTypeEnum>(
+                            contentPadding: const EdgeInsets.all(0.0),
+                            value: ProductTypeEnum.Done,
+                            groupValue: _productTypeEnum,
+                            dense: true,
+                            title: Text(ProductTypeEnum.Done.name),
+                            onChanged: (val) {
+                              setState(() {
+                                _productTypeEnum = val;
+                                displaystatus.text = ProductTypeEnum.Done.name;
                               });
                             },
                           ),
