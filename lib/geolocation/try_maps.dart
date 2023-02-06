@@ -79,7 +79,14 @@ class _MapsState extends State<Maps> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CustHomePage(),
+              ),
+            );
+          },
         ),
         title: const Text(
           "Pinned Location",
@@ -90,14 +97,12 @@ class _MapsState extends State<Maps> {
           IconButton(
             icon: Icon(Icons.arrow_forward_ios_outlined),
             onPressed: () {
-              if (locationtapped) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CustHomePage(),
-                  ),
-                );
-              }
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CustHomePage(),
+                ),
+              );
             },
           ),
           SizedBox(

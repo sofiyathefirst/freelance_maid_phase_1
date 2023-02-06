@@ -41,8 +41,8 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   google_nav_bar: ^5.0.6
   flutter_polyline_points: ^1.0.0
-  google_maps_flutter: ^2.2.1
-  google_maps_webservice: any
+  google_maps_flutter: any
+  google_maps_webservice: ^0.0.19
   location: ^4.4.0
   flutter_svg: ^1.1.6
   carousel_slider: any
@@ -63,7 +63,7 @@ dependencies:
   table_calendar: any
   flutter_rating_bar: ^4.0.1
   flutter_typeahead: any
-  flutter_google_places: any
+  flutter_google_places: ^0.3.0
   get: any
   uuid: ^3.0.7
 

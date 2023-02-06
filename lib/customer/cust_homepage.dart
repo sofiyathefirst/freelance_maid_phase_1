@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/customer/cust_booking.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
-import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
-import 'package:freelance_maid_phase_1/customer/review_page.dart';
 import 'package:freelance_maid_phase_1/geolocation/display_all_location.dart';
 
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
@@ -15,13 +11,161 @@ import 'package:freelance_maid_phase_1/type%20of%20services/gardening.dart';
 import 'package:freelance_maid_phase_1/type%20of%20services/housecleaning.dart';
 import 'package:freelance_maid_phase_1/type%20of%20services/officecleaning.dart';
 import 'package:freelance_maid_phase_1/type%20of%20services/postrenovation.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class CustHomePage extends StatefulWidget {
   CustHomePage({Key? key}) : super(key: key);
 
   @override
   State<CustHomePage> createState() => _CustHomePageState();
+}
+
+/*class RecommendationService {
+  final CollectionReference _reviewsCollection =
+      FirebaseFirestore.instance.collection('reviews');
+
+  Future<Map<String, double>> getMaidRatings() async {
+    //Step 1: Retrieve the data from the review collection in Firebase Firestore
+    final querySnapshot = await _reviewsCollection.get();
+    final documents = querySnapshot.docs;
+
+    //Step2: Preprocess the data
+    final Map<String, List<double>> maidRatings = {};
+    for (var document in documents) {
+      final maidEmail = document.get('maidemail');
+      final rating = document.get('rating');
+      if (!maidRatings.containsKey(maidEmail)) {
+        maidRatings[maidEmail] = [rating];
+      } else {
+        maidRatings[maidEmail]?.add(rating);
+      }
+    }
+
+    //Step 3: Calculate the average rating for each maid
+    final Map<String, double> maidAverageRatings = {};
+    for (var maid in maidRatings.keys) {
+      final ratings = maidRatings[maid];
+      final average = ratings!.reduce((a, b) => a + b) / ratings.length;
+      maidAverageRatings[maid] = average;
+    }
+
+    return maidAverageRatings;
+  }
+
+  Future<List<String>> getRecommendations(String customerEmail) async {
+    //Step 1: Retrieve the data from the review collection
+    final querySnapshot = await _reviewsCollection.get();
+    final documents = querySnapshot.docs;
+
+    //Step 2: Preprocess the data
+    final Map<String, List<double>> customerRatings = {};
+    for (var document in documents) {
+      final customer = document.get('custemail');
+      final maid = document.get('maidemail');
+      final rating = document.get('rating');
+      if (customer == customerEmail) {
+        if (!customerRatings.containsKey(maid)) {
+          customerRatings[maid] = [rating];
+        } else {
+          customerRatings[maid]?.add(rating);
+        }
+      }
+    }
+
+    //Step 3: Calculate the average rating for the customer
+    final customerAverageRatings = {};
+    for (var maid in customerRatings.keys) {
+      final ratings = customerRatings[maid];
+      final average = ratings!.reduce((a, b) => a + b) / ratings.length;
+      customerAverageRatings[maid] = average;
+    }
+
+    //Step 4: Find the ratings given by other customers
+    //final querySnapshot = await _reviewsCollection.get();
+    //final documents = querySnapshot.docs;
+    final Map<String, List<double>> otherCustomerRatings = {};
+    for (var document in documents) {
+      final customer = document.get('custemail');
+      final maid = document.get('maidemail');
+      final rating = document.get('rating');
+      if (customer != customerEmail) {
+        if (!otherCustomerRatings.containsKey(customer)) {
+          otherCustomerRatings[customer] = {
+            maid: [rating]
+          } as List<double>;
+        } else if (!otherCustomerRatings[customer]!.contains(maid)) {
+          otherCustomerRatings[customer]![maid] = [rating] as double;
+        } else {
+          otherCustomerRatings[customer]![maid].add(rating);
+        }
+      }
+    }
+
+    final Map<String, double> similarityScores = {};
+    for (var otherCustomer in otherCustomerRatings.keys) {
+      final otherCustomerRatingsForMaids = otherCustomerRatings[otherCustomer];
+      for (var maid in otherCustomerRatingsForMaids.keys) {
+        final ratings = otherCustomerRatingsForMaids[maid];
+        final average = ratings.reduce((a, b) => a + b) / ratings.length;
+        if (customerAverageRatings.containsKey(maid) &&
+            customerAverageRatings[maid] != 0) {
+          final customerAverage = customerAverageRatings[maid];
+          final numerator = ratings
+              .map((rating) => (rating - average) * (customerAverage - average))
+              .reduce((a, b) => a + b);
+          final denominator = sqrt(ratings
+                  .map((rating) => pow(rating - average, 2))
+                  .reduce((a, b) => a + b)) *
+              sqrt(customerAverageRatings.keys
+                      .map((k) => pow(customerAverageRatings[k] - average, 2))
+                      .reduce((a, b) => a + b));
+          similarityScores[maid] = numerator / denominator;
+        }
+      }
+    }
+  }
+}*/
+
+//start sini!!!
+Future<double> getAverageStarRating(String maidEmail) async {
+  double avgRating = 0.0;
+  int count = 0;
+
+  // Get a reference to the collection of reviews
+  final reviewsRef = FirebaseFirestore.instance.collection('reviews');
+
+  // Filter the reviews by the maid's ID
+  final reviews =
+      await reviewsRef.where('maidemail', isEqualTo: maidEmail).get();
+
+  // Calculate the average star rating
+  for (var review in reviews.docs) {
+    avgRating += review.data()['starRating'];
+    count++;
+  }
+  avgRating = avgRating / count;
+
+  return avgRating;
+}
+
+Future<List> getRecommendations(String maidEmail) async {
+  // Get the average star rating for the given maid
+  final avgRating = await getAverageStarRating(maidEmail);
+
+  // Get a reference to the collection of reviews
+  final reviewsRef = FirebaseFirestore.instance.collection('reviews');
+
+  // Find the other maids with similar average star ratings
+  final recommendations = await reviewsRef
+      .where('rating', isGreaterThanOrEqualTo: avgRating - 0.5)
+      .where('rating', isLessThanOrEqualTo: avgRating + 0.5)
+      .where('maidemail', isNotEqualTo: maidEmail)
+      .get();
+
+  // Extract the maid IDs from the recommendations
+  final recommendationIds =
+      recommendations.docs.map((review) => review.data()['maidId']).toList();
+
+  return recommendationIds;
 }
 
 class _CustHomePageState extends State<CustHomePage> {

@@ -5,6 +5,7 @@ import 'package:freelance_maid_phase_1/common%20method/gettextformfield.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_login.dart';
 import 'package:freelance_maid_phase_1/database/auth.dart';
+import 'package:freelance_maid_phase_1/geolocation/get_location.dart';
 import 'package:freelance_maid_phase_1/geolocation/try_maps.dart';
 
 import 'package:intl/intl.dart';
@@ -63,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
           (value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Maps(),
+              builder: (context) => UserLocation(),
             ),
           ),
         );

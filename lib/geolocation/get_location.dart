@@ -7,14 +7,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../customer/cust_homepage.dart';
 
-class UpdateCustLocation extends StatefulWidget {
-  UpdateCustLocation({Key? key}) : super(key: key);
+class UserLocation extends StatefulWidget {
+  UserLocation({Key? key}) : super(key: key);
 
   @override
-  State<UpdateCustLocation> createState() => _UpdateCustLocationState();
+  State<UserLocation> createState() => _UserLocationState();
 }
 
-class _UpdateCustLocationState extends State<UpdateCustLocation> {
+class _UserLocationState extends State<UserLocation> {
   late GoogleMapController googleMapController;
   Marker? marker;
   Position? position;
@@ -54,7 +54,7 @@ class _UpdateCustLocationState extends State<UpdateCustLocation> {
     await FirebaseFirestore.instance
         .collection('custlocation')
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update({
+        .set({
       'latitude': newPositon.latitude,
       'longitude': newPositon.longitude,
       'Address': data.address,

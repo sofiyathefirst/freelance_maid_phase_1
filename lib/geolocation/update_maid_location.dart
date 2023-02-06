@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 
 class UpdateMaidLocation extends StatefulWidget {
   UpdateMaidLocation({Key? key}) : super(key: key);
@@ -13,61 +15,57 @@ class UpdateMaidLocation extends StatefulWidget {
   State<UpdateMaidLocation> createState() => _UpdateMaidLocationState();
 }
 
+//dapatkan location maid
 class _UpdateMaidLocationState extends State<UpdateMaidLocation> {
   late GoogleMapController googlemapcontroller;
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  Position? positions;
+  Marker? marker;
+  Position? position;
   String? addressLoc;
   String? postalCode;
   String? country;
 
   bool locationtapped = false;
-  CameraPosition _cameraposition =
-      CameraPosition(target: LatLng(2.1638, 102.1277), zoom: 12);
 
-  void getMarkers(double lat, double long) {
-    MarkerId markerId = MarkerId(lat.toString() + long.toString());
-    Marker _marker = Marker(
-        markerId: markerId,
-        position: LatLng(lat, long),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
-        infoWindow: InfoWindow(snippet: addressLoc));
+  void getMarkers() async {
+    Position res = await Geolocator.getCurrentPosition();
     setState(() {
-      markers[markerId] = _marker;
+      position = res;
+      marker = Marker(
+          markerId: MarkerId("curr_loc"),
+          position: LatLng(position!.latitude, position!.longitude),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
+          draggable: true,
+          onDragEnd: (newPosition) {
+            _saveLocation(newPosition);
+          });
     });
   }
 
-  void getCurrentLocation() async {
-    Position currentPosition =
-        await GeolocatorPlatform.instance.getCurrentPosition();
+  void _saveLocation(LatLng newPositon) async {
+    GeoData data = await Geocoder2.getDataFromCoordinates(
+        latitude: newPositon.latitude,
+        longitude: newPositon.longitude,
+        googleMapApiKey: "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
+    addressLoc = data.address;
 
-    setState(() {
-      positions = currentPosition;
+    await FirebaseFirestore.instance
+        .collection('location')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'latitude': newPositon.latitude,
+      'longitude': newPositon.longitude,
+      'Address': data.address,
+      'custemail': FirebaseAuth.instance.currentUser?.email
     });
-  }
-
-  Future<void> getCurrentLoc() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-
-      setState(() {
-        _cameraposition = CameraPosition(
-            target: LatLng(position.latitude, position.longitude), zoom: 12);
-      });
-      print('get the position');
-      print(position.latitude);
-      print(position.longitude);
-    } catch (e) {
-      print(e);
-    }
+    setState(() {
+      addressLoc = data.address;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
-    getCurrentLoc();
+    getMarkers();
   }
 
   @override
@@ -81,7 +79,7 @@ class _UpdateMaidLocationState extends State<UpdateMaidLocation> {
           onPressed: () {},
         ),
         title: const Text(
-          "Pinned Location",
+          "Get Location",
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         ),
@@ -89,14 +87,12 @@ class _UpdateMaidLocationState extends State<UpdateMaidLocation> {
           IconButton(
             icon: Icon(Icons.arrow_forward_ios_outlined),
             onPressed: () {
-              if (locationtapped) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MaidProfile(),
-                  ),
-                );
-              }
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MaidHomePage(),
+                ),
+              );
             },
           ),
           SizedBox(
@@ -110,38 +106,17 @@ class _UpdateMaidLocationState extends State<UpdateMaidLocation> {
             SizedBox(
               height: 600,
               child: GoogleMap(
-                  onTap: (tapped) async {
-                    if (!locationtapped) {
-                      locationtapped = true;
-                      GeoData data = await Geocoder2.getDataFromCoordinates(
-                          latitude: tapped.latitude,
-                          longitude: tapped.longitude,
-                          googleMapApiKey:
-                              "AIzaSyAeTdgjlC47FKjicCxlBU10CIogCR3HrBA");
-                      addressLoc = data.address;
-                      getMarkers(tapped.latitude, tapped.longitude);
-                      await FirebaseFirestore.instance
-                          .collection('location')
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .update({
-                        'latitude': tapped.latitude,
-                        'longitude': tapped.longitude,
-                        'Address': data.address,
-                        'email': FirebaseAuth.instance.currentUser!.email
-                      });
-                      setState(() {
-                        addressLoc = data.address;
-                      });
-                    }
-                  },
-                  mapType: MapType.hybrid,
-                  compassEnabled: true,
-                  trafficEnabled: true,
-                  onMapCreated: (GoogleMapController controller) {
-                    googlemapcontroller = controller;
-                  },
-                  initialCameraPosition: _cameraposition,
-                  markers: Set<Marker>.of(markers.values)),
+                mapType: MapType.hybrid,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(position?.latitude ?? 2.2214,
+                      position?.longitude ?? 102.4531),
+                  zoom: 12,
+                ),
+                markers: Set.of((marker != null) ? [marker!] : []),
+                onMapCreated: (GoogleMapController controller) {
+                  googlemapcontroller = controller;
+                },
+              ),
             ),
             Text('Address: $addressLoc'),
           ],
