@@ -90,6 +90,11 @@ class _UserLocationState extends State<UserLocation> {
                   builder: (context) => CustHomePage(),
                 ),
               );
+              SnackBar snackbar = const SnackBar(
+                content: Text("Registered Successful!"),
+                backgroundColor: Colors.green,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackbar);
             },
           ),
           SizedBox(

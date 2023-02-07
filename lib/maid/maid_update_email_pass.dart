@@ -36,6 +36,7 @@ class _MaidUpdateState extends State<MaidUpdate> {
         SnackBar(
           content:
               Text(" Your email and password updated. Please login again!"),
+          backgroundColor: Colors.amberAccent,
         ),
       );
     } catch (error) {}

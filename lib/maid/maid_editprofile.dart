@@ -193,11 +193,11 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
           ),
         ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Update Successful!'),
-        ),
+      SnackBar snackbar = const SnackBar(
+        content: Text("Profile Updated!"),
+        backgroundColor: Colors.green,
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
   }
 

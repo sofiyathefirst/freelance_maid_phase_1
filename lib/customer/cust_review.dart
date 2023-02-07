@@ -60,7 +60,10 @@ class _ReviewState extends State<Review> {
             builder: (context) => CustHomePage(),
           ),
         ));
-    SnackBar snackbar = const SnackBar(content: Text("Review Posted"));
+    SnackBar snackbar = const SnackBar(
+      content: Text("Review Posted"),
+      backgroundColor: Colors.amberAccent,
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 

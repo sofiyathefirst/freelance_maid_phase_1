@@ -35,7 +35,8 @@ class _CustUpdateState extends State<CustUpdate> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:
-              Text(" Your meail and password updated. Please login again!"),
+              Text(" Your email and password updated. Please login again!"),
+          backgroundColor: Colors.amberAccent,
         ),
       );
     } catch (error) {}

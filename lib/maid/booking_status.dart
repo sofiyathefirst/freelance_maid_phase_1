@@ -363,6 +363,11 @@ class _UpdateBookingState extends State<UpdateBooking> {
                               builder: (_) => MaidReceipt(),
                             ),
                           );
+                          SnackBar snackbar = const SnackBar(
+                            content: Text("Status Updated!"),
+                            backgroundColor: Colors.green,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(

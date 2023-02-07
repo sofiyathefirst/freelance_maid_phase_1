@@ -193,7 +193,7 @@ class _DeepCleaningState extends State<DeepCleaning> {
                                       SizedBox(height: 20),
                                       Text('Gender: ' + maid.get('gender')),
                                       SizedBox(height: 20),
-                                      Text('Rate per 2 hour: RM' +
+                                      Text('Rate per 2 hour: ' +
                                           maid.get('rateperhour')),
                                       SizedBox(height: 20),
                                       Row(

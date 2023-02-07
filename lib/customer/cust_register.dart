@@ -58,6 +58,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 'uid': value.user!.uid,
               }).catchError((e) {
                 print(e);
+                SnackBar snackbar = SnackBar(content: Text(e));
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
               })
             })
         .then(

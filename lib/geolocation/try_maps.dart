@@ -79,14 +79,7 @@ class _MapsState extends State<Maps> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CustHomePage(),
-              ),
-            );
-          },
+          onPressed: () {},
         ),
         title: const Text(
           "Pinned Location",
@@ -103,6 +96,11 @@ class _MapsState extends State<Maps> {
                   builder: (context) => CustHomePage(),
                 ),
               );
+              SnackBar snackbar = const SnackBar(
+                content: Text("Registered Successful!"),
+                backgroundColor: Colors.green,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackbar);
             },
           ),
           SizedBox(

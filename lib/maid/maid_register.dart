@@ -67,6 +67,11 @@ class _RegisterMaidState extends State<RegisterMaid> {
                 'uid': value.user!.uid
               }).catchError((e) {
                 print(e);
+                SnackBar snackbar = SnackBar(
+                  content: Text(e),
+                  backgroundColor: Colors.red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
               })
             })
         .then(

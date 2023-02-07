@@ -247,7 +247,10 @@ class _CustbookingState extends State<Custbooking> {
         ),
       ),
     );
-    SnackBar snackbar = const SnackBar(content: Text("Booking Successful!"));
+    SnackBar snackbar = const SnackBar(
+      content: Text("Booking Successful!"),
+      backgroundColor: Colors.green,
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 

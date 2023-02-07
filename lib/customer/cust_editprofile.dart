@@ -122,7 +122,10 @@ class _CustEditProfileState extends State<CustEditProfile> {
           ),
         ),
       );
-      SnackBar snackbar = SnackBar(content: Text("Profile updated!"));
+      SnackBar snackbar = SnackBar(
+        content: Text("Profile updated!"),
+        backgroundColor: Colors.green,
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
   }
