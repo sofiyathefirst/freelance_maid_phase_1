@@ -7,6 +7,7 @@ import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -43,7 +44,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MaidReceipt(),
+            builder: (context) => MaidHomePage(),
           ),
         );
         break;
@@ -69,30 +70,27 @@ class _MaidHomePageState extends State<MaidHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.home_filled),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MaidHomePage(),
-              ),
-            );
-          },
+          onPressed: () {},
         ),
         title: const Text(
           "Home Page",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout_rounded),
+            icon: Icon(
+              Icons.logout_rounded,
+              color: Colors.black,
+            ),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
@@ -135,7 +133,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
                 if (snapshot.hasError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Delete Succesful'),
+                      content: Text('There is error'),
                     ),
                   );
                 }
@@ -153,159 +151,335 @@ class _MaidHomePageState extends State<MaidHomePage> {
                       final bookmaid = sd[i];
 
                       if (currentUser == bookmaid.get('maiduid')) {
-                        return Column(
-                          children: [
-                            SizedBox(height: 20),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                  bottomLeft: Radius.circular(0),
-                                  bottomRight: Radius.circular(0),
+                        return Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                    bottomLeft: Radius.circular(0),
+                                    bottomRight: Radius.circular(0),
+                                  ),
+                                  color: Colors.white,
                                 ),
-                                color: Colors.deepPurple[100],
-                              ),
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                  SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: Image(
-                                      image: NetworkImage(
-                                          bookmaid.get('custimage')),
+                                width: double.infinity,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
                                     ),
-                                  ),
-                                  SizedBox(width: 15),
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text('Customer Information',
-                                          style: TextStyle(
+                                    Text('Customer Information',
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
-                                          )),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text('Customer Name: \n' +
-                                          bookmaid.get('custfirstname') +
-                                          '\t' +
-                                          bookmaid.get('cuslastname')),
-                                      SizedBox(height: 5),
-                                      Text('Customer Phone Number: \n' +
-                                          bookmaid.get('custpnum')),
-                                      SizedBox(height: 5),
-                                      Text('Customer Email: ' +
-                                          bookmaid.get('custemail')),
-                                      SizedBox(height: 5),
-                                      Text('Customer Gender: ' +
-                                          bookmaid.get('custgender')),
-                                      SizedBox(height: 5),
-                                      Text('Cleaning type: \n' +
-                                          bookmaid.get('cleaningtype')),
-                                      SizedBox(height: 5),
-                                      Text('Bedroom: ' +
-                                          bookmaid.get('bedroom')),
-                                      SizedBox(height: 5),
-                                      Text('Bathroom: ' +
-                                          bookmaid.get('bathroom')),
-                                      SizedBox(height: 5),
-                                      Text('Kitchen: ' +
-                                          bookmaid.get('kitchen')),
-                                      SizedBox(height: 5),
-                                      Text('Pantry: ' + bookmaid.get('pantry')),
-                                      SizedBox(height: 5),
-                                      Text('Office: ' + bookmaid.get('office')),
-                                      SizedBox(height: 5),
-                                      Text('Garden: ' + bookmaid.get('garden')),
-                                      SizedBox(height: 5),
-                                      Text('Booking Date: ' +
-                                          bookmaid.get('bookdate')),
-                                      SizedBox(height: 5),
-                                      Text('Time Slot: ' +
-                                          bookmaid.get('timeslot')),
-                                      SizedBox(height: 5),
-                                      Text('Total Payment: ' +
-                                          bookmaid
-                                              .get('totalpayment')
-                                              .toString()),
-                                      SizedBox(height: 5),
-                                      Text('Status: \n' +
-                                          bookmaid.get('status')),
-                                      SizedBox(height: 10),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  UpdateBooking(data: bookmaid),
-                                            ),
-                                          );
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.green.shade800),
-                                        ),
-                                        child: Text(
-                                          'Update Status',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                color: Colors.deepPurple[50],
-                              ),
-                              width: double.infinity,
-                              child: SizedBox(
-                                height: 150,
-                                width: 150,
-                                child: GoogleMap(
-                                  mapType: MapType.normal,
-                                  markers: <Marker>{
-                                    Marker(
-                                        markerId:
-                                            MarkerId(bookmaid.get('custemail')),
-                                        position: LatLng(
-                                          bookmaid.get('custlatitude'),
-                                          bookmaid.get('custlongitude'),
+                                        textAlign: TextAlign.center),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 15,
                                         ),
-                                        infoWindow: InfoWindow(
-                                            title: bookmaid.get('custaddress')),
-                                        icon: BitmapDescriptor
-                                            .defaultMarkerWithHue(
-                                                BitmapDescriptor.hueMagenta))
-                                  }.toSet(),
-                                  initialCameraPosition: CameraPosition(
-                                    target: LatLng(bookmaid.get('custlatitude'),
-                                        bookmaid.get('custlongitude')),
-                                    zoom: 15,
+                                        SizedBox(
+                                          height: 100,
+                                          width: 100,
+                                          child: Image(
+                                            image: NetworkImage(
+                                                bookmaid.get('custimage')),
+                                          ),
+                                        ),
+                                        SizedBox(width: 15),
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              'Customer Name: \n' +
+                                                  bookmaid
+                                                      .get('custfirstname') +
+                                                  '\t' +
+                                                  bookmaid.get('cuslastname'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Customer Phone Number: \n' +
+                                                  bookmaid.get('custpnum'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Customer Email: \n' +
+                                                  bookmaid.get('custemail'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Customer Gender: \n' +
+                                                  bookmaid.get('custgender'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Cleaning type: \n' +
+                                                  bookmaid.get('cleaningtype'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Bedroom: ' +
+                                                  bookmaid.get('bedroom'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Bathroom: ' +
+                                                  bookmaid.get('bathroom'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Kitchen: ' +
+                                                  bookmaid.get('kitchen'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Pantry: ' +
+                                                  bookmaid.get('pantry'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Office: ' +
+                                                  bookmaid.get('office'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Garden: ' +
+                                                  bookmaid.get('garden'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Booking Date: ' +
+                                                  bookmaid.get('bookdate'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Time Slot: \n' +
+                                                  bookmaid.get('timeslot'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Total Payment: ' +
+                                                  bookmaid
+                                                      .get('totalpayment')
+                                                      .toString(),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Status: \n' +
+                                                  bookmaid.get('status'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                if ("Done" ==
+                                                    bookmaid.get('status')) {
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MaidHomePage()),
+                                                  );
+                                                } else {
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          UpdateBooking(
+                                                              data: bookmaid),
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                            Color>(
+                                                        Colors.green.shade800),
+                                              ),
+                                              child: Text(
+                                                'Update Status',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                        "Below is the location of customer's house",
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: Colors.white,
+                                ),
+                                width: double.infinity,
+                                child: SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: GoogleMap(
+                                    mapType: MapType.hybrid,
+                                    markers: <Marker>{
+                                      Marker(
+                                          markerId: MarkerId(
+                                              bookmaid.get('custemail')),
+                                          position: LatLng(
+                                            bookmaid.get('custlatitude'),
+                                            bookmaid.get('custlongitude'),
+                                          ),
+                                          infoWindow: InfoWindow(
+                                              title:
+                                                  bookmaid.get('custaddress')),
+                                          icon: BitmapDescriptor
+                                              .defaultMarkerWithHue(
+                                                  BitmapDescriptor.hueMagenta))
+                                    }.toSet(),
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(
+                                          bookmaid.get('custlatitude'),
+                                          bookmaid.get('custlongitude')),
+                                      zoom: 15,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       } else {
                         return Column(

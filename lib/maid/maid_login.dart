@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_register.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../common method/gettextformfield.dart';
 
@@ -44,7 +45,7 @@ class _MaidLoginState extends State<MaidLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -65,14 +66,14 @@ class _MaidLoginState extends State<MaidLogin> {
                   ),
                 ),
               ),
-              const Text(
-                'Sign in',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
-              ),
+              Text('Sign in',
+                  style: GoogleFonts.heebo(
+                    textStyle: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  )),
               const SizedBox(
                 height: 20,
               ),
@@ -83,27 +84,59 @@ class _MaidLoginState extends State<MaidLogin> {
                 inputType: TextInputType.emailAddress,
                 validator: _requiredValidator,
               ),
-              getTextFormField(
-                controller: _maidpassword,
-                hintName: 'Password',
-                icon: Icons.lock,
-                isObscureText: true,
-                validator: _requiredValidator,
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                margin: EdgeInsets.only(top: 20.0),
+                child: TextFormField(
+                  controller: _maidpassword,
+                  obscureText: _isObsecure3,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 3.0),
+                    ),
+                    prefixIcon: IconButton(
+                        icon: Icon(
+                          _isObsecure3
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObsecure3 = !_isObsecure3;
+                          });
+                        }),
+                    hintText: 'Password',
+                    hintStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  validator: _requiredValidator,
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                ),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
+                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                    shadowColor: Colors.cyanAccent),
+                child: Text('Sign in',
+                    style: GoogleFonts.heebo(
+                      textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    )),
                 onPressed: signIn,
               ),
               const SizedBox(
@@ -112,11 +145,14 @@ class _MaidLoginState extends State<MaidLogin> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not registered yet?',
-                      style: TextStyle(
-                          color: Colors.white,
+                  Text('Not registered yet?',
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w600)),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      )),
                   const SizedBox(
                     height: 15,
                   ),
@@ -129,11 +165,14 @@ class _MaidLoginState extends State<MaidLogin> {
                         ),
                       );
                     },
-                    child: const Text('Sign Up',
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600)),
+                    child: Text('Sign Up',
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.greenAccent[400],
+                          ),
+                        )),
                   ),
                 ],
               ),

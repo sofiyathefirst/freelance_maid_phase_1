@@ -30,7 +30,7 @@ class _MaidreviewState extends State<Maidreview> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MaidReceipt(),
+            builder: (context) => MaidHomePage(),
           ),
         );
         break;

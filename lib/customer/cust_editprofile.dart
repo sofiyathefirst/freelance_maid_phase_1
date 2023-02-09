@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
+import 'package:freelance_maid_phase_1/geolocation/update_cust_location.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -133,16 +135,20 @@ class _CustEditProfileState extends State<CustEditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => CustHomePage(),
+                builder: (context) => CustProfile(),
               ),
             );
           },
@@ -150,217 +156,339 @@ class _CustEditProfileState extends State<CustEditProfile> {
         title: const Text(
           "Edit Profile",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(15),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: 20,
-              ),
-              CircleAvatar(
-                radius: 65.0,
-                backgroundImage: NetworkImage(image!),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              imageName == "" ? Container() : Text("${imageName}"),
-              OutlinedButton(
-                  onPressed: () {
-                    imagePicker();
-                  },
-                  child: Text("Select Image")),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "First Name",
-                      style: TextStyle(color: Colors.black),
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                //height: 500,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  TextField(
-                    controller: displayfname,
-                    decoration: InputDecoration(
-                        hintText: "Update First Name",
-                        errorText: _fname ? null : "First Name invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Last Name",
-                      style: TextStyle(color: Colors.black),
+                    CircleAvatar(
+                      radius: 65.0,
+                      backgroundImage: NetworkImage(image!),
                     ),
-                  ),
-                  TextField(
-                    controller: displaylname,
-                    decoration: InputDecoration(
-                        hintText: "Update Last Name",
-                        errorText: _lname ? null : "Last Name invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Phone Number",
-                      style: TextStyle(color: Colors.black),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  TextField(
-                    controller: displaypnum,
-                    decoration: InputDecoration(
-                        hintText: "Update Phone Number",
-                        errorText: _pnum ? null : "Phone Number invalid"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Gender",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  DropdownButtonFormField(
-                    value: _selectedgender,
-                    items: _genderList
-                        .map((e) => DropdownMenuItem(
-                              child: Text(e),
-                              value: e,
-                            ))
-                        .toList(),
-                    onChanged: (val) {
-                      setState(() {
-                        _selectedgender = val as String;
-                        displaygender.text = _selectedgender!;
-                      });
-                    },
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.0),
-                    child: Text(
-                      "Birth Date",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: displaybirthdate,
-                          decoration: InputDecoration(
-                            hintText: 'Update Birthdate',
-                            errorText: _birthdate ? null : "Birthdate invalid",
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            prefixIcon: const Icon(
-                              Icons.calendar_today_rounded,
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                    imageName == "" ? Container() : Text("${imageName}"),
+                    OutlinedButton(
+                      onPressed: () {
+                        imagePicker();
+                      },
+                      child: Text(
+                        "Select Image",
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
-                          readOnly:
-                              true, //set it true, so that user will not able to edit text
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(
-                                    1900), //DateTime.now() - not to allow to choose before today.
-                                lastDate: DateTime(2025));
-
-                            if (pickedDate != null) {
-                              print(
-                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                              String formattedDate =
-                                  DateFormat('dd-MM-yyyy').format(pickedDate);
-                              print(
-                                  formattedDate); //formatted date output using intl package =>  2021-03-16
-                              //you can implement different kind of Date Format here according to your requirement
-
-                              setState(() {
-                                displaybirthdate.text =
-                                    formattedDate; //set output date to TextField value.
-                              });
-                            } else {
-                              print("Date is not selected");
-                            }
-                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          controller: displayfname,
+                          decoration: InputDecoration(
+                              labelText: 'First Name',
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                                borderSide: BorderSide(
+                                    color: Colors.deepPurple.shade200,
+                                    width: 3.0),
+                              ),
+                              hintText: "Update First Name",
+                              errorText: _fname ? null : "First Name invalid"),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: updateProfileData,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                  ),
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          controller: displaylname,
+                          decoration: InputDecoration(
+                              labelText: 'Last Name',
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                                borderSide: BorderSide(
+                                    color: Colors.deepPurple.shade200,
+                                    width: 3.0),
+                              ),
+                              hintText: "Update Last Name",
+                              errorText: _lname ? null : "Last Name invalid"),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          controller: displaypnum,
+                          decoration: InputDecoration(
+                              labelText: 'Phone Number',
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0)),
+                                borderSide: BorderSide(
+                                    color: Colors.deepPurple.shade200,
+                                    width: 3.0),
+                              ),
+                              hintText: "Update Phone Number",
+                              errorText: _pnum ? null : "Phone Number invalid"),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Gender',
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0)),
+                              borderSide: BorderSide(
+                                  color: Colors.deepPurple.shade200,
+                                  width: 3.0),
+                            ),
+                          ),
+                          value: _selectedgender,
+                          items: _genderList
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  ))
+                              .toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedgender = val as String;
+                              displaygender.text = _selectedgender!;
+                            });
+                          },
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: displaybirthdate,
+                                decoration: InputDecoration(
+                                  labelText: 'Birth Date',
+                                  labelStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20.0)),
+                                    borderSide: BorderSide(color: Colors.black),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20.0)),
+                                    borderSide: BorderSide(
+                                        color: Colors.deepPurple.shade200,
+                                        width: 3.0),
+                                  ),
+                                  hintText: 'Update Birthdate',
+                                  errorText:
+                                      _birthdate ? null : "Birthdate invalid",
+                                  hintStyle: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.calendar_today_rounded,
+                                    color: Colors.black,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                readOnly:
+                                    true, //set it true, so that user will not able to edit text
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(
+                                          1900), //DateTime.now() - not to allow to choose before today.
+                                      lastDate: DateTime(2025));
+
+                                  if (pickedDate != null) {
+                                    print(
+                                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                    String formattedDate =
+                                        DateFormat('dd-MM-yyyy')
+                                            .format(pickedDate);
+                                    print(
+                                        formattedDate); //formatted date output using intl package =>  2021-03-16
+                                    //you can implement different kind of Date Format here according to your requirement
+
+                                    setState(() {
+                                      displaybirthdate.text =
+                                          formattedDate; //set output date to TextField value.
+                                    });
+                                  } else {
+                                    print("Date is not selected");
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: updateProfileData,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            shadowColor: Colors.cyanAccent),
+                        child: Text(
+                          'Save',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                //height: 500,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text("Click button below to update your location",
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        textAlign: TextAlign.center),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateCustLocation(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(),
+                      child: Text(
+                        'Update My Location',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

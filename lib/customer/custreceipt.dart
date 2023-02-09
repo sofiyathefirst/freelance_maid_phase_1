@@ -7,6 +7,7 @@ import 'package:freelance_maid_phase_1/customer/cust_review.dart';
 import 'package:freelance_maid_phase_1/customer/review_page.dart';
 
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Receipt extends StatefulWidget {
@@ -22,13 +23,20 @@ class _ReceiptState extends State<Receipt> {
   final review = FirebaseFirestore.instance.collection('reviews');
 
   Future<void> _delete(String bookingId) async {
-    await bookingMaid.doc(bookingId).delete();
+    try {
+      await bookingMaid.doc(bookingId).delete();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Cancel Succesful'),
-      ),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cancel Successful'),
+        ),
+      );
+    } catch (e) {
+      if (e is FlutterError && e.message.contains('unmounted')) {
+        return;
+      }
+      rethrow;
+    }
   }
 
   int _selectedIndex = 1;
@@ -71,9 +79,13 @@ class _ReceiptState extends State<Receipt> {
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -86,33 +98,11 @@ class _ReceiptState extends State<Receipt> {
         title: const Text(
           "Booking Receipt",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: () {
-              /*Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Geolocation(),
-                ),
-              );*/
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.logout_rounded),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SplashScreen2(),
-                ),
-              );
-            },
-          ),
           SizedBox(
             width: 15,
           ),
@@ -146,7 +136,7 @@ class _ReceiptState extends State<Receipt> {
                 if (snapshot.hasError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Delete Succesful'),
+                      content: Text('There is an error'),
                     ),
                   );
                 }
@@ -171,7 +161,7 @@ class _ReceiptState extends State<Receipt> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
-                                color: Colors.deepPurple[50],
+                                color: Colors.white,
                               ),
                               width: double.infinity,
                               child: Row(
@@ -193,120 +183,162 @@ class _ReceiptState extends State<Receipt> {
                                             bookmaid.get('maidfirstname') +
                                             '\t' +
                                             bookmaid.get('maidlastname'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Maid Phone Number: \n' +
                                             bookmaid.get('maidpnum'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Maid Email: \n' +
                                             bookmaid.get('maidemail'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Maid Gender: ' +
                                             bookmaid.get('maidgender'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Cleaning type: \n' +
                                             bookmaid.get('cleaningtype'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Bedroom: ' + bookmaid.get('bedroom'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Bathroom: ' + bookmaid.get('bathroom'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Kitchen: ' + bookmaid.get('kitchen'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Pantry: ' + bookmaid.get('pantry'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Office: ' + bookmaid.get('office'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Garden: ' + bookmaid.get('garden'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Booking Date: ' +
                                             bookmaid.get('bookdate'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Status: \n' + bookmaid.get('status'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         'Time Slot: ' +
                                             bookmaid.get('timeslot'),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
@@ -314,38 +346,50 @@ class _ReceiptState extends State<Receipt> {
                                             bookmaid
                                                 .get('totalpayment')
                                                 .toString(),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
-                                            fontSize: 15),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(height: 10),
                                       Text(
-                                        'Cancellation must be 3 days \n before the booking date!',
-                                        style: TextStyle(
-                                            color: Colors.red,
+                                        'Cancellation must be before \nmaid Accept the job!',
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
                                             fontSize: 15,
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                          ),
+                                        ),
                                       ),
                                       Row(
                                         children: [
                                           ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                shadowColor: Colors.pink,
+                                                backgroundColor: Colors.red),
                                             onPressed: () {
-                                              _delete(bookmaid.id);
-                                              Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Receipt()),
-                                                (Route<dynamic> route) => false,
-                                              );
+                                              if ("No Status" !=
+                                                  bookmaid.get('status')) {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Receipt()),
+                                                );
+                                              } else {
+                                                _delete(bookmaid.id);
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Receipt()),
+                                                );
+                                              }
                                             },
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                          Color>(
-                                                      Colors.red.shade800),
-                                            ),
                                             child: const Text(
                                               'Cancel',
                                               style: TextStyle(
@@ -358,14 +402,25 @@ class _ReceiptState extends State<Receipt> {
                                           ),
                                           ElevatedButton(
                                             onPressed: () {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => Review(
-                                                    data: bookmaid,
+                                              if ("Done" ==
+                                                  bookmaid.get('status')) {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Review(
+                                                      data: bookmaid,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
+                                                );
+                                              } else {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Receipt()),
+                                                );
+                                              }
                                             },
                                             style: ButtonStyle(
                                               backgroundColor:

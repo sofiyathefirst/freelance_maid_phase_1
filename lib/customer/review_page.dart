@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'cust_profilepage.dart';
 
@@ -59,9 +60,13 @@ class _ReviewPageState extends State<ReviewPage> {
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -74,26 +79,10 @@ class _ReviewPageState extends State<ReviewPage> {
         title: const Text(
           "Review Page",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.logout_rounded),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SplashScreen2(),
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            width: 15,
-          ),
-        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -139,60 +128,98 @@ class _ReviewPageState extends State<ReviewPage> {
                     (i) {
                       final review = snapd[i];
                       if (review.get('reviews') != null) {
-                        return Column(
-                          children: [
-                            SizedBox(height: 20),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: Colors.deepPurple[50],
-                              ),
-                              width: double.infinity,
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 10),
-                                  Text(
-                                      'Review from ' +
-                                          review.get('custfirstname'),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                  SizedBox(height: 10),
-                                  Text('Maid Name: ' +
-                                      review.get('maidfirstname') +
-                                      '\t' +
-                                      review.get('maidlastname')),
-                                  SizedBox(height: 10),
-                                  Text('Cleaning type: ' +
-                                      review.get('cleaningtype')),
-                                  SizedBox(height: 10),
-                                  Text('Review: ' + review.get('reviews')),
-                                  SizedBox(height: 10),
-                                  RatingBar.builder(
-                                      initialRating: review.get("rating"),
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      ignoreGestures: true,
-                                      itemPadding:
-                                          EdgeInsets.symmetric(horizontal: 4.0),
-                                      itemBuilder: (context, _) => Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
+                        return Container(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20),
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30),
+                                    topRight: Radius.circular(30),
+                                    bottomRight: Radius.circular(30),
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10),
+                                    Text(
+                                        'Review from ' +
+                                            review.get('custfirstname'),
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
                                           ),
-                                      glow: true,
-                                      itemSize: 30,
-                                      onRatingUpdate: (rating) => {}),
-                                  SizedBox(height: 10),
-                                ],
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                              ),
-                            )
-                          ],
+                                        ),
+                                        textAlign: TextAlign.center),
+                                    SizedBox(height: 10),
+                                    Text(
+                                        'Maid Name: ' +
+                                            review.get('maidfirstname') +
+                                            '\t' +
+                                            review.get('maidlastname'),
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center),
+                                    SizedBox(height: 10),
+                                    Text(
+                                        'Cleaning type: ' +
+                                            review.get('cleaningtype'),
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center),
+                                    SizedBox(height: 10),
+                                    Text('Review: \n' + review.get('reviews'),
+                                        style: GoogleFonts.heebo(
+                                          textStyle: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        textAlign: TextAlign.center),
+                                    SizedBox(height: 10),
+                                    RatingBar.builder(
+                                        initialRating:
+                                            review.get("rating").toDouble(),
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        ignoreGestures: true,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                        glow: true,
+                                        itemSize: 30,
+                                        onRatingUpdate: (rating) => {}),
+                                    SizedBox(height: 10),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         );
                       } else {
                         return Column(

@@ -136,7 +136,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MaidReceipt(),
+            builder: (context) => MaidHomePage(),
           ),
         );
         break;
@@ -360,7 +360,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => MaidReceipt(),
+                              builder: (_) => MaidHomePage(),
                             ),
                           );
                           SnackBar snackbar = const SnackBar(

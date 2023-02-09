@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/common%20method/gettextformfield.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_register.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustLogin extends StatefulWidget {
   CustLogin({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class CustLogin extends StatefulWidget {
 class _CustLoginState extends State<CustLogin> {
   final _custEmail = TextEditingController();
   final _custPassword = TextEditingController();
+  bool _isObscure = true;
 
   @override
   void dispose() {
@@ -39,7 +41,7 @@ class _CustLoginState extends State<CustLogin> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -63,14 +65,14 @@ class _CustLoginState extends State<CustLogin> {
               const SizedBox(
                 height: 20,
               ),
-              const Text(
-                'Sign in',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40,
-                  color: Colors.white,
-                ),
-              ),
+              Text('Sign in',
+                  style: GoogleFonts.heebo(
+                    textStyle: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  )),
               const SizedBox(
                 height: 20,
               ),
@@ -81,27 +83,57 @@ class _CustLoginState extends State<CustLogin> {
                 inputType: TextInputType.emailAddress,
                 validator: _requiredValidator,
               ),
-              getTextFormField(
-                controller: _custPassword,
-                hintName: 'Password',
-                icon: Icons.lock,
-                isObscureText: true,
-                validator: _requiredValidator,
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                margin: EdgeInsets.only(top: 20.0),
+                child: TextFormField(
+                  controller: _custPassword,
+                  obscureText: _isObscure,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 3.0),
+                    ),
+                    prefixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        }),
+                    hintText: 'Password',
+                    hintStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  validator: _requiredValidator,
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                ),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
+                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                    shadowColor: Colors.cyanAccent),
+                child: Text('Sign in',
+                    style: GoogleFonts.heebo(
+                      textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    )),
                 onPressed: signIn,
               ),
               const SizedBox(
@@ -110,11 +142,14 @@ class _CustLoginState extends State<CustLogin> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not registered yet?',
-                      style: TextStyle(
-                          color: Colors.white,
+                  Text('New User?',
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w600)),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      )),
                   const SizedBox(
                     height: 15,
                   ),
@@ -127,11 +162,14 @@ class _CustLoginState extends State<CustLogin> {
                         ),
                       );
                     },
-                    child: const Text('Sign Up',
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600)),
+                    child: Text('Sign Up',
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.greenAccent[400],
+                          ),
+                        )),
                   ),
                 ],
               ),

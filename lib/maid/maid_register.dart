@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/geolocation/mapsmaid.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_login.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../common method/gettextformfield.dart';
@@ -38,6 +39,8 @@ class _RegisterMaidState extends State<RegisterMaid> {
     "Office Cleaning",
     "Post Renovation"
   ];
+  bool _isObscure = true;
+  bool _isObscure2 = true;
 
   bool showProgress = false;
 
@@ -87,7 +90,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -108,14 +111,25 @@ class _RegisterMaidState extends State<RegisterMaid> {
                   ),
                 ),
               ),
-              const Text(
-                'Maid Details',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
+              Text('Sign Up',
+                  style: GoogleFonts.heebo(
+                    textStyle: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  )),
+              const SizedBox(
+                height: 10,
               ),
+              Text('Please Fill In All Field',
+                  style: GoogleFonts.heebo(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  )),
               const SizedBox(
                 height: 20,
               ),
@@ -179,20 +193,27 @@ class _RegisterMaidState extends State<RegisterMaid> {
                           _maidgender.text = _selectedgender!;
                         });
                       },
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                       decoration: InputDecoration(
+                        labelText: 'Choose Gender',
+                        labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
                           borderSide: BorderSide(
-                              color: Colors.green.shade200, width: 3.0),
+                              color: Colors.deepPurple.shade200, width: 3.0),
                         ),
                         prefixIcon: Icon(
                           Icons.person,
@@ -219,16 +240,21 @@ class _RegisterMaidState extends State<RegisterMaid> {
                       TextFormField(
                         controller: _maidbirthdate,
                         decoration: InputDecoration(
+                          labelText: 'Choose Birth Date',
+                          labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black),
                           enabledBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
-                            borderSide: BorderSide(color: Colors.white),
+                                BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(color: Colors.black),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
+                                BorderRadius.all(Radius.circular(20.0)),
                             borderSide: BorderSide(
-                                color: Colors.green.shade200, width: 3.0),
+                                color: Colors.deepPurple.shade200, width: 3.0),
                           ),
                           prefixIcon: Icon(
                             Icons.calendar_today_rounded,
@@ -246,7 +272,7 @@ class _RegisterMaidState extends State<RegisterMaid> {
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime(
-                                  1900), //DateTime.now() - not to allow to choose before today.
+                                  1950), //DateTime.now() - not to allow to choose before today.
                               lastDate: DateTime(2025));
 
                           if (pickedDate != null) {
@@ -270,9 +296,6 @@ class _RegisterMaidState extends State<RegisterMaid> {
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -306,20 +329,27 @@ class _RegisterMaidState extends State<RegisterMaid> {
                           _maidcleaningtype.text = _selectedVal!;
                         });
                       },
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                       decoration: InputDecoration(
+                        labelText: 'Choose Cleaning Type',
+                        labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
                           borderSide: BorderSide(
-                              color: Colors.green.shade200, width: 3.0),
+                              color: Colors.deepPurple.shade200, width: 3.0),
                         ),
                         prefixIcon: Icon(
                           Icons.cleaning_services_rounded,
@@ -333,21 +363,77 @@ class _RegisterMaidState extends State<RegisterMaid> {
                   ],
                 ),
               ),
-              getTextFormField(
-                controller: _password,
-                hintName: 'Password',
-                icon: Icons.remove_red_eye_rounded,
-                isObscureText: true,
-                inputType: TextInputType.name,
-                validator: _requiredValidator,
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                margin: EdgeInsets.only(top: 20.0),
+                child: TextFormField(
+                  controller: _password,
+                  obscureText: _isObscure,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 3.0),
+                    ),
+                    prefixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        }),
+                    hintText: 'Password',
+                    hintStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  validator: _requiredValidator,
+                ),
               ),
-              getTextFormField(
-                controller: _confirmpass,
-                hintName: 'Confirm Password',
-                icon: Icons.lock,
-                isObscureText: true,
-                inputType: TextInputType.name,
-                validator: _confirmPasswordValidator,
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                margin: EdgeInsets.only(top: 20.0),
+                child: TextFormField(
+                  controller: _confirmpass,
+                  obscureText: _isObscure2,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 3.0),
+                    ),
+                    prefixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure2 ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure2 = !_isObscure2;
+                          });
+                        }),
+                    hintText: 'Password',
+                    hintStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  validator: _confirmPasswordValidator,
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -355,13 +441,16 @@ class _RegisterMaidState extends State<RegisterMaid> {
               ElevatedButton(
                 onPressed: signUp,
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                ),
-                child: const Text(
+                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                    shadowColor: Colors.cyanAccent),
+                child: Text(
                   'Sign Up',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                  style: GoogleFonts.heebo(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -371,11 +460,14 @@ class _RegisterMaidState extends State<RegisterMaid> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Already registered',
-                      style: TextStyle(
-                          color: Colors.white,
+                  Text('Already registered',
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w600)),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      )),
                   const SizedBox(
                     height: 15,
                   ),
@@ -388,11 +480,14 @@ class _RegisterMaidState extends State<RegisterMaid> {
                         ),
                       );
                     },
-                    child: const Text('Sign In',
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600)),
+                    child: Text('Sign In',
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.greenAccent[400],
+                          ),
+                        )),
                   ),
                 ],
               ),

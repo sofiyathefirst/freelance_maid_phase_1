@@ -10,6 +10,7 @@ import 'package:freelance_maid_phase_1/geolocation/display_all_location.dart';
 
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Disinfection extends StatefulWidget {
@@ -64,9 +65,13 @@ class _DisinfectionState extends State<Disinfection> {
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -77,39 +82,12 @@ class _DisinfectionState extends State<Disinfection> {
           },
         ),
         title: const Text(
-          "Disinfection Services",
+          "Disinfection Service",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DisplayAllLocation(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.logout_rounded),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SplashScreen2(),
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            width: 15,
-          ),
-        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -164,91 +142,144 @@ class _DisinfectionState extends State<Disinfection> {
                                   topRight: Radius.circular(30),
                                   bottomRight: Radius.circular(30),
                                 ),
-                                color: Colors.blue.shade100,
+                                color: Colors.white,
                               ),
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: Image(
-                                      image: NetworkImage(maid.get('image')),
-                                    ),
-                                  ),
-                                  SizedBox(width: 20),
-                                  Column(
+                                  Row(
                                     children: [
-                                      SizedBox(height: 20),
-                                      Text('Name: ' +
-                                          maid.get('maidfirstname') +
-                                          '\t' +
-                                          maid.get('maidlastname')),
-                                      SizedBox(height: 20),
-                                      Text('Phone Number: ' +
-                                          maid.get('phonenum').toString()),
-                                      SizedBox(height: 20),
-                                      Text('Email: ' + maid.get('maidemail')),
-                                      SizedBox(height: 20),
-                                      Text('Gender: ' + maid.get('gender')),
-                                      SizedBox(height: 20),
-                                      Text('Rate per 2 hour: RM' +
-                                          maid.get('rateperhour')),
-                                      SizedBox(height: 20),
-                                      Row(
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      SizedBox(
+                                        height: 100,
+                                        width: 100,
+                                        child: Image(
+                                          image:
+                                              NetworkImage(maid.get('image')),
+                                        ),
+                                      ),
+                                      SizedBox(width: 25),
+                                      Column(
                                         children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Custbooking(data: maid),
+                                          SizedBox(height: 20),
+                                          Text(
+                                              'Name: \n' +
+                                                  maid.get('maidfirstname') +
+                                                  '\t' +
+                                                  maid.get('maidlastname'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
                                                 ),
-                                              );
-                                            },
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                          Color>(
-                                                      Colors.green.shade700),
-                                            ),
-                                            child: const Text(
-                                              'Book Now',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
                                               ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 20),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ReviewPage(),
+                                              textAlign: TextAlign.center),
+                                          SizedBox(height: 10),
+                                          Text(
+                                              'Phone Number: \n' +
+                                                  maid
+                                                      .get('phonenum')
+                                                      .toString(),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
                                                 ),
-                                              );
-                                            },
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Colors.black),
-                                            ),
-                                            child: const Text(
-                                              'Review',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
                                               ),
-                                            ),
-                                          ),
+                                              textAlign: TextAlign.center),
+                                          SizedBox(height: 10),
+                                          Text(
+                                              'Email: \n' +
+                                                  maid.get('maidemail'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              textAlign: TextAlign.center),
+                                          SizedBox(height: 10),
+                                          Text(
+                                              'Gender: \n' + maid.get('gender'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              textAlign: TextAlign.center),
+                                          SizedBox(height: 10),
+                                          Text(
+                                              'Rate per 2 hour: \n' +
+                                                  maid.get('rateperhour'),
+                                              style: GoogleFonts.heebo(
+                                                textStyle: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              textAlign: TextAlign.center),
+                                          SizedBox(height: 10),
                                         ],
                                       )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            shadowColor: Colors.cyanAccent,
+                                            backgroundColor: Colors.green),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Custbooking(data: maid),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('Book Now',
+                                            style: GoogleFonts.heebo(
+                                              textStyle: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            )),
+                                      ),
+                                      SizedBox(width: 40),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            shadowColor: Colors.pinkAccent,
+                                            backgroundColor: Colors.black),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReviewPage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text('View Review',
+                                            style: GoogleFonts.heebo(
+                                              textStyle: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            )),
+                                      ),
                                     ],
                                   )
                                 ],

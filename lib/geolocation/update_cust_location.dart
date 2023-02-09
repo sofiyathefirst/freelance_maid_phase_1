@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../customer/cust_homepage.dart';
@@ -68,41 +70,49 @@ class _UpdateCustLocationState extends State<UpdateCustLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CustProfile(),
+              ),
+            );
+          },
         ),
         title: const Text(
-          "Pinned Location",
+          "Update Location",
           style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.arrow_forward_ios_outlined),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CustHomePage(),
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            width: 15,
-          ),
-        ],
       ),
       body: Container(
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Text('Drag and move the location marker to update your location',
+                style: GoogleFonts.heebo(
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                )),
+            const SizedBox(
+              height: 20,
+            ),
             SizedBox(
-              height: 600,
+              height: 300,
               child: GoogleMap(
+                zoomGesturesEnabled: true,
                 mapType: MapType.hybrid,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(position?.latitude ?? 2.2214,
@@ -115,7 +125,43 @@ class _UpdateCustLocationState extends State<UpdateCustLocation> {
                 },
               ),
             ),
-            Text('Address: $addressLoc'),
+            Text('View Addres Here before Submit: $addressLoc',
+                style: GoogleFonts.heebo(
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                )),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                  shadowColor: Colors.cyanAccent),
+              child: Text('Update My Location',
+                  style: GoogleFonts.heebo(
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  )),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustProfile(),
+                  ),
+                );
+                SnackBar snackbar = const SnackBar(
+                  content: Text("Location Updated!"),
+                  backgroundColor: Colors.green,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+              },
+            ),
           ],
         ),
       ),

@@ -32,18 +32,19 @@ class getTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: Colors.black),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            borderSide: BorderSide(color: Colors.blue.shade200, width: 3.0),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 3.0),
           ),
           prefixIcon: Icon(
             icon,
             color: Colors.black,
           ),
           hintText: hintName,
-          hintStyle: TextStyle(color: Colors.black),
+          hintStyle:
+              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           fillColor: Colors.white,
           filled: true,
         ),
@@ -80,12 +81,12 @@ class getTextFormField2 extends StatelessWidget {
         keyboardType: inputType,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
-            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            borderSide: BorderSide(color: Colors.black),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
-            borderSide: BorderSide(color: Colors.green.shade200, width: 3.0),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 3.0),
           ),
           prefixIcon: Icon(
             icon,

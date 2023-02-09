@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/common%20method/gettextformfield.dart';
 import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_login.dart';
+import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 
 class CustUpdate extends StatefulWidget {
   CustUpdate({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class _CustUpdateState extends State<CustUpdate> {
   final currentUser = FirebaseAuth.instance.currentUser;
   bool _email = true;
   bool _pass = true;
+  bool _isObscure = true;
+  bool _isObscure2 = true;
 
   updateEmailPass() async {
     try {
@@ -62,16 +65,20 @@ class _CustUpdateState extends State<CustUpdate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => CustHomePage(),
+                builder: (context) => CustProfile(),
               ),
             );
           },
@@ -79,7 +86,7 @@ class _CustUpdateState extends State<CustUpdate> {
         title: const Text(
           "Update Email & Password",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -97,21 +104,80 @@ class _CustUpdateState extends State<CustUpdate> {
                 icon: Icons.email,
                 inputType: TextInputType.emailAddress,
               ),
-              getTextFormField2(
-                controller: _custPassword,
-                hintName: 'Password',
-                icon: Icons.lock,
-                isObscureText: true,
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                margin: EdgeInsets.only(top: 20.0),
+                child: TextFormField(
+                  controller: _custPassword,
+                  obscureText: _isObscure,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 3.0),
+                    ),
+                    prefixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        }),
+                    hintText: 'Password',
+                    hintStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  validator: _requiredValidator,
+                ),
               ),
-              getTextFormField(
-                controller: _custConfirmPassword,
-                hintName: 'Confirm Password',
-                icon: Icons.lock,
-                isObscureText: true,
-                validator: _confirmPasswordValidator,
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                margin: EdgeInsets.only(top: 20.0),
+                child: TextFormField(
+                  controller: _custConfirmPassword,
+                  obscureText: _isObscure2,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 3.0),
+                    ),
+                    prefixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure2 ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure2 = !_isObscure2;
+                          });
+                        }),
+                    hintText: 'Confirm Password',
+                    hintStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  validator: _confirmPasswordValidator,
+                ),
               ),
               const SizedBox(
-                height: 25,
+                height: 20,
               ),
               Center(
                 child: ElevatedButton(
@@ -133,6 +199,13 @@ class _CustUpdateState extends State<CustUpdate> {
         ),
       ),
     );
+  }
+
+  String? _requiredValidator(String? text) {
+    if (text == null || text.trim().isEmpty) {
+      return 'This field is required';
+    }
+    return null;
   }
 
   String? _confirmPasswordValidator(String? _custconfirmPassword) {

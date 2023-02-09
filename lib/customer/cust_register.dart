@@ -7,6 +7,7 @@ import 'package:freelance_maid_phase_1/customer/cust_login.dart';
 import 'package:freelance_maid_phase_1/database/auth.dart';
 import 'package:freelance_maid_phase_1/geolocation/get_location.dart';
 import 'package:freelance_maid_phase_1/geolocation/try_maps.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:intl/intl.dart';
 
@@ -32,6 +33,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _custbirthdate = TextEditingController();
   String? _selectedgender = "Male";
   final _genderList = ["Male", "Female"];
+  bool _isObscure = true;
+  bool _isObscure2 = true;
 
   bool showProgress = false;
 
@@ -75,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
           child: Container(
               padding: const EdgeInsets.all(20),
@@ -99,14 +102,25 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                      color: Colors.white,
-                    ),
+                  Text('Sign Up',
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 10,
                   ),
+                  Text('Please Fill In All Field',
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      )),
                   const SizedBox(
                     height: 20,
                   ),
@@ -160,27 +174,30 @@ class _RegisterPageState extends State<RegisterPage> {
                               _custgender.text = _selectedgender!;
                             });
                           },
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                          style: GoogleFonts.heebo(
+                            textStyle: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                           decoration: InputDecoration(
-                            labelText: 'Gender',
+                            labelText: 'Choose Gender',
                             labelStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25,
-                                color: Colors.grey),
+                                color: Colors.black),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0)),
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: BorderSide(color: Colors.black),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0)),
                               borderSide: BorderSide(
-                                  color: Colors.green.shade200, width: 3.0),
+                                  color: Colors.deepPurple.shade200,
+                                  width: 3.0),
                             ),
                             prefixIcon: Icon(
                               Icons.person,
@@ -207,16 +224,22 @@ class _RegisterPageState extends State<RegisterPage> {
                           TextFormField(
                             controller: _custbirthdate,
                             decoration: InputDecoration(
+                              labelText: 'Enter Birth Date',
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20.0)),
-                                borderSide: BorderSide(color: Colors.white),
+                                borderSide: BorderSide(color: Colors.black),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20.0)),
                                 borderSide: BorderSide(
-                                    color: Colors.green.shade200, width: 3.0),
+                                    color: Colors.deepPurple.shade200,
+                                    width: 3.0),
                               ),
                               prefixIcon: Icon(
                                 Icons.calendar_today_rounded,
@@ -234,7 +257,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   context: context,
                                   initialDate: DateTime.now(),
                                   firstDate: DateTime(
-                                      1900), //DateTime.now() - not to allow to choose before today.
+                                      1950), //DateTime.now() - not to allow to choose before today.
                                   lastDate: DateTime(2025));
 
                               if (pickedDate != null) {
@@ -259,19 +282,81 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  getTextFormField(
-                    controller: _custPassword,
-                    hintName: 'Password',
-                    icon: Icons.lock,
-                    isObscureText: true,
-                    validator: _requiredValidator,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    margin: EdgeInsets.only(top: 20.0),
+                    child: TextFormField(
+                      controller: _custPassword,
+                      obscureText: _isObscure,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide:
+                              BorderSide(color: Colors.deepPurple, width: 3.0),
+                        ),
+                        prefixIcon: IconButton(
+                            icon: Icon(
+                              _isObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                            }),
+                        hintText: 'Password',
+                        hintStyle: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      validator: _requiredValidator,
+                    ),
                   ),
-                  getTextFormField(
-                    controller: _custConfirmPassword,
-                    hintName: 'Confirm Password',
-                    icon: Icons.lock,
-                    isObscureText: true,
-                    validator: _confirmPasswordValidator,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    margin: EdgeInsets.only(top: 20.0),
+                    child: TextFormField(
+                      controller: _custConfirmPassword,
+                      obscureText: _isObscure2,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide:
+                              BorderSide(color: Colors.deepPurple, width: 3.0),
+                        ),
+                        prefixIcon: IconButton(
+                            icon: Icon(
+                              _isObscure2
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isObscure2 = !_isObscure2;
+                              });
+                            }),
+                        hintText: 'Confirm Password',
+                        hintStyle: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                      validator: _confirmPasswordValidator,
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -279,13 +364,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   ElevatedButton(
                     onPressed: signUp,
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
-                    ),
-                    child: const Text(
+                        padding: const EdgeInsets.fromLTRB(40, 15, 40, 15),
+                        shadowColor: Colors.cyanAccent),
+                    child: Text(
                       'Sign Up',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                      style: GoogleFonts.heebo(
+                        textStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -295,11 +383,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Already registered',
-                          style: TextStyle(
-                              color: Colors.white,
+                      Text('Already registered',
+                          style: GoogleFonts.heebo(
+                            textStyle: TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight.w600)),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          )),
                       const SizedBox(
                         height: 15,
                       ),
@@ -312,11 +403,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           );
                         },
-                        child: const Text('Sign In',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600)),
+                        child: Text('Sign In',
+                            style: GoogleFonts.heebo(
+                              textStyle: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.greenAccent[400],
+                              ),
+                            )),
                       ),
                     ],
                   ),

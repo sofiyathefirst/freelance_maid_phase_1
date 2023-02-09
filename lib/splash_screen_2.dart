@@ -28,7 +28,7 @@ class SplashScreen2 extends StatelessWidget {
             Text('Please choose your login method',
                 style: GoogleFonts.heebo(
                   textStyle: TextStyle(
-                    fontSize: 17,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -68,7 +68,7 @@ class SplashScreen2 extends StatelessWidget {
                       'Customer',
                       style: GoogleFonts.heebo(
                         textStyle: TextStyle(
-                          fontSize: 17,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -112,7 +112,7 @@ class SplashScreen2 extends StatelessWidget {
                     child: Text('Maid',
                         style: GoogleFonts.heebo(
                           textStyle: TextStyle(
-                            fontSize: 17,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),

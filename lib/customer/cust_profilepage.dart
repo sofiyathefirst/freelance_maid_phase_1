@@ -8,6 +8,7 @@ import 'package:freelance_maid_phase_1/customer/cust_update_email_pass.dart';
 import 'package:freelance_maid_phase_1/customer/custreceipt.dart';
 import 'package:freelance_maid_phase_1/geolocation/update_cust_location.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustProfile extends StatefulWidget {
   CustProfile({Key? key}) : super(key: key);
@@ -115,13 +116,14 @@ class _CustProfileState extends State<CustProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
           "User Profile",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -134,27 +136,21 @@ class _CustProfileState extends State<CustProfile> {
                 ),
               );
             },
-            icon: Icon(Icons.arrow_back_ios_new)),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
+            )),
         actions: <Widget>[
-          ElevatedButton(
+          IconButton(
+            icon: Icon(Icons.logout_rounded, color: Colors.black),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UpdateCustLocation(),
+                  builder: (context) => SplashScreen2(),
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            ),
-            child: Text(
-              'Update Location',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
           SizedBox(
             width: 15,
@@ -181,125 +177,173 @@ class _CustProfileState extends State<CustProfile> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(15),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: CircleAvatar(
-                    backgroundColor: Colors.green[200],
-                    backgroundImage: imageXFile == null
-                        ? NetworkImage(image!)
-                        : Image.file(imageXFile!).image,
-                    radius: 65,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                //height: 500,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.person,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    fname! + '\t' + lname!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.phone_android,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    pnum!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.alternate_email,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    email!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.accessibility,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    gender!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(
-                    Icons.calendar_month,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    birthdate!,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: Row(
-                  children: [
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
                     const SizedBox(
-                      width: 25,
+                      height: 20,
                     ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: CircleAvatar(
+                          backgroundColor: Colors.deepPurple,
+                          backgroundImage: imageXFile == null
+                              ? NetworkImage(image!)
+                              : Image.file(imageXFile!).image,
+                          radius: 65,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(fname! + '\t' + lname!,
+                            style: GoogleFonts.heebo(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            textAlign: TextAlign.center),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.phone,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(pnum!,
+                            style: GoogleFonts.heebo(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            textAlign: TextAlign.center),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.alternate_email,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(email!,
+                            style: GoogleFonts.heebo(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            textAlign: TextAlign.center),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.male,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(gender!,
+                            style: GoogleFonts.heebo(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            textAlign: TextAlign.center),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_month,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(birthdate!,
+                            style: GoogleFonts.heebo(
+                              textStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            textAlign: TextAlign.center),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                //height: 500,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Click button below to edit your profile",
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        textAlign: TextAlign.center),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pushReplacement(
@@ -309,9 +353,7 @@ class _CustProfileState extends State<CustProfile> {
                           ),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-                      ),
+                      style: ElevatedButton.styleFrom(),
                       child: Text(
                         'Edit Profile',
                         style: TextStyle(
@@ -321,31 +363,17 @@ class _CustProfileState extends State<CustProfile> {
                       ),
                     ),
                     const SizedBox(
-                      width: 10,
+                      height: 20,
                     ),
-                    ElevatedButton(
-                      onPressed: _delete,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-                      ),
-                      child: Text(
-                        'Delete Account',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                    Text("Click button below to update your Email & Password",
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 25,
-                    ),
+                        textAlign: TextAlign.center),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pushReplacement(
@@ -355,11 +383,9 @@ class _CustProfileState extends State<CustProfile> {
                           ),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-                      ),
+                      style: ElevatedButton.styleFrom(),
                       child: Text(
-                        'Update Email \n & Password',
+                        'Update Email & Password',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -367,27 +393,52 @@ class _CustProfileState extends State<CustProfile> {
                       ),
                     ),
                     const SizedBox(
-                      width: 10,
+                      height: 10,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SplashScreen2(),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                //height: 500,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Are you sure you want to delete your account?",
+                        style: GoogleFonts.heebo(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-                      ),
+                        ),
+                        textAlign: TextAlign.center),
+                    ElevatedButton(
+                      onPressed: _delete,
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
                       child: Text(
-                        'Logout',
+                        'Delete Account',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),
