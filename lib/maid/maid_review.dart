@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Maidreview extends StatefulWidget {
@@ -15,7 +17,7 @@ class Maidreview extends StatefulWidget {
 }
 
 class _MaidreviewState extends State<Maidreview> {
-  final rreview = FirebaseFirestore.instance.collection('review');
+  final rreview = FirebaseFirestore.instance.collection('reviews');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
 
   int _selectedIndex = 1;
@@ -58,9 +60,13 @@ class _MaidreviewState extends State<Maidreview> {
     return Scaffold(
       backgroundColor: Colors.deepPurple[100],
       appBar: AppBar(
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -73,26 +79,10 @@ class _MaidreviewState extends State<Maidreview> {
         title: const Text(
           "Review",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.w700,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.logout_rounded),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SplashScreen2(),
-                ),
-              );
-            },
-          ),
-          SizedBox(
-            width: 15,
-          ),
-        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -141,34 +131,75 @@ class _MaidreviewState extends State<Maidreview> {
                         return Column(
                           children: [
                             SizedBox(height: 20),
+                            Text('Customer Review',
+                                style: GoogleFonts.heebo(
+                                  textStyle: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                textAlign: TextAlign.center),
+                            SizedBox(height: 20),
                             Container(
-                              color: Colors.deepPurple[100],
                               width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  bottomLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                  bottomRight: Radius.circular(30),
+                                ),
+                                color: Colors.white,
+                              ),
                               child: Column(
                                 children: [
                                   SizedBox(height: 20),
                                   Text(
                                       'Review from ' +
                                           review.get('custfirstname'),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                                      style: GoogleFonts.heebo(
+                                        textStyle: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      textAlign: TextAlign.center),
                                   SizedBox(height: 5),
-                                  Text('Maid Name: ' +
-                                      review.get('maidfirstname') +
-                                      '\t' +
-                                      review.get('maidlastname')),
+                                  Text('Review: ' + review.get('reviews'),
+                                      style: GoogleFonts.heebo(
+                                        textStyle: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      textAlign: TextAlign.center),
                                   SizedBox(height: 5),
-                                  Text('Cleaning type: ' +
-                                      review.get('cleaningtype')),
-                                  SizedBox(height: 5),
-                                  Text('Review: ' + review.get('reviews')),
+                                  RatingBar.builder(
+                                      initialRating:
+                                          review.get("rating").toDouble(),
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      ignoreGestures: true,
+                                      itemPadding:
+                                          EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                      glow: true,
+                                      itemSize: 30,
+                                      onRatingUpdate: (rating) => {}),
+                                  SizedBox(height: 10),
                                 ],
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                               ),
-                            )
+                            ),
                           ],
                         );
                       } else {

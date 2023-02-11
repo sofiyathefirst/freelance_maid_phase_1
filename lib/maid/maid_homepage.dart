@@ -156,6 +156,16 @@ class _MaidHomePageState extends State<MaidHomePage> {
                           child: Column(
                             children: [
                               SizedBox(height: 20),
+                              Text('Customer Booking List',
+                                  style: GoogleFonts.heebo(
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  textAlign: TextAlign.center),
+                              SizedBox(height: 20),
                               Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
@@ -433,7 +443,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                         "Below is the location of customer's house",
                                         style: GoogleFonts.heebo(
                                           textStyle: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                           ),
