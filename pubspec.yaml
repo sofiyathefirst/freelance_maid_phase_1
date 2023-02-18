@@ -66,6 +66,7 @@ dependencies:
   flutter_google_places: ^0.3.0
   get: any
   uuid: ^3.0.7
+  flutter_launcher_icons: any
 
  
   

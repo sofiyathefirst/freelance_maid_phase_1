@@ -187,7 +187,7 @@ class _CustHomePageState extends State<CustHomePage> {
                                   decoration: BoxDecoration(
                                     image: const DecorationImage(
                                       image:
-                                          AssetImage('assets/image/indoor.png'),
+                                          AssetImage('assets/image/rumah.png'),
                                     ),
                                   ),
                                 ),
@@ -207,21 +207,6 @@ class _CustHomePageState extends State<CustHomePage> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey[300],
-                                  ),
-                                  child: selectedType == "housecleaning"
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 40,
-                                        )
-                                      : Container(),
-                                )
                               ],
                             ),
                           ),
@@ -244,8 +229,8 @@ class _CustHomePageState extends State<CustHomePage> {
                                   width: 120,
                                   decoration: BoxDecoration(
                                     image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/image/outdoor.png'),
+                                      image:
+                                          AssetImage('assets/image/office.png'),
                                     ),
                                   ),
                                 ),
@@ -265,21 +250,6 @@ class _CustHomePageState extends State<CustHomePage> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey[300],
-                                  ),
-                                  child: selectedType == "officecleaning"
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 40,
-                                        )
-                                      : Container(),
-                                )
                               ],
                             ),
                           ),
@@ -302,8 +272,8 @@ class _CustHomePageState extends State<CustHomePage> {
                                   width: 120,
                                   decoration: BoxDecoration(
                                     image: const DecorationImage(
-                                      image:
-                                          AssetImage('assets/image/indoor.png'),
+                                      image: AssetImage(
+                                          'assets/image/disinfect.png'),
                                     ),
                                   ),
                                 ),
@@ -323,21 +293,6 @@ class _CustHomePageState extends State<CustHomePage> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey[300],
-                                  ),
-                                  child: selectedType == "disinfection"
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 30,
-                                        )
-                                      : Container(),
-                                )
                               ],
                             ),
                           ),
@@ -380,8 +335,8 @@ class _CustHomePageState extends State<CustHomePage> {
                                   width: 120,
                                   decoration: BoxDecoration(
                                     image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/image/outdoor.png'),
+                                      image:
+                                          AssetImage('assets/image/garden.png'),
                                     ),
                                   ),
                                 ),
@@ -400,21 +355,6 @@ class _CustHomePageState extends State<CustHomePage> {
                                 ),
                                 const SizedBox(
                                   height: 10,
-                                ),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey[300],
-                                  ),
-                                  child: selectedType == "garderning"
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 40,
-                                        )
-                                      : Container(),
                                 ),
                               ],
                             ),
@@ -439,7 +379,7 @@ class _CustHomePageState extends State<CustHomePage> {
                                   decoration: BoxDecoration(
                                     image: const DecorationImage(
                                       image:
-                                          AssetImage('assets/image/indoor.png'),
+                                          AssetImage('assets/image/deep.png'),
                                     ),
                                   ),
                                 ),
@@ -459,21 +399,6 @@ class _CustHomePageState extends State<CustHomePage> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey[300],
-                                  ),
-                                  child: selectedType == "deepcleaning"
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 40,
-                                        )
-                                      : Container(),
-                                )
                               ],
                             ),
                           ),
@@ -496,8 +421,8 @@ class _CustHomePageState extends State<CustHomePage> {
                                   width: 120,
                                   decoration: BoxDecoration(
                                     image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/image/outdoor.png'),
+                                      image:
+                                          AssetImage('assets/image/reno.png'),
                                     ),
                                   ),
                                 ),
@@ -517,21 +442,6 @@ class _CustHomePageState extends State<CustHomePage> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.grey[300],
-                                  ),
-                                  child: selectedType == "postrenovation"
-                                      ? Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 40,
-                                        )
-                                      : Container(),
-                                )
                               ],
                             ),
                           ),
@@ -547,22 +457,6 @@ class _CustHomePageState extends State<CustHomePage> {
                     SizedBox(
                       height: 15,
                     ),
-
-                    /*FutureBuilder<List<String>>(
-                      future: RecommendationService().getTopNMaids(5),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              return Text(snapshot.data![index]);
-                            },
-                          );
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
-                    ),*/
                   ],
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:freelance_maid_phase_1/maid/booking_status.dart';
+import 'package:freelance_maid_phase_1/maid/maid_mainpage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
@@ -44,7 +45,7 @@ class _MaidHomePageState extends State<MaidHomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MaidHomePage(),
+            builder: (context) => MaidMainPage(),
           ),
         );
         break;
@@ -75,11 +76,21 @@ class _MaidHomePageState extends State<MaidHomePage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.home_filled),
-          onPressed: () {},
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MaidMainPage(),
+              ),
+            );
+          },
         ),
         title: const Text(
-          "Home Page",
+          "Booking List",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w700,
@@ -155,16 +166,6 @@ class _MaidHomePageState extends State<MaidHomePage> {
                           padding: const EdgeInsets.all(10),
                           child: Column(
                             children: [
-                              SizedBox(height: 20),
-                              Text('Customer Booking List',
-                                  style: GoogleFonts.heebo(
-                                    textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  textAlign: TextAlign.center),
                               SizedBox(height: 20),
                               Container(
                                 decoration: BoxDecoration(
@@ -395,17 +396,10 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                               ),
                                             ),
                                             SizedBox(height: 10),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                if ("Done" ==
-                                                    bookmaid.get('status')) {
-                                                  Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MaidHomePage()),
-                                                  );
-                                                } else {
+                                            if (bookmaid.get('status') !=
+                                                "Done") ...[
+                                              ElevatedButton(
+                                                onPressed: () {
                                                   Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
@@ -414,22 +408,22 @@ class _MaidHomePageState extends State<MaidHomePage> {
                                                               data: bookmaid),
                                                     ),
                                                   );
-                                                }
-                                              },
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                            Color>(
-                                                        Colors.green.shade800),
-                                              ),
-                                              child: Text(
-                                                'Update Status',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty
+                                                          .all<Color>(Colors
+                                                              .green.shade800),
+                                                ),
+                                                child: Text(
+                                                  'Update Status',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ]
                                           ],
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,

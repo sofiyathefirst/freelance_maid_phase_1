@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/geolocation/update_maid_location.dart';
 import 'package:freelance_maid_phase_1/maid/maid_editprofile.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_mainpage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
 import 'package:freelance_maid_phase_1/maid/maid_update_email_pass.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
@@ -95,7 +96,7 @@ class _MaidProfileState extends State<MaidProfile> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MaidHomePage(),
+            builder: (context) => MaidMainPage(),
           ),
         );
         break;
@@ -137,7 +138,7 @@ class _MaidProfileState extends State<MaidProfile> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MaidHomePage(),
+                  builder: (context) => MaidMainPage(),
                 ),
               );
             },

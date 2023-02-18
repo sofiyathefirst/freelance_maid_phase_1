@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_mainpage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_register.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -36,7 +37,7 @@ class _MaidLoginState extends State<MaidLogin> {
           password: _maidpassword.text.trim(),
         )
         .then((user) => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MaidHomePage())))
+            context, MaterialPageRoute(builder: (context) => MaidMainPage())))
         .catchError((e) {
       print(e);
     });

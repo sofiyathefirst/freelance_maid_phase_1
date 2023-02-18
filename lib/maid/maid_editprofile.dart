@@ -135,7 +135,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         displayimg.text = image!;
         displaygender.text = gender!;
         displaybirthdate.text = birthdate!;
-        //displayaddress.text = address!;
         displaycleaningtype.text = cleaningtype!;
         displayrateperhour.text = rateperhour!;
         displayserviceoffered.text = serviceoffered!;
@@ -151,7 +150,7 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
       displayimg.text.isEmpty ? _image = false : _image = true;
       displaygender.text.isEmpty ? _gender = false : _gender = true;
       displaybirthdate.text.isEmpty ? _birthdate = false : _birthdate = true;
-      //displayaddress.text.isEmpty ? _address = false : _address = true;
+
       displaycleaningtype.text.isEmpty
           ? _cleaningtype = false
           : _cleaningtype = true;
@@ -169,7 +168,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         _pnum &&
         _gender &&
         _birthdate &&
-        //_address &&
         _cleaningtype &&
         _rateperhour &&
         _serviceoffered) {
@@ -183,7 +181,6 @@ class _MaidEditProfileState extends State<MaidEditProfile> {
         "gender": displaygender.text.trim(),
         "birthdate": displaybirthdate.text.trim(),
         "image": displayimg.text.trim(),
-        //"address": displayaddress.text.trim(),
         "cleaningtype": displaycleaningtype.text.trim(),
         "rateperhour": displayrateperhour.text.trim(),
         "serviceoffered": displayserviceoffered.text.trim(),

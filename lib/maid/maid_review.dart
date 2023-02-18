@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_mainpage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/splash_screen_2.dart';
@@ -32,7 +33,7 @@ class _MaidreviewState extends State<Maidreview> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MaidHomePage(),
+            builder: (context) => MaidMainPage(),
           ),
         );
         break;
@@ -71,7 +72,7 @@ class _MaidreviewState extends State<Maidreview> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => MaidHomePage(),
+                builder: (context) => MaidMainPage(),
               ),
             );
           },

@@ -5,6 +5,7 @@ import 'package:freelance_maid_phase_1/customer/cust_homepage.dart';
 import 'package:freelance_maid_phase_1/customer/cust_profilepage.dart';
 
 import 'package:freelance_maid_phase_1/maid/maid_homepage.dart';
+import 'package:freelance_maid_phase_1/maid/maid_mainpage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_profilepage.dart';
 import 'package:freelance_maid_phase_1/maid/maid_receipt.dart';
 import 'package:freelance_maid_phase_1/maid/maid_review.dart';
@@ -136,7 +137,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MaidHomePage(),
+            builder: (context) => MaidMainPage(),
           ),
         );
         break;
@@ -162,16 +163,19 @@ class _UpdateBookingState extends State<UpdateBooking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.deepPurple[100],
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MaidHomePage(),
+                  builder: (context) => MaidMainPage(),
                 ),
               );
             },
@@ -179,26 +183,10 @@ class _UpdateBookingState extends State<UpdateBooking> {
           title: const Text(
             "Booking Status",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontWeight: FontWeight.w700,
             ),
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.logout_rounded),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SplashScreen2(),
-                  ),
-                );
-              },
-            ),
-            SizedBox(
-              width: 15,
-            ),
-          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
@@ -280,22 +268,24 @@ class _UpdateBookingState extends State<UpdateBooking> {
                         SizedBox(
                           width: 5,
                         ),
-                        Expanded(
-                          child: RadioListTile<ProductTypeEnum>(
-                            contentPadding: const EdgeInsets.all(0.0),
-                            value: ProductTypeEnum.Decline,
-                            groupValue: _productTypeEnum,
-                            dense: true,
-                            title: Text(ProductTypeEnum.Decline.name),
-                            onChanged: (val) {
-                              setState(() {
-                                _productTypeEnum = val;
-                                displaystatus.text =
-                                    ProductTypeEnum.Decline.name;
-                              });
-                            },
+                        if (status != "Accept") ...[
+                          Expanded(
+                            child: RadioListTile<ProductTypeEnum>(
+                              contentPadding: const EdgeInsets.all(0.0),
+                              value: ProductTypeEnum.Decline,
+                              groupValue: _productTypeEnum,
+                              dense: true,
+                              title: Text(ProductTypeEnum.Decline.name),
+                              onChanged: (val) {
+                                setState(() {
+                                  _productTypeEnum = val;
+                                  displaystatus.text =
+                                      ProductTypeEnum.Decline.name;
+                                });
+                              },
+                            ),
                           ),
-                        ),
+                        ],
                         SizedBox(
                           width: 5,
                         ),
@@ -360,7 +350,7 @@ class _UpdateBookingState extends State<UpdateBooking> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => MaidHomePage(),
+                              builder: (_) => MaidMainPage(),
                             ),
                           );
                           SnackBar snackbar = const SnackBar(
