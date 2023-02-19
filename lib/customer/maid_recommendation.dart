@@ -103,7 +103,7 @@ class _MaidRecommendationState extends State<MaidRecommendation> {
   }
 
   Future<List<Map<String, dynamic>>> getData() async {
-    var topNMaids = await RecommendationService().getTopNMaids(5);
+    var topNMaids = await RecommendationService().getTopNMaids(6);
     var topNMaidDetails =
         await RecommendationService().getTopNMaidDetails(topNMaids);
     return topNMaidDetails;
