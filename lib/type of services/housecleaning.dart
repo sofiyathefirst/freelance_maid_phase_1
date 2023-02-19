@@ -264,8 +264,9 @@ class _HouseCleaningState extends State<HouseCleaning> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ReviewPage(),
+                                              builder: (context) => ReviewPage(
+                                                data: maid,
+                                              ),
                                             ),
                                           );
                                         },

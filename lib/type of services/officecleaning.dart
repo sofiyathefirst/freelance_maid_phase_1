@@ -265,8 +265,9 @@ class _OFficeCleaningState extends State<OFficeCleaning> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ReviewPage(),
+                                              builder: (context) => ReviewPage(
+                                                data: maid,
+                                              ),
                                             ),
                                           );
                                         },

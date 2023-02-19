@@ -10,7 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'cust_profilepage.dart';
 
 class ReviewPage extends StatefulWidget {
-  ReviewPage({Key? key}) : super(key: key);
+  final QueryDocumentSnapshot<Object?>? data;
+  const ReviewPage({Key? key, this.data}) : super(key: key);
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -19,6 +20,7 @@ class ReviewPage extends StatefulWidget {
 class _ReviewPageState extends State<ReviewPage> {
   final rreview = FirebaseFirestore.instance.collection('reviews');
   var currentUser = FirebaseAuth.instance.currentUser?.email;
+  late String maidemail = widget.data!.get('maidemail');
 
   int _selectedIndex = 0;
 
@@ -127,7 +129,7 @@ class _ReviewPageState extends State<ReviewPage> {
                     snapd.length,
                     (i) {
                       final review = snapd[i];
-                      if (review.get('reviews') != null) {
+                      if (review.get('maidemail') == maidemail) {
                         return Container(
                           padding: const EdgeInsets.all(15),
                           child: Column(

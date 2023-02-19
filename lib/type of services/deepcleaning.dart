@@ -266,7 +266,7 @@ class _DeepCleaningState extends State<DeepCleaning> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  ReviewPage(),
+                                                  ReviewPage(data: maid),
                                             ),
                                           );
                                         },

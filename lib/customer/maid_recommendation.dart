@@ -340,26 +340,6 @@ class _MaidRecommendationState extends State<MaidRecommendation> {
                                         ),
                                         textAlign: TextAlign.center),
                                     SizedBox(height: 20),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          shadowColor: Colors.pinkAccent,
-                                          backgroundColor: Colors.black),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ReviewPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        "View Customer's Review",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 )
                               ],

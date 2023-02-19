@@ -267,7 +267,7 @@ class _GardeningState extends State<Gardening> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  ReviewPage(),
+                                                  ReviewPage(data: maid),
                                             ),
                                           );
                                         },

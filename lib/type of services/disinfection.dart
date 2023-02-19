@@ -266,8 +266,9 @@ class _DisinfectionState extends State<Disinfection> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ReviewPage(),
+                                              builder: (context) => ReviewPage(
+                                                data: maid,
+                                              ),
                                             ),
                                           );
                                         },

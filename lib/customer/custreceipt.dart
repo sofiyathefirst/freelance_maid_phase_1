@@ -367,20 +367,13 @@ class _ReceiptState extends State<Receipt> {
                                       ),
                                       Row(
                                         children: [
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                shadowColor: Colors.pink,
-                                                backgroundColor: Colors.red),
-                                            onPressed: () {
-                                              if ("No Status" !=
-                                                  bookmaid.get('status')) {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Receipt()),
-                                                );
-                                              } else {
+                                          if (bookmaid.get('status') ==
+                                              "No Status") ...[
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  shadowColor: Colors.pink,
+                                                  backgroundColor: Colors.red),
+                                              onPressed: () {
                                                 _delete(bookmaid.id);
                                                 Navigator.pushReplacement(
                                                   context,
@@ -388,22 +381,23 @@ class _ReceiptState extends State<Receipt> {
                                                       builder: (context) =>
                                                           Receipt()),
                                                 );
-                                              }
-                                            },
-                                            child: const Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                              },
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                           const SizedBox(
                                             width: 10,
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              if ("Done" ==
-                                                  bookmaid.get('status')) {
+                                          if (bookmaid.get('status') ==
+                                              "Done") ...[
+                                            ElevatedButton(
+                                              onPressed: () {
                                                 Navigator.pushReplacement(
                                                   context,
                                                   MaterialPageRoute(
@@ -413,29 +407,22 @@ class _ReceiptState extends State<Receipt> {
                                                     ),
                                                   ),
                                                 );
-                                              } else {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Receipt()),
-                                                );
-                                              }
-                                            },
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                          Color>(
-                                                      Colors.green.shade800),
-                                            ),
-                                            child: Text(
-                                              'Leave Review',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
+                                              },
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                            Color>(
+                                                        Colors.green.shade800),
+                                              ),
+                                              child: Text(
+                                                'Leave Review',
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ],
                                       ),
                                       SizedBox(height: 20),
